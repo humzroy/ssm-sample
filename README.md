@@ -1,3 +1,1 @@
-# caxs-test
-# SSMDemo
 # SSMDemo

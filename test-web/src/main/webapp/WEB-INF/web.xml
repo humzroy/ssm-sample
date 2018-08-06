@@ -21,6 +21,7 @@
             classpath:applicationContext.xml,
             classpath:dubboContext.xml,
             classpath:dubboContext-reference.xml,
+            classpath:../../../../test-service/src/main/resources/META-INF/spring/spring-activeMq.xml,
         </param-value>
     </context-param>
 

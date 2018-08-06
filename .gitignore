@@ -1,0 +1,22 @@
+# Intellij
+*.iml
+*/*.iml
+
+#some local files
+*/.settings/
+*/.DS_Store
+.DS_Store
+*/.idea/
+.idea/
+
+# Java class files
+*.class
+target
+logs
+# Generated files
+*/bin/
+*/gen/
+*/out/
+
+# Log Files
+*.log

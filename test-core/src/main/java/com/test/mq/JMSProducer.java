@@ -23,66 +23,77 @@ public class JMSProducer {
      */
     private static final String BROKEURL = ActiveMQConnection.DEFAULT_BROKER_URL;
     /**
+     * 连接
+     */
+    private Connection connection = null;
+    /**
+     * 会话 接受或者发送消息的线程
+     */
+    private Session session = null;
+    /**
+     * 消息生产者
+     */
+    private MessageProducer messageProducer = null;
+
+    /**
      * 发送的消息数量
      */
     private static final int SENDNUM = 10;
 
-    public static void main(String[] args) {
+    /**
+     * 初始化
+     *
+     * @throws JMSException
+     * @throws Exception
+     */
+    private void initialize() throws JMSException, Exception {
         // 连接工厂
         ConnectionFactory connectionFactory;
-        // 连接
-        Connection connection = null;
-        // 会话 接受或者发送消息的线程
-        Session session;
         // 消息目的地
         Destination destination;
-        // 消息生产者
-        MessageProducer messageProducer;
         // 实例化连接工厂
-        connectionFactory = new ActiveMQConnectionFactory(USERNAME, PASSWORD, BROKEURL);
         try {
-            // 获取连接
+            connectionFactory = new ActiveMQConnectionFactory(USERNAME, PASSWORD, BROKEURL);
             connection = connectionFactory.createConnection();
-            // 启动连接
-            connection.start();
-            // 创建session
-            session = connection.createSession(true, Session.AUTO_ACKNOWLEDGE);
-            // 创建一个名为"hello world"的消息队列
+            session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
             destination = session.createQueue("hello");
-            // 创建消息生成者
             messageProducer = session.createProducer(destination);
-            // 发送消息
-            sendMessage(session, messageProducer);
-
-            session.commit();
-        } catch (Exception e) {
+            messageProducer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+        } catch (JMSException e) {
             e.printStackTrace();
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (JMSException e) {
-                    e.printStackTrace();
-                }
-            }
-
         }
-
     }
 
     /**
      * 发送消息
-     * @param session
-     * @param messageProducer
+     *
+     * @param message
      * @throws Exception
      */
-    public static void sendMessage(Session session, MessageProducer messageProducer) throws Exception {
-        for (int i = 0; i < JMSProducer.SENDNUM; i++) {
-            // 创建一条文本消息
-            TextMessage message = session.createTextMessage("ActiveMQ 发送消息" + i);
-            System.out.println("发送消息：Activemq 发送消息" + i);
-            // 通过消息生产者发出消息
-            messageProducer.send(message);
+    public void sendMessage(String message) throws Exception {
+        initialize();
+        TextMessage msg = session.createTextMessage(message);
+        connection.start();
+        System.out.println("Producer:->Sending message: " + message);
+        messageProducer.send(msg);
+        System.out.println("Producer:->Message sent complete!");
+    }
+
+    /**
+     * 关闭连接
+     *
+     * @throws JMSException
+     */
+    public void close() throws JMSException {
+        System.out.println("Producer:->Closing connection");
+        if (messageProducer != null) {
+            messageProducer.close();
+        }
+        if (session != null) {
+            session.close();
+        }
+        if (connection != null) {
+            connection.close();
         }
     }
 }

@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="test-api" />
         <module name="test-core" />
+        <module name="test-plugins" />
         <module name="test-service" />
         <module name="test-web" />
       </profile>
@@ -16,6 +17,7 @@
       <module name="test-api" target="1.8" />
       <module name="test-core" target="1.8" />
       <module name="test-parent" target="1.5" />
+      <module name="test-plugins" target="1.5" />
       <module name="test-service" target="1.8" />
       <module name="test-web" target="1.8" />
     </bytecodeTargetLevel>

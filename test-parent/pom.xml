@@ -15,7 +15,7 @@
          <module>../test-api</module>
          <module>../test-service</module>
          <module>../test-web</module>
-
+         <module>../test-plugins</module>
      </modules>
 
 </project>

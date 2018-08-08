@@ -20,6 +20,7 @@
             <list>
                 <value>file:${CONF_HOME}/dubbo-server.properties</value>
                 <value>file:${CONF_HOME}/jdbc.properties</value>
+                <value>file:${CONF_HOME}/redis.properties</value>
             </list>
         </property>
     </bean>
@@ -27,8 +28,6 @@
 
     <!-- 使用zookeeper广播注册中心暴露服务地址 -->
     <dubbo:registry protocol="zookeeper" address="${dubboServer.address}" />
-
-
     <!-- 提供方应用信息，用于计算依赖关系 -->
     <dubbo:application name="caxs-service" />
     <!-- 用dubbo协议在20880端口暴露服务 -->

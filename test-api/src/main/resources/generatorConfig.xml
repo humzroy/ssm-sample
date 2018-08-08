@@ -29,8 +29,7 @@
     <!-- 引入 properties 配置文件 -->
     <properties resource="properties/mbg.properties"/>
     <!-- 数据库链接驱动包（使用在插件中直接引入方式）指定外部classPath，这里是MySQL数据库驱动地址 -->
-    <!-- <classPathEntry location="${mbg.jar}"/> -->
-    <classPathEntry location="E:\caxs-cfs\dataSource\mysql.jar"/>
+    <classPathEntry location="${mbg.jar}"/>
 
     <!-- 主要配置内容，指定生成哪些MyBais文件，targetRunTime指定生成代码的运行目标，defaultModelType指定一张数据表生成一个领域模型类 -->
     <!-- targetRuntime="MyBatis3Simple"：不生成Example.java文件，进而不生成XXXByExample方法，仅提供最基础的CRUD方法 -->
@@ -46,12 +45,12 @@
         <!-- 为生成的Java模型类添加序列化接口 -->
         <!-- <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/> -->
         <!-- 使用自己扩展的序列化插件，对 Example 也实现序列化接口 -->
-        <plugin type="com.wu.plugins.mybatis.generator.SerializablePlugin"/>
+        <plugin type="com.test.plugins.mybatis.generator.SerializablePlugin"/>
         <!-- 为生成的Java模型创建一个toString方法 -->
         <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
 
         <!-- 这里的type里写的是你的实现类的类全路径 -->
-        <commentGenerator type="com.wu.plugins.mybatis.generator.CommentGenerator"/>
+        <commentGenerator type="com.test.plugins.mybatis.generator.CommentGenerator"/>
         <!-- <commentGenerator> -->
             <!-- true:不生成注释，false:生成注释 -->
             <!--<property name="suppressAllComments" value="true"/>-->
@@ -73,32 +72,32 @@
 
         <!-- 2. 指定采用何种方式，生成何种对象 -->
         <!-- 生成领域模型（实体类）和查询对象，	在tragetProject目录下的targetPackage(demo.model)包中生成与数据表同名的领域模型 (Pet.java)， 生成名为PetExample.java的查询对象 -->
-        <javaModelGenerator targetPackage="com.test.base.domain"
+        <javaModelGenerator targetPackage="com.test.base.domain.system"
                             targetProject="./src/main/java">
-            <property name="User" value="true"/>
+            <property name="Bch" value="true"/>
             <property name="trimStrings" value="true"/>
             <!-- 不使用setProperty方法，而是使用构造函数为每个字段赋值，推荐不设置此属性 -->
             <!-- <property name="immutable" value="true" /> -->
         </javaModelGenerator>
 
         <!-- 生成 MyBatis的SQL映射文件，PetMapper.xml -->
-        <sqlMapGenerator targetPackage="daos.hm"
+        <sqlMapGenerator targetPackage="mapper.base.system"
                          targetProject="${mbg.path}/resources">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
 
         <!--生成MyBatis的DAO接口，PetMapper.java -->
         <!-- type表示javaClient的类型，支持XMLMAPPER:SQL映射文件+接口，ANNOTATEDMAPPER：SQLBuilder+注解+接口，MIXEDMAPPER：混合形式 -->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.test.base.dao.hm"
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.test.base.dao.system"
                              targetProject="${mbg.path}/java">
-            <property name="UserDao" value="true"/>
+            <property name="BchDao" value="true"/>
             <!-- 指定父接口，一般不使用 -->
             <!-- <property name="rootInterface" value="hello" /> -->
         </javaClientGenerator>
 
         <!-- 3. 指定为哪些数据表生成MyBatis文件 -->
 
-        <table tableName="hm_user" domainObjectName="User"
+        <table tableName="s_bch" domainObjectName="Bch"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false"/>

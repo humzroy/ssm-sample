@@ -2,8 +2,6 @@
 *.iml
 */*.iml
 */.idea/
-.idea/libraries
-.idea/*.xml
 
 # Compiled source #
 ###################
@@ -31,6 +29,7 @@ target
 # Logs and databases #
 ######################
 *.log
+logs
 *.sql
 *.sqlite
 
@@ -44,4 +43,3 @@ target
 Icon?
 ehthumbs.db
 Thumbs.db
-/.idea/misc.xml

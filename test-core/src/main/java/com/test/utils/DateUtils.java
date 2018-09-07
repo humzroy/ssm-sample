@@ -1,557 +1,304 @@
 package com.test.utils;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.google.common.collect.ImmutableMap;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.*;
+import java.util.regex.Pattern;
+
+
 /**
- * @description :日期类
- * @author : wuhengzhen
- * @date : 2018-8-2 20:33
+ * 日期工具类, 通过静态继承的方式, 扩展common-lang3中的DateUtils
  */
-public class DateUtils {
+public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
-    public static final String DATEFORMATLONG14 = "yyyyMMddHHmmss";
-    public static final String DATEFORMATLONG23 = "yyyy-MM-dd HH:mm:ss.SSS";
 
-    public static final String DATEFORMATLONG17 = "yyyyMMdd HH:mm:ss";
-    public static final String DATEFORMATLONG19 = "yyyy-MM-dd HH:mm:ss";
-    public static final String DATEFORMATMEDIUM = "yyyy-MM-dd HH:mm";
-    public static final String DATE_FORMAT_YMDH = "yyyyMMddHH";
-    public static final String DATEFORMATSHORT10 = "yyyy-MM-dd";
-    public static final String DATEFORMATSHORT11 = "HH:mm:ss";
-    public static final String DATE_SHORT_YEARMONTH = "yyyy-MM";
-    public static final String DATENUMBERFORMAT8 = "yyyyMMdd";
-    public static final String DATEHOURNUMBERFORMAT = "yyyyMMddHH";
-    public static final String DATE_FORMAT_HOUR = "H";
-    private static Logger logger = LoggerFactory.getLogger(DateUtils.class);
+    private static final Map<Pattern, String> PATTERN_MAP = ImmutableMap.<Pattern, String>builder()
+            .put(Pattern.compile("^\\d{8}$"), "yyyyMMdd")
+            .put(Pattern.compile("^\\d{14}$"), "yyyyMMddHHmmss")
+            .put(Pattern.compile("^\\d{12}$"), "yyyyMMddHHmm")
+            .put(Pattern.compile("^\\d{10}$"), "yyyyMMddHH")
+            .put(Pattern.compile("^\\d{4}\\-\\d{1,2}\\-\\d{1,2} \\d{1,2}:\\d{1,2}:\\d{1,2}\\.\\d{1,3}$"), "y-M-d H:m:s.S")
+            .put(Pattern.compile("^\\d{4}\\-\\d{1,2}\\-\\d{1,2} \\d{1,2}:\\d{1,2}:\\d{1,2}$"), "y-M-d H:m:s")
+            .put(Pattern.compile("^\\d{4}\\-\\d{1,2}\\-\\d{1,2} \\d{1,2}:\\d{1,2}$"), "y-M-d H:m")
+            .put(Pattern.compile("^\\d{4}\\-\\d{1,2}\\-\\d{1,2} \\d{1,2}$"), "y-M-d H")
+            .put(Pattern.compile("^\\d{4}\\-\\d{1,2}\\-\\d{1,2}$"), "y-M-d")
+            .put(Pattern.compile("^\\d{2}:\\d{1,2}:\\d{1,2}\\.\\d{1,3}$"), "H:m:s.S")
+            .put(Pattern.compile("^\\d{2}:\\d{1,2}:\\d{1,2}$"), "H:m:s")
+            .put(Pattern.compile("^\\d{2}:\\d{1,2}$"), "H:m")
+            .build();
 
-    public static Date getCurrentDate() {
-        return new Date();
+
+    /**
+     * 日期规则定义
+     */
+    public static final String[] DATE_PATTERN = new String[]{
+            //编号0
+            "yyyyMMdd",
+            //编号1
+            "yyyyMMddHHmmss",
+            //编号2
+            "yyyyMMddHHmm",
+            //编号3
+            "yyyy-MM-dd HH:mm:ss",
+            //编号4
+            "yyyyMMdd HH:mm",
+            //编号5
+            "yyyy-MM-dd",
+            //编号6
+            "mm:ss",
+            //编号7
+            "yyyy-MM-dd HH:mm"
+    };
+
+
+    /**
+     * 自动解析日期/时间字符串, 此方法会自动识别日期格式.
+     *
+     * @param date 任意格式日期时间字符串, 具体参见{PATTERN_MAP}
+     * @return 日期
+     */
+    public static Date autoParseDate(String date) {
+        if (StringUtils.isEmpty(date)) {
+            return null;
+        }
+        Date result = null;
+        for (Pattern pattern : PATTERN_MAP.keySet()) {
+            if (pattern.matcher(date).matches()) {
+                String tmp = PATTERN_MAP.get(pattern);
+                try {
+                    result = parseDate(date, tmp);
+                } catch (ParseException e) {
+                    throw new RuntimeException("解析[" + tmp + "]格式的日期字符串[" + date + "]失败", e);
+                }
+            }
+        }
+        if (result == null) {
+            throw new RuntimeException("无法识别日期字符串的格式: " + date);
+        }
+        return result;
     }
 
-    public static long getCurrentTimeMillis() {
-        return System.currentTimeMillis();
-    }
 
-    public static String getCurrentYearMonthDate() {
-        return getCurrentFormatDate("yyyy-MM");
-    }
-
-    public static int cutTwoDateToDay(Date a, Date b) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar calendar = Calendar.getInstance();
-        int theday = 0;
+    /**
+     * 将日期yyyy-MM-dd字符串解析为日期对象, 解析失败则返回null
+     * 注意! 此方法会吞掉异常!
+     *
+     * @param date 日期字符串
+     * @return 日期实例或null
+     */
+    public static Date parseDate(String date) {
         try {
-            Date beginDate = format.parse(format.format(a));
-            Date endDate = format.parse(format.format(b));
-
-            calendar.setTime(beginDate);
-            long begin = calendar.getTimeInMillis();
-            calendar.setTime(endDate);
-            long end = calendar.getTimeInMillis();
-
-            theday = (int) ((end - begin) / 86400000L);
+            return parseDate(date, 5);
         } catch (ParseException e) {
-            logger.debug("日期转换出错!", e);
+            return null;
         }
-        return theday;
     }
 
-    public static String intToTimeString(int time) {
-        String hour = String.valueOf(time / 60);
-        String minute = String.valueOf(time - time / 60 * 60);
 
-        if (hour.length() < 2) {
-            hour = "0" + hour;
-        }
-        if (minute.length() < 2) {
-            minute = "0" + minute;
-        }
-        return hour + ":" + minute;
+    public static Date parseDate(String date, int index) throws ParseException {
+        return parseDate(date, DATE_PATTERN[index]);
     }
 
-    public static Date maxDate(Date data1, Date data2) {
-        if (data1.before(data2)) {
-            return data2;
+
+    /**
+     * 将时间yyyy-MM-dd HH:mm:ss字符串解析为日期对象, 解析失败则返回null
+     *
+     * @param date 日期字符串
+     * @return 日期实例或null
+     */
+    public static Date parseDateTime(String date) {
+        Date result;
+        try {
+            result = parseDate(date, DATE_PATTERN[3]);
+        } catch (ParseException e) {
+            result = null;
         }
-        return data1;
+        return result;
     }
 
-    public static Date minDate(Date a, Date b) {
-        if (a.before(b)) {
-            return a;
-        }
-        return b;
+
+    /**
+     * 获取今天的日期, 不包括时间. 如yyyy-MM-dd 00:00:00.000
+     *
+     * @return yyyy-MM-dd 00:00:00.000
+     */
+    public static Date todayDate() {
+        Calendar result = Calendar.getInstance();
+        result.set(Calendar.HOUR_OF_DAY, 0);
+        result.set(Calendar.MINUTE, 0);
+        result.set(Calendar.SECOND, 0);
+        result.set(Calendar.MILLISECOND, 0);
+        return result.getTime();
     }
 
-    public static int getWeekOfDate(Date date) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        int w = cal.get(7) - 1;
-        if (w == 0) {
-            w = 7;
-        }
-        return w;
-    }
 
-    public static int getDayOfWeek() {
-        int dayOfWeek = Calendar.getInstance().get(7);
-
-        if (dayOfWeek == 1) {
-            dayOfWeek = 7;
+    /**
+     * 根据开始日期和结束日期, 计算日期差.
+     * 若日期字符串格式非法, 则返回-1
+     *
+     * @param from 开始日期
+     * @param to   结束日期
+     * @return 两个日期之间的天数
+     */
+    public static int getDays(String from, String to) {
+        Date fromDate = parseDate(from);
+        Date toDate = parseDate(to);
+        int days;
+        if (fromDate != null && toDate != null) {
+            days = getDays(fromDate, toDate);
         } else {
-            dayOfWeek--;
+            days = -1;
         }
-        return dayOfWeek;
-    }
-
-    public static String formatDate(Date date, String pattern) {
-        SimpleDateFormat format = new SimpleDateFormat(pattern);
-        return format.format(date);
-    }
-
-    public static Date createDate(String dateString, String pattern)
-            throws ParseException {
-        SimpleDateFormat format = new SimpleDateFormat(pattern);
-        return format.parse(dateString);
-    }
-
-    public static String getCurrentFormatDate(String formatDate) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
-        Date dateInstance = getCurrentDate();
-        simpleDateFormat.applyPattern(formatDate);
-        return simpleDateFormat.format(dateInstance);
-    }
-
-    public static String getCurrentFormatDateShort10() {
-        return getCurrentFormatDate("yyyy-MM-dd");
-    }
-
-    public static String getCurrentFormatDateShort11() {
-        return getCurrentFormatDate("HH:mm:ss");
-    }
-
-    public static String getCurrentFormatDateShort8() {
-        return getCurrentFormatDate("yyyyMMdd");
-    }
-
-    public static String getCurrentFormatDateShortNowTime(){return getCurrentFormatDate("HH:mm:ss");}
-
-    public static String getCurrentFormatDateShortNowTime2(){return getCurrentFormatDate("HHmmss");}
-
-
-    public static String getCurrentFormatDateLong17() {
-        return getCurrentFormatDate("yyyyMMdd HH:mm:ss");
-    }
-
-    public static String getCurrentFormatDateLong19() {
-        return getCurrentFormatDate("yyyy-MM-dd HH:mm:ss");
-    }
-
-    public static String getCurrentFormatDateLong23() {
-        return getCurrentFormatDate("yyyy-MM-dd HH:mm:ss.SSS");
+        return days;
     }
 
 
-    public static String getCurrentFormatDateLong14() {
-        return getCurrentFormatDate("yyyyMMddHHmmss");
-    }
-
-
-    public static String getCurrentFormatDateMedium() {
-        return getCurrentFormatDate("yyyy-MM-dd HH:mm");
-    }
-
-
-    private static String getDate2String(String format, Date date) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
-        simpleDateFormat.applyPattern(format);
-        return simpleDateFormat.format(date);
-    }
-
-    public static String getDate2LongString(Date date) {
-        return getDate2String("yyyy-MM-dd HH:mm:ss", date);
-    }
-
-    public static String getDate2ShortString10(Date date) {
-        return getDate2String("yyyy-MM-dd", date);
-    }
-
-    public static String getDate2LongString17(Date date) {
-        return getDate2String("yyyyMMdd HH:mm:ss", date);
-    }
-
-    public static String getDate2LongString19(Date date) {
-        return getDate2String("yyyy-MM-dd HH:mm:ss", date);
-    }
-
-    public static String getDate2LongString23(Date date) {
-        return getDate2String("yyyy-MM-dd HH:mm:ss.SSS", date);
-    }
-
-    public static String getDate2MediumString(Date date) {
-        return getDate2String("yyyy-MM-dd HH:mm", date);
-    }
-
-
-    public static String getDate2HourString(Date date) {
-        return getDate2String("H", date);
-    }
-
-    public static String getDate2NumberString8(Date date) {
-        return getDate2String("yyyyMMdd", date);
-    }
-
-    public static String getLong2LongString(long l) {
-        Date dateInstance = getLong2Date(l);
-        return getDate2LongString(dateInstance);
-    }
-
-    public static String getLong2MediumString(long l) {
-        Date dateInstance = getLong2Date(l);
-        return getDate2MediumString(dateInstance);
-    }
-
-    public static String getLong2ShortString10(long l) {
-        Date dateInstance = getLong2Date(l);
-        return getDate2ShortString10(dateInstance);
-    }
-
-    private static Date getString2Date(String format, String str) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
-        simpleDateFormat.applyPattern(format);
-        ParsePosition parseposition = new ParsePosition(0);
-        return simpleDateFormat.parse(str, parseposition);
-    }
-
-    public static Date getString2LongDate(String str) {
-        return getString2Date("yyyy-MM-dd HH:mm:ss", str);
-    }
-
-
-    public static Date getString2ShortDate10(String str) {
-        return getString2Date("yyyy-MM-dd", str);
-    }
-
-    public static Date getString2LongDate17(String str) {
-        return getString2Date("yyyyMMdd HH:mm:ss", str);
-    }
-
-    public static Date getString2LongDate19(String str) {
-        return getString2Date("yyyy-MM-dd HH:mm:ss", str);
-    }
-
-    public static Date getString2LongDate23(String str) {
-        return getString2Date("yyyy-MM-dd HH:mm:ss.SSS", str);
-    }
-
-    public static Date getString2MediumDate(String str) {
-        return getString2Date("yyyy-MM-dd HH:mm", str);
-    }
-
-    public static Date getString2NumberDate8(String str) {
-        return getString2Date("yyyyMMdd", str);
-    }
-
-    public static Date getString2YmdhDate(String str) {
-        return getString2Date("yyyyMMddHH", str);
-    }
-
-    public static Date getEmptyDate() {
-        return getString2ShortDate10("1971-01-01");
-    }
-
-    public static String getEmptyDateString() {
-        return "1971-01-01";
-    }
-
-    public static Date getLong2Date(long l) {
-        return new Date(l);
-    }
-
-    public static int getOffMinutes(long l) {
-        return getOffMinutes(l, getCurrentTimeMillis());
-    }
-
-    public static int getOffMinutes(long from, long to) {
-        return (int) ((to - from) / 60000L);
-    }
-
-    public static int getYear() {
-        return Calendar.getInstance().get(1);
-    }
-
-    public static int getMonth() {
-        return Calendar.getInstance().get(2) + 1;
-    }
-
-    public static int getDay() {
-        return Calendar.getInstance().get(5);
-    }
-
-    public static int getHour() {
-        return Calendar.getInstance().get(11);
-    }
-
-    public static int getMinute() {
-        return Calendar.getInstance().get(12);
-    }
-
-    public static int getSecond() {
-        return Calendar.getInstance().get(13);
-    }
-
-    public static String add(int day) {
-        GregorianCalendar gregorianCalendar = new GregorianCalendar();
-        gregorianCalendar.add(5, day);
-        Date dateInstance = gregorianCalendar.getTime();
-        return getDate2String("yyyy-MM-dd", dateInstance);
-    }
-
-    public static String subtract(int day) {
-        GregorianCalendar gregorianCalendar = new GregorianCalendar();
-        gregorianCalendar.add(5, -day);
-        Date dateInstance = gregorianCalendar.getTime();
-        return getDate2String("yyyy-MM-dd", dateInstance);
-    }
-
-    public static String getlastMonth() {
-        SimpleDateFormat sdf = new SimpleDateFormat("MM");
-        GregorianCalendar gc = new GregorianCalendar();
-        gc.roll(2, false);
-        return sdf.format(gc.getTime());
-    }
-
-    public static String getCurrentLastMonth() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
-        Calendar cal = Calendar.getInstance();
-        cal.add(2, -1);
-        return format.format(cal.getTime());
-    }
-
-    public static String[] getCurrentLastWeek() {
-        String[] weeks = new String[2];
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar cal = Calendar.getInstance();
-        cal.add(6, -cal.get(7));
-        weeks[1] = format.format(cal.getTime());
-        cal.add(6, -6);
-        weeks[0] = format.format(cal.getTime());
-        return weeks;
-    }
-
-    public static boolean isStartLessEndTime(String start, String end)
-            throws ParseException {
-        if (("".equals(start)) || ("".equals(end))) {
-            return false;
+    /**
+     * 根据开始日期和结束日期, 计算日期差
+     *
+     * @param from 开始日期
+     * @param to   结束日期
+     * @return 两个日期之间的天数
+     */
+    public static int getDays(Date from, Date to) {
+        int days = 0;
+        if (from.before(to)) {
+            while (from.before(to)) {
+                days++;
+                from = addDays(from, 1);
+            }
+        } else {
+            days = -1;
         }
-        Date startDate = DateFormat.getDateInstance().parse(start);
-        Date endDate = DateFormat.getDateInstance().parse(end);
-        if (startDate.compareTo(endDate) >= 0) {
-            return false;
+        return days;
+    }
+
+
+    /**
+     * 获取时间段(闭区间)内的每一天, 日期均以yyyy-MM-dd格式字符串表示
+     *
+     * @param start 开始日期
+     * @param end   结束日期
+     * @return 日期段内的每一天, 若日期格式不合法则返回空结果
+     */
+    public static Set<String> getEveryDay(String start, String end) {
+        Set<String> result = new TreeSet<String>();
+        Date startDate = parseDate(start);
+        Date endDate = parseDate(end);
+        if (startDate != null && endDate != null && startDate.getTime() <= endDate.getTime()) {
+            Set<Date> allDate = getEveryDay(startDate, endDate);
+            for (Date date : allDate) {
+                result.add(format(date, DATE_PATTERN[5]));
+            }
         }
-        return true;
+        return result;
     }
 
-    public static Date getToday() {
-        Calendar cal = Calendar.getInstance();
-        return cal.getTime();
-    }
 
-    public static Date getYesterday() {
-        Calendar cal = Calendar.getInstance();
-        cal.add(5, -1);
-        return cal.getTime();
-    }
-
-    public static Date getFirstDayOfThisWeek() {
-        Date today = getToday();
-        return getFirstDayInWeek(today);
-    }
-
-    public static Date getFirstDayInMonth(int year, int month) {
-        month--;
-        Calendar cal = Calendar.getInstance();
-        cal.clear();
-        cal.set(year, month, 1);
-        return cal.getTime();
-    }
-
-    public static Date getLastDayInMonth(int year, int month) {
-        Date firstDay = getFirstDayInMonth(year, month);
-        Calendar firstCal = getCalendarByDate(firstDay);
-        firstCal.add(2, 1);
-        firstCal.add(6, -1);
-        return firstCal.getTime();
-    }
-
-    public static Date getFirstDayOfThisMonth() {
-        Calendar cal = Calendar.getInstance();
-        int year = cal.get(1);
-        int month = cal.get(2);
-        month++;
-        return getFirstDayInMonth(year, month);
-    }
-
-    public static Date getFirstDayOfLastMonth() {
-        int year = getYearOfLastMonth();
-        int month = getMonthOfLastMonth();
-        return getFirstDayInMonth(year, month);
-    }
-
-    private static int getYearOfLastMonth() {
-        Calendar cal = Calendar.getInstance();
-        cal.add(2, -1);
-        return cal.get(1);
-    }
-
-    private static int getMonthOfLastMonth() {
-        Calendar cal = Calendar.getInstance();
-        cal.add(2, -1);
-        int month = cal.get(2);
-        month++;
-        return month;
-    }
-
-    public static int getThisMonth() {
-        Calendar cal = Calendar.getInstance();
-        int month = cal.get(2);
-        month++;
-        return month;
-    }
-
-    public static Date getFirstDayInYear(int year) {
-        int month = 0;
-        int day = 1;
-        Calendar cal = Calendar.getInstance();
-        cal.set(year, month, day);
-        return cal.getTime();
-    }
-
-    public static Date getLastDayInYear(int year) {
-        int month = 11;
-        int day = 31;
-        Calendar cal = Calendar.getInstance();
-        cal.set(year, month, day);
-        return cal.getTime();
-    }
-
-    public static int getThisYear() {
-        Calendar cal = Calendar.getInstance();
-        return cal.get(1);
-    }
-
-    public static int getLastYear() {
-        Calendar cal = Calendar.getInstance();
-        cal.add(1, -1);
-        return cal.get(1);
-    }
-
-    public static Date getFirstDayInWeek(Date date) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        int thisweek = cal.get(3);
-        int lastweek = thisweek;
-        Date thisday = null;
-        while (lastweek == thisweek) {
-            thisday = cal.getTime();
-            cal.add(5, -1);
-            lastweek = cal.get(3);
+    /**
+     * 获取时间段(闭区间)内的每一天
+     *
+     * @param start 开始日期
+     * @param end   结束日期
+     * @return 日期段内的每一天
+     */
+    public static Set<Date> getEveryDay(Date start, Date end) {
+        Set<Date> result = new HashSet<Date>();
+        while (start.getTime() <= end.getTime()) {
+            result.add(start);
+            start = addDays(start, 1);
         }
-        return thisday;
+        return result;
     }
 
-    public static Date getLastDayInWeek(Date date) {
-        Date firstdayofweek = getFirstDayInWeek(date);
-        Calendar cal = getCalendarByDate(firstdayofweek);
-        cal.add(6, 6);
-        return cal.getTime();
-    }
 
-    private static Calendar getCalendarByDate(Date date) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        return cal;
-    }
-
-    public static String getDateStr(Date date)
-    {
-        String pattern = "yyyy-MM-dd";
-        SimpleDateFormat format = new SimpleDateFormat(pattern);
-        return format.format(date);
-    }
-
-    public static String getMonthStr(Date date) {
-        String pattern = "yyyy-MM";
-        SimpleDateFormat format = new SimpleDateFormat(pattern);
-        return format.format(date);
-    }
-
-    public static Date getDateByStr(String dateStr) {
-        String pattern = "yyyy-MM-dd";
-        SimpleDateFormat format = new SimpleDateFormat(pattern);
-        Date date = null;
-        try {
-            date = format.parse(dateStr);
-        } catch (ParseException e) {
-            throw new RuntimeException("wrong date format, should be " + pattern);
+    /**
+     * 在指定日期基础上增加day
+     */
+    public static String addDays(String date, int days) {
+        Date tmp = parseDate(date);
+        if (tmp == null) {
+            return null;
         }
-
-        return date;
+        tmp = addDays(tmp, days);
+        return DateFormatUtils.format(tmp, DATE_PATTERN[5]);
     }
 
-    public static String addHour(int hour) {
-        GregorianCalendar gregorianCalendar = new GregorianCalendar();
-        gregorianCalendar.add(10, hour);
-        Date dateInstance = gregorianCalendar.getTime();
-        return getDate2String("yyyyMMddHH", dateInstance);
+
+    /**
+     * 根据今天的时间 添加 numDay 天的时间
+     *
+     * @param numDay 要改变的 天数
+     * @return
+     */
+    public static Date addDays(Date date, int numDay) {
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        // 把日期往后增加一天.整数往后推,负数往前移动
+        calendar.add(Calendar.DATE, numDay);
+        Date tempDay = calendar.getTime();
+        return tempDay;
     }
 
-    public static Date addHour2Date(int hour) {
-        GregorianCalendar gregorianCalendar = new GregorianCalendar();
-        gregorianCalendar.add(10, hour);
-        Date dateInstance = gregorianCalendar.getTime();
-        return dateInstance;
+
+    /**
+     * 根据今天的时间 添加 numDay 天的时间
+     *
+     * @param numDay 要改变的 天数
+     * @return
+     */
+    public static Date addDays(int numDay) {
+        // 取时间
+        Date todayDate = DateUtils.todayDate();
+        return addDays(todayDate, numDay);
     }
 
-    public static String addHourReturnShortDate(int hour) {
-        GregorianCalendar gregorianCalendar = new GregorianCalendar();
-        gregorianCalendar.add(10, hour);
-        Date dateInstance = gregorianCalendar.getTime();
-        return getDate2String("yyyy-MM-dd", dateInstance);
-    }
 
-    public static Date getNextHourDate(int hour) {
-        GregorianCalendar gregorianCalendar = new GregorianCalendar();
-        gregorianCalendar.add(10, hour);
-        Date dateInstance = gregorianCalendar.getTime();
-        String longDateTime = getDate2LongString(dateInstance);
-        String nextDateHour = longDateTime.subSequence(0, 14) + "00:00";
-        return getString2LongDate(nextDateHour);
-    }
-
-    public static Date getNextMinuteDate(int minute) {
-        GregorianCalendar gregorianCalendar = new GregorianCalendar();
-        gregorianCalendar.add(12, minute);
-        Date dateInstance = gregorianCalendar.getTime();
-        String longDateTime = getDate2LongString(dateInstance);
-        String nextDateMinute = longDateTime.subSequence(0, 17) + "00";
-        return getString2LongDate(nextDateMinute);
-    }
-
-    public static boolean inDateRange(Date startDate, Date endDate, Date date) {
-        if ((startDate == null) || (endDate == null) || (date == null)) {
-            return false;
+    /**
+     * 将日期对象格式化为yyyy-MM-dd格式字符串
+     *
+     * @param date 日期对象
+     * @return yyyy-MM-dd格式字符串
+     */
+    public static String format(Date date) {
+        if (date == null) {
+            return null;
         }
-
-        return ((startDate.before(date)) || (startDate.equals(date))) && ((endDate.after(date)) || (endDate.equals(date)));
+        return DateFormatUtils.format(date, DATE_PATTERN[5]);
     }
+
+
+    /**
+     * 将日期对象格式化为yyyy-MM-dd HH:mm:ss格式字符串
+     *
+     * @param date 日期对象
+     * @return yyyy-MM-dd HH:mm:ss
+     */
+    public static String formatDateTime(Date date) {
+        if (date == null) {
+            return null;
+        }
+        return DateFormatUtils.format(date, DATE_PATTERN[3]);
+    }
+
+
+    /**
+     * 将日期格式化为指定格式字符串
+     *
+     * @param date    日期对象
+     * @param pattern 字符串格式
+     * @return 日期字符串
+     */
+    public static String format(Date date, String pattern) {
+        if (date == null) {
+            return null;
+        }
+        return DateFormatUtils.format(date, pattern);
+    }
+
+
 }

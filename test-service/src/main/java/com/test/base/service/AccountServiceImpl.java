@@ -65,7 +65,7 @@ public class AccountServiceImpl implements IAccountService {
         user.setMobile(param.get("mobile"));
         user.setEmail(param.get("email"));
         user.setAvatar(param.get("avatar"));
-        user.setCreateTime(DateUtils.getCurrentDate());
+        user.setCreateTime(DateUtils.getDateByStr(DateUtils.getCurrentDate()));
         user.setLastUpdateTime(null);
         user.setLastLoginTime(null);
         return userMapper.insertSelective(user);
@@ -86,7 +86,7 @@ public class AccountServiceImpl implements IAccountService {
         user.setMobile(param.get("mobile"));
         user.setEmail(param.get("email"));
         user.setAvatar(param.get("avatar"));
-        user.setLastUpdateTime(DateUtils.getCurrentDate());
+        user.setLastUpdateTime(DateUtils.getDateByStr(DateUtils.getCurrentDate()));
         String lastLoginTime = param.get("lastLoginTime");
         if (StringUtils.isNotEmpty(lastLoginTime)) {
             user.setLastLoginTime(DateUtils.getDateByStr(lastLoginTime));

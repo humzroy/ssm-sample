@@ -2,11 +2,13 @@ package com.test.utils;
 
 
 import com.google.common.collect.ImmutableMap;
+import jodd.datetime.JDateTime;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.log4j.Logger;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -301,4 +303,32 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     }
 
 
+    /**
+     * 获得当前日期
+     *
+     * @return
+     */
+    public static String getCurrentDate() {
+        JDateTime jdt = new JDateTime();
+        return jdt.toString("YYYY-MM-DD");
+    }
+
+    /**
+     * 将指定的日期转换为YYYY-MM-DD格式
+     *
+     * @param dateStr
+     * @return
+     */
+    public static Date getDateByStr(String dateStr) {
+        String pattern = "yyyy-MM-dd";
+        SimpleDateFormat format = new SimpleDateFormat(pattern);
+        Date date;
+        try {
+            date = format.parse(dateStr);
+        } catch (ParseException e) {
+            throw new RuntimeException("wrong date format, should be " + pattern);
+        }
+
+        return date;
+    }
 }

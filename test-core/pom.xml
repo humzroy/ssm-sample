@@ -458,6 +458,11 @@
         </dependency>
         <!-- Drools End -->
 
+        <dependency>
+            <groupId>org.jodd</groupId>
+            <artifactId>jodd-core</artifactId>
+            <version>3.5.2</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>test-core</finalName>

@@ -51,6 +51,7 @@
         <property name="minIdle" value="0" />
         <!-- 获取连接最大等待时间 -->
         <property name="maxWait" value="60000" />
+        <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
         <property name="poolPreparedStatements" value="true" />
         <property name="maxPoolPreparedStatementPerConnectionSize"
                   value="33" />
@@ -88,6 +89,7 @@
         <property name="minIdle" value="0" />
         <!-- 获取连接最大等待时间 -->
         <property name="maxWait" value="60000" />
+        <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
         <property name="poolPreparedStatements" value="true" />
         <property name="maxPoolPreparedStatementPerConnectionSize"
                   value="33" />
@@ -177,6 +179,7 @@
             </array>
         </property>
     </bean>
+    <!-- DAO接口所在包名，Spring会自动查找其下的类 -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.test" />
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />

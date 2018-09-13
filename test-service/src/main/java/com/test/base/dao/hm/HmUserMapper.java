@@ -4,7 +4,7 @@ import com.test.base.domain.User;
 
 import java.util.Map;
 
-public interface UserMapper {
+public interface HmUserMapper {
     int deleteByPrimaryKey(String id);
 
     int insert(User record);

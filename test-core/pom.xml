@@ -157,7 +157,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>6.0.6</version>
+            <version>5.1.45</version>
         </dependency>
 
         <!-- start druid 数据源-->
@@ -502,7 +502,7 @@
             <artifactId>jodd-core</artifactId>
             <version>3.5.2</version>
         </dependency>
-        
+
         <!-- lombok注解 -->
         <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
         <dependency>

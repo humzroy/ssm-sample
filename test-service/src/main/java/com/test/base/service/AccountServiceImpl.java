@@ -1,7 +1,7 @@
 package com.test.base.service;
 
+import com.test.base.dao.hm.HmUserMapper;
 import com.test.utils.DateUtils;
-import com.test.base.dao.hm.UserMapper;
 import com.test.base.domain.User;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -22,7 +22,7 @@ import java.util.Map;
 public class AccountServiceImpl implements IAccountService {
     private static final Logger logger = LoggerFactory.getLogger(AccountServiceImpl.class);
     @Autowired
-    private UserMapper userMapper;
+    private HmUserMapper hmUserMapper;
 
     /**
      * 用户登录
@@ -39,7 +39,7 @@ public class AccountServiceImpl implements IAccountService {
         param.put("password", password);
         User user = null;
         try {
-            user = userMapper.accountLogin(param);
+            user = hmUserMapper.accountLogin(param);
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("用户查询失败！" + e.getMessage());
@@ -68,7 +68,7 @@ public class AccountServiceImpl implements IAccountService {
         user.setCreateTime(DateUtils.getDateByStr(DateUtils.getCurrentDate()));
         user.setLastUpdateTime(null);
         user.setLastLoginTime(null);
-        return userMapper.insertSelective(user);
+        return hmUserMapper.insertSelective(user);
     }
 
     /**
@@ -91,7 +91,7 @@ public class AccountServiceImpl implements IAccountService {
         if (StringUtils.isNotEmpty(lastLoginTime)) {
             user.setLastLoginTime(DateUtils.getDateByStr(lastLoginTime));
         }
-        return userMapper.updateByPrimaryKeySelective(user);
+        return hmUserMapper.updateByPrimaryKeySelective(user);
     }
 
 }

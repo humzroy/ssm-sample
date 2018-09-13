@@ -74,7 +74,7 @@
         <!-- 生成领域模型（实体类）和查询对象，	在tragetProject目录下的targetPackage(demo.model)包中生成与数据表同名的领域模型 (Pet.java)， 生成名为PetExample.java的查询对象 -->
         <javaModelGenerator targetPackage="com.test.base.domain.system"
                             targetProject="./src/main/java">
-            <property name="Bch" value="true"/>
+            <property name="User" value="true"/>
             <property name="trimStrings" value="true"/>
             <!-- 不使用setProperty方法，而是使用构造函数为每个字段赋值，推荐不设置此属性 -->
             <!-- <property name="immutable" value="true" /> -->
@@ -90,14 +90,14 @@
         <!-- type表示javaClient的类型，支持XMLMAPPER:SQL映射文件+接口，ANNOTATEDMAPPER：SQLBuilder+注解+接口，MIXEDMAPPER：混合形式 -->
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.test.base.dao.system"
                              targetProject="${mbg.path}/java">
-            <property name="BchDao" value="true"/>
+            <property name="UserDao" value="true"/>
             <!-- 指定父接口，一般不使用 -->
             <!-- <property name="rootInterface" value="hello" /> -->
         </javaClientGenerator>
 
         <!-- 3. 指定为哪些数据表生成MyBatis文件 -->
 
-        <table tableName="s_bch" domainObjectName="Bch"
+        <table tableName="s_user" domainObjectName="User"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false"/>

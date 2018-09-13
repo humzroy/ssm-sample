@@ -142,7 +142,7 @@
 
     <!-- myBatis文件 -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="oracleDataSource" />
+        <property name="dataSource" ref="mysqlDataSource" />
         <property name="configLocation">
             <value>classpath:mybatis-config.xml</value>
         </property>
@@ -153,7 +153,7 @@
                 <bean class="com.github.pagehelper.PageHelper">
                     <property name="properties">
                         <value>
-                            dialect=oracle
+                            dialect=mysql
                             pageSizeZero=true
                         </value>
                     </property>
@@ -169,7 +169,7 @@
     <!-- 配置事务管理器 -->
     <bean id="transactionManager"
           class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="oracleDataSource" />
+        <property name="dataSource" ref="mysqlDataSource" />
     </bean>
 
     <!-- enables scanning for @Transactional annotations -->

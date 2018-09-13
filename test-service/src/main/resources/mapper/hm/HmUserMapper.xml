@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.test.base.dao.hm.UserMapper" >
+<mapper namespace="com.test.base.dao.hm.HmUserMapper" >
   <resultMap id="BaseResultMap" type="com.test.base.domain.User" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="username" property="username" jdbcType="VARCHAR" />
@@ -26,12 +26,12 @@
     <result column="code" property="code" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, username, loginid, password, mobile, email, avatar, create_time, last_update_time, 
-    last_login_time, department_code, role_id, meeting_reminding_time, job_title, phone_number, 
+    id, username, loginid, password, mobile, email, avatar, create_time, last_update_time,
+    last_login_time, department_code, role_id, meeting_reminding_time, job_title, phone_number,
     phone_number_spare, rank, community, enable, hide, department_id, code
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from hm_user
     where id = #{id,jdbcType=VARCHAR}
@@ -41,21 +41,21 @@
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.test.base.domain.User" >
-    insert into hm_user (id, username, loginid, 
-      password, mobile, email, 
-      avatar, create_time, last_update_time, 
-      last_login_time, department_code, role_id, 
-      meeting_reminding_time, job_title, phone_number, 
-      phone_number_spare, rank, community, 
-      enable, hide, department_id, 
+    insert into hm_user (id, username, loginid,
+      password, mobile, email,
+      avatar, create_time, last_update_time,
+      last_login_time, department_code, role_id,
+      meeting_reminding_time, job_title, phone_number,
+      phone_number_spare, rank, community,
+      enable, hide, department_id,
       code)
-    values (#{id,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{loginid,jdbcType=VARCHAR}, 
-      #{password,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
-      #{avatar,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateTime,jdbcType=TIMESTAMP}, 
-      #{lastLoginTime,jdbcType=TIMESTAMP}, #{departmentCode,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR}, 
-      #{meetingRemindingTime,jdbcType=INTEGER}, #{jobTitle,jdbcType=VARCHAR}, #{phoneNumber,jdbcType=VARCHAR}, 
-      #{phoneNumberSpare,jdbcType=VARCHAR}, #{rank,jdbcType=INTEGER}, #{community,jdbcType=VARCHAR}, 
-      #{enable,jdbcType=VARCHAR}, #{hide,jdbcType=VARCHAR}, #{departmentId,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{loginid,jdbcType=VARCHAR},
+      #{password,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
+      #{avatar,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateTime,jdbcType=TIMESTAMP},
+      #{lastLoginTime,jdbcType=TIMESTAMP}, #{departmentCode,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR},
+      #{meetingRemindingTime,jdbcType=INTEGER}, #{jobTitle,jdbcType=VARCHAR}, #{phoneNumber,jdbcType=VARCHAR},
+      #{phoneNumberSpare,jdbcType=VARCHAR}, #{rank,jdbcType=INTEGER}, #{community,jdbcType=VARCHAR},
+      #{enable,jdbcType=VARCHAR}, #{hide,jdbcType=VARCHAR}, #{departmentId,jdbcType=VARCHAR},
       #{code,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.test.base.domain.User" >

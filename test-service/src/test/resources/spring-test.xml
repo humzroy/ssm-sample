@@ -13,14 +13,14 @@
 
     <context:component-scan base-package="com.test.base" />
 
-    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <!--<property name="locations">
+    <!--<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        &lt;!&ndash;<property name="locations">
             <list>
                 <value>file:${CONF_HOME}/dubbo-server.properties</value>
                 <value>file:${CONF_HOME}/jdbc.properties</value>
             </list>
-        </property>-->
-    </bean>
+        </property>&ndash;&gt;
+    </bean>-->
 
     <!-- 配置数据源 使用的是Druid数据源 -->
     <!-- oracle 数据源 -->

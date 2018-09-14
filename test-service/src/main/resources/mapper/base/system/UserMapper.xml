@@ -169,10 +169,10 @@
   <insert id="insertBatch" parameterType="java.util.List">
     insert into s_user (login_name, password, user_name, create_time) values
     <foreach collection="userList" index="index" item="item" open="(" separator="),(" close=")">
+      #{item.loginName},
+      #{item.password},
       #{item.userName},
-      #{elem.passWord},
-      #{elem.userName},
-      #{elem.createTime}
+      #{item.createTime}
     </foreach>
   </insert>
 

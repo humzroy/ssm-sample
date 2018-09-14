@@ -166,7 +166,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <!-- 批量插入 -->
-  <insert id="insertBatch" parameterType="java.util.List">
+  <insert id="insertBatch" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
     insert into s_user (login_name, password, user_name, create_time) values
     <foreach collection="userList" index="index" item="item" open="(" separator="),(" close=")">
       #{item.loginName},

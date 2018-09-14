@@ -58,6 +58,7 @@ public class BaseTest {
 
 		userList.add(userTest1);
 		userList.add(userTest2);
+		logger.info(userList.toString());
 		int row = userMapper.insertBatch(userList);
 		logger.info(Integer.toString(row));
 

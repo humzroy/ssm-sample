@@ -19,8 +19,7 @@ public class DataFormatUtils {
      * @param b
      * @return
      */
-    private static final String[] HEX_DIGITS = {
-            "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"};
+    private static final String[] HEX_DIGITS = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"};
 
     private static final DecimalFormat WEST_NUM_FORMAT = new DecimalFormat("#,###.00");
 
@@ -223,10 +222,10 @@ public class DataFormatUtils {
     }
 
     /**
+     * b -> 16进制字符串
+     *
      * @param b
      * @return
-     * @Date:2014-1-11
-     * @author:温亦汝
      */
     public static String byteToHexString(byte b) {
         int n = b;

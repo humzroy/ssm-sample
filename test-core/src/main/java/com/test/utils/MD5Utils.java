@@ -12,8 +12,6 @@ import java.nio.channels.FileChannel;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author : wuhengzhen
@@ -115,40 +113,16 @@ public class MD5Utils {
     /**
      * 加盐MD5加密
      *
-     * @param str
-     * @return
+     * @param str  明文密码
+     * @param salt 盐值
+     * @return MD5加密后的密文
      */
-    public static String md5Salt(String str) {
-        // 获取随机盐
-        String salt = getSalt();
+    public static String md5Salt(String str, String salt) {
         String md5Str;
         try {
             // MD5加密
             md5Str = md5(str + salt);
             return md5Str;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
-     * 加盐MD5加密(同时获取盐值，存储DB，用于校验)
-     *
-     * @param str
-     * @return
-     */
-    public static Map<String, String> getMd5Salt(String str) {
-        Map<String, String> result = new HashMap<>(2);
-        // 获取随机盐
-        String salt = getSalt();
-        result.put("salt", salt);
-        String md5Str;
-        try {
-            // MD5加密
-            md5Str = md5(str + salt);
-            result.put("md5Str", md5Str);
-            return result;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

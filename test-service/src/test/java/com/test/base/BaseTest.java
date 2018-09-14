@@ -70,17 +70,26 @@ public class BaseTest {
 
     }
 
+    /**
+     * MD5
+     * @throws UnsupportedEncodingException
+     * @throws NoSuchAlgorithmException
+     */
     @Test
     public void testMD5() throws UnsupportedEncodingException, NoSuchAlgorithmException {
         // String password = "admin";
         // String md5salt = MD5Utils.getMd5Salt(password);
         // System.out.println(md5salt);
 
+        System.out.println(MD5Utils.checkPassword("admin", "vALIddME", "7E5089D8E64E39A26D2F1D38EFBB5003"));
 
-        System.out.println(MD5Utils.checkPassword("admin","vALIddME","7E5089D8E64E39A26D2F1D38EFBB5003"));
+    }
 
-
-
+    /**
+     * 16进制
+     */
+    @Test
+    public void testHex() {
 
     }
 }

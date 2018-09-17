@@ -13,7 +13,7 @@
     http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 
-    <context:component-scan base-package="com.test" />
+    <context:component-scan base-package="com.test.*" />
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
@@ -139,20 +139,20 @@
         <property name="logSlowSql" value="true" />
     </bean>
 
-    <bean id="dataSource" class="com.test.datasource.DynamicDataSource">
+    <!--<bean id="dataSource" class="com.test.datasource.DynamicDataSource">
         <property name="targetDataSources">
             <map key-type="java.lang.String">
                 <entry value-ref="mysqlDataSource" key="MYSQL"></entry>
                 <entry value-ref="oracleDataSource" key="ORACLE"></entry>
             </map>
         </property>
-        <!--<property name="defaultTargetDataSource" ref="oracleDataSource"></property>-->
-    </bean>
+        &lt;!&ndash;<property name="defaultTargetDataSource" ref="oracleDataSource"></property>&ndash;&gt;
+    </bean>-->
 
     <!-- 配置事务管理器 -->
     <bean id="transactionManager"
           class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource" />
+        <property name="dataSource" ref="oracleDataSource" />
     </bean>
 
     <!-- enables scanning for @Transactional annotations -->
@@ -160,7 +160,7 @@
 
     <!-- myBatis文件 -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource" />
+        <property name="dataSource" ref="oracleDataSource" />
         <property name="configLocation">
             <value>classpath:mybatis-config.xml</value>
         </property>
@@ -168,10 +168,11 @@
         <property name="mapperLocations" value="classpath*:mapper/**/*Mapper.xml" />
         <property name="plugins">
             <array>
-                <bean class="com.test.pagehelper.PageHelperUtil">
+                <!--<bean class="com.test.pagehelper.PageHelperUtil">-->
+                <bean class="com.github.pagehelper.PageHelper">
                     <property name="properties">
                         <value>
-                            dialect=mysql
+                            dialect=oracle
                             pageSizeZero=true
                         </value>
                     </property>

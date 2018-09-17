@@ -38,6 +38,12 @@
         <version>4.1.4.RELEASE</version>
 
     </dependency>
+        <dependency>
+            <groupId>com.test</groupId>
+            <artifactId>test-service</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
     <build>
         <finalName>test-web</finalName>

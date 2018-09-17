@@ -45,6 +45,11 @@
             <version>10.2.0.3.0</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>classes12</groupId>
+            <artifactId>classes12</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 
     <build>

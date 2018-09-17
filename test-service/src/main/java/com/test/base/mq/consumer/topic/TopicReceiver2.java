@@ -1,4 +1,4 @@
-package com.test.mq.springmq.consumer.topic;
+package com.test.base.mq.consumer.topic;
 
 import javax.jms.JMSException;
 import javax.jms.Message;

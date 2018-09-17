@@ -1,13 +1,13 @@
 package com.test.base.web.mq;
 
-import com.test.mq.springmq.producer.quene.QueneSender;
-import com.test.mq.springmq.producer.topic.TopicSender;
+
+import com.test.base.service.jms.IJmsSenderService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.annotation.Resource;
 
 /**
  * @author : wuhengzhen
@@ -19,10 +19,12 @@ import javax.annotation.Resource;
 @Controller
 @RequestMapping("/activemq")
 public class ActivemqController {
-    @Resource
-    QueneSender queueSender;
-    @Resource
-    TopicSender topicSender;
+    /**
+     * 获取 jmsService 对象
+     */
+    @Autowired
+    @Qualifier("jmsSenderService")
+    private IJmsSenderService jmsSenderService;
 
     /**
      * 发送消息到队列
@@ -36,7 +38,7 @@ public class ActivemqController {
     public String queueSender(@RequestParam("message") String message) {
         String opt = "";
         try {
-            queueSender.send("test.queue", message);
+            jmsSenderService.sendQueue("test.queue", message);
             opt = "suc";
         } catch (Exception e) {
             opt = e.getCause().toString();
@@ -57,7 +59,7 @@ public class ActivemqController {
     public String topicSender(@RequestParam("message") String message) {
         String opt = "";
         try {
-            topicSender.send("test.topic", message);
+            jmsSenderService.sendTopic("test.topic", message);
             opt = "suc";
         } catch (Exception e) {
             opt = e.getCause().toString();

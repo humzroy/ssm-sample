@@ -8,9 +8,8 @@
 	default-lazy-init="true">
    <!-- Service列表 -->
    <!-- 账号服务 -->
-	<dubbo:service interface="com.test.base.service.IUsrRoleService" ref="usrRoleService" />
 	<dubbo:service interface="com.test.base.service.IAccountService" ref="accountServiceImpl" />
-
+	<dubbo:service interface="com.test.base.service.jms.IJmsSenderService" ref="jmsSenderServiceImpl"/>
 
 
 

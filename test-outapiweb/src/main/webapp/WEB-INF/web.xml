@@ -1,25 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC
+        "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+        "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
 <web-app version="2.5"
          xmlns="http://java.sun.com/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
-    http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
-
+        http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
     <!--定义了WEB应用的名字-->
-    <display-name>test-web</display-name>
-
-    <!--过滤器元素将一个名字与一个实现javax.Filter接口的类相关联-->
-    <filter>
-        <!-- 缓存的过滤器-->
-        <filter-name>cacheFilter</filter-name>
-        <filter-class>com.test.base.filter.CacheFilter</filter-class>
-    </filter>
-    <!--命名一个过滤器，就要利用filter-mapping元素把它与一个或多个servlet相关联-->
-    <filter-mapping>
-        <filter-name>cacheFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-
+    <display-name>test-outapiweb</display-name>
     <!-- 在Spring框架中是如何解决从页面传来的字符串的编码问题的呢？-->
     <!-- 下面我们来看看Spring框架给我们提供过滤器CharacterEncodingFilter -->
     <!-- 这个过滤器就是针对于每次浏览器请求进行过滤的，然后再其之上添加了父类没有的功能即处理字符编码。 -->
@@ -71,23 +60,6 @@
     <listener>
         <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
     </listener>
-
-    <!-- 2、部署applicationContext的xml文件-->
-    <!-- 如果在web.xml中不写任何参数配置信息，默认的路径是"/WEB-INF/applicationContext.xml，
-    在WEB-INF目录下创建的xml文件的名称必须是applicationContext.xml。
-    如果是要自定义文件名可以在web.xml里加入contextConfigLocation这个context参数：
-    在<param-value> </param-value>里指定相应的xml文件名，如果有多个xml文件，可以写在一起并以“,”号分隔。
-    也可以这样applicationContext-*.xml采用通配符，比如这那个目录下有applicationContext-ibatis-base.xml，
-    applicationContext-action.xml，applicationContext-ibatis-dao.xml等文件，都会一同被载入。
-    在ContextLoaderListener中关联了ContextLoader这个类，所以整个加载配置过程由ContextLoader来完成。-->
-    <context-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>
-            classpath:applicationContext.xml,
-            classpath:dubboContext.xml,
-            classpath:dubboContext-reference.xml,
-        </param-value>
-    </context-param>
 
     <!-- 如果你的DispatcherServlet拦截"/"，为了实现REST风格，拦截了所有的请求，那么同时对*.js,*.jpg等静态文件的访问也就被拦截了。-->
     <!-- 方案一：激活Tomcat的defaultServlet来处理静态文件-->
@@ -174,83 +146,11 @@
         <!-- 此处会拦截URL中带“/”的请求。-->
         <url-pattern>/</url-pattern>
     </servlet-mapping>
-
-    <filter>
-        <filter-name>DruidWebStatFilter</filter-name>
-        <filter-class>com.alibaba.druid.support.http.WebStatFilter</filter-class>
-        <!-- 排除一些不必要的url，比如.js,/jslib/-->
-        <init-param>
-            <param-name>exclusions</param-name>
-            <param-value>/static/*,*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*</param-value>
-        </init-param>
-        <!-- 缺省sessionStatMaxCount是1000个。你可以按需要进行配置 -->
-        <init-param>
-            <param-name>sessionStatMaxCount</param-name>
-            <param-value>1000</param-value>
-        </init-param>
-        <!-- druid 0.2.7版本开始支持profile，配置profileEnable能够监控单个url调用的sql列表 -->
-        <init-param>
-            <param-name>profileEnable</param-name>
-            <param-value>true</param-value>
-        </init-param>
-        <init-param>
-            <param-name>principalSessionName</param-name>
-            <param-value>users.username</param-value>
-        </init-param>
-    </filter>
-
-    <filter-mapping>
-        <filter-name>DruidWebStatFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-
-    <!-- druid监控 -->
-    <servlet>
-        <servlet-name>DruidStatView</servlet-name>
-        <servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
-        <!--
-            deny优先于allow，如果在deny列表中，就算在allow列表中，也会被拒绝。
-            如果allow没有配置或者为空，则允许所有访问
-
-        <init-param>
-            <param-name>allow</param-name>
-            <param-value>128.242.127.1/24,127.0.0.1</param-value>
-        </init-param>
-        <init-param>
-            <param-name>deny</param-name>
-            <param-value>192.168.1.118</param-value>
-        </init-param>-->
-        <!-- 在StatViewSerlvet输出的html页面中，有一个功能是Reset All，执行这个操作之后，会导致所有计数器清零，重新计数 -->
-        <init-param>
-            <param-name>resetEnable</param-name>
-            <param-value>true</param-value>
-        </init-param>
-        <!-- 远程访问JavaSE项目使用jmx连接
-        <init-param>
-            <param-name>jmxUrl</param-name>
-            <param-value>service:jmx:rmi:///jndi/rmi://192.168.1.76:9004/jmxrmi</param-value>
-        </init-param> -->
-        <!--  用户名和密码 -->
-        <init-param>
-            <param-name>loginUsername</param-name>
-            <param-value>caxsdruid</param-value>
-        </init-param>
-        <init-param>
-            <param-name>loginPassword</param-name>
-            <param-value>caxs!123</param-value>
-        </init-param>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>DruidStatView</servlet-name>
-        <url-pattern>/druid/*</url-pattern>
-    </servlet-mapping>
-
     <!-- 配置session超时时间，单位分钟 -->
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
+        <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
-
 </web-app>

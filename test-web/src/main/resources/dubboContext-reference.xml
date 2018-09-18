@@ -8,6 +8,7 @@
 
 	<dubbo:reference id="accountService" interface="com.test.base.service.IAccountService" timeout="30000"/>
 	<dubbo:reference id="jmsSenderService" interface="com.test.base.service.jms.IJmsSenderService" timeout="30000"/>
+	<dubbo:reference id="demoService" interface="com.test.base.service.demo.IDemoService" timeout="30000"/>
 
 
 </beans>

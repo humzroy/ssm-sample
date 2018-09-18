@@ -10,6 +10,7 @@
    <!-- 账号服务 -->
 	<dubbo:service interface="com.test.base.service.IAccountService" ref="accountServiceImpl" />
 	<dubbo:service interface="com.test.base.service.jms.IJmsSenderService" ref="jmsSenderServiceImpl"/>
+	<dubbo:service interface="com.test.base.service.demo.IDemoService" ref="demoServiceImpl"/>
 
 
 

@@ -1,7 +1,8 @@
 package com.test.utils;
 
 import org.apache.commons.net.ftp.*;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.SocketException;
@@ -22,7 +23,7 @@ public class FtpUtil {
     public static final String ENCODING_UTF8 = "UTF-8";
     public static final String ENCODING_ISO = "ISO-8859-1";
     public static final String LANGUAGE_CODE_ZH = "zh";
-    private static Logger log = Logger.getLogger(FtpUtil.class);
+    private static Logger log = LoggerFactory.getLogger(FtpUtil.class);
     private FTPClient ftp;
 
     public FtpUtil() {

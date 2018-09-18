@@ -13,7 +13,7 @@
     <artifactId>test-outapiweb</artifactId>
     <packaging>war</packaging>
 
-    <name>test-outapiweb Maven Webapp</name>
+    <name>test-outapiweb</name>
     <!-- FIXME change it to the project's website -->
     <url>http://www.example.com</url>
 

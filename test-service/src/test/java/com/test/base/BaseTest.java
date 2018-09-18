@@ -6,23 +6,13 @@
 package com.test.base;
 
 
-import com.test.base.dao.system.UserMapper;
-import com.test.base.domain.system.User;
 import com.test.utils.MD5Utils;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import sun.security.provider.MD5;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Base Tester.
@@ -72,6 +62,7 @@ public class BaseTest {
 
     /**
      * MD5
+     *
      * @throws UnsupportedEncodingException
      * @throws NoSuchAlgorithmException
      */

@@ -9,9 +9,13 @@ package com.test.base;
 import com.test.utils.*;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.commons.codec.binary.Hex;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -26,8 +30,9 @@ import java.util.Collections;
  * @version 1.0
  * @since <pre>09/07/2018</pre>
  */
-// @RunWith(SpringJUnit4ClassRunner.class)
-// @ContextConfiguration(locations = {"/spring-test.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"/spring-redis.xml"})
+// @ContextConfiguration(locations = {"/spring-test.xml", })
 public class BaseTest {
     private static final Logger logger = LoggerFactory.getLogger(BaseTest.class);
 
@@ -35,7 +40,8 @@ public class BaseTest {
     // IUsrRoleService usrRoleService;
     // @Autowired
     // private UserMapper userMapper;
-
+    @Autowired
+    private RedisUtils redisUtils;
 
     @Test
     public void test() {
@@ -117,5 +123,17 @@ public class BaseTest {
 
     }
 
+    /**
+     * test redis
+     */
+    @Test
+    public void testRedis() {
+        // redisUtils.set("name", "admin");
+        redisUtils.remove("name");
+        System.out.println(redisUtils.get("name"));
+
+        // System.out.println(redisUtils.get("myKey"));
+
+    }
 
 }

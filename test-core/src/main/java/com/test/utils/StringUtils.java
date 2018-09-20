@@ -23,6 +23,14 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     private static Pattern pattern = Pattern.compile("<(span)?\\sstyle.*?style>|(span)?\\sstyle=.*?>", Pattern.DOTALL);
     private static Pattern pattern2 = Pattern.compile("(<[^>]+>)", Pattern.DOTALL);
     private static Pattern patterncomma = Pattern.compile("(&[^;]+;)", Pattern.DOTALL);
+    /**
+     * 字母
+     */
+    private static final String CHAR = "char";
+    /**
+     * 数字
+     */
+    private static final String NUM = "num";
 
     /**
      * 一次性判断多个或单个对象为空。
@@ -44,28 +52,34 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     }
 
     /**
-     * 获取指定长度的随机数
+     * 获得指定长度的随机字符串
+     * 参照ASCII码表 65到90为大写字母，97到122为小写字母
      *
-     * @param length
-     * @return
+     * @param length 要生成的字符串长度
+     * @return 返回生成的随机字符串
      */
-    public static String getRandom(int length) {
-        String val = "";
+    public static String getStringRandom(int length) {
+        StringBuilder valSb = new StringBuilder();
         Random random = new Random();
+
+        //参数length，表示生成几位随机数
         for (int i = 0; i < length; i++) {
-            // 输出字母还是数字
-            String charOrNum = random.nextInt(2) % 2 == 0 ? "char" : "num";
-            // 字符串
-            if ("char".equalsIgnoreCase(charOrNum)) {
-                // 取得大写字母还是小写字母
-                int choice = random.nextInt(2) % 2 == 0 ? 65 : 97;
-                val += (char) (choice + random.nextInt(26));
-            } else if ("num".equalsIgnoreCase(charOrNum)) {
-                // 数字
-                val += String.valueOf(random.nextInt(10));
+            //输出是数字还是字母
+            String charOrNum = random.nextInt(2) % 2 == 0 ? CHAR : NUM;
+            switch (charOrNum) {
+                case CHAR:
+                    // 输出是大写字母还是小写字母
+                    int choice = random.nextInt(2) % 2 == 0 ? 65 : 97;
+                    valSb.append((char) (random.nextInt(26) + choice));
+                    break;
+                case NUM:
+                    valSb.append(random.nextInt(10));
+                    break;
+                default:
+                    break;
             }
         }
-        return val.toLowerCase();
+        return valSb.toString().toLowerCase();
     }
 
     /**

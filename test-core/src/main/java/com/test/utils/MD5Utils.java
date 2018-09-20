@@ -1,5 +1,6 @@
 package com.test.utils;
 
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -25,11 +26,6 @@ public class MD5Utils {
      * LOG
      */
     private static Log log = LogFactory.getLog(MD5Utils.class);
-    public static final String RA = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    /**
-     * 盐的长度，此处设为8
-     */
-    private static final Integer SALT_LENGTH = 8;
 
     /**
      * 适用于上G大的文件
@@ -74,7 +70,6 @@ public class MD5Utils {
             return null;
         }
     }
-
 
     /**
      * 对字符串进行普通md5加密(大写+数字)
@@ -130,21 +125,6 @@ public class MD5Utils {
     }
 
     /**
-     * 生成随机盐
-     *
-     * @return 随机生成的盐
-     */
-    public static String getSalt() {
-        SecureRandom random = new SecureRandom();
-        // 盐的长度，这里是8，可自行调整
-        char[] text = new char[SALT_LENGTH];
-        for (int i = 0; i < SALT_LENGTH; i++) {
-            text[i] = RA.charAt(random.nextInt(RA.length()));
-        }
-        return new String(text);
-    }
-
-    /**
      * 密码校验（普通MD5）
      *
      * @param password  明文密码
@@ -176,5 +156,30 @@ public class MD5Utils {
             return false;
         }
     }
+
+    /**
+     * 获取字节数组形式的MD5摘要
+     *
+     * @param data 需要获取摘要的字节数组
+     * @return 获取到的MD5摘要数组
+     * @throws Exception
+     */
+    public static byte[] md5Byte(byte[] data) throws NoSuchAlgorithmException {
+        MessageDigest md5 = MessageDigest.getInstance("MD5");
+        md5.update(data);
+        return md5.digest();
+    }
+
+    /**
+     * 获取十六进制字符串形式的MD5摘要
+     *
+     * @param src 需要获得MD5摘要的字符串
+     * @return 获取到的十六进制的MD5摘要
+     */
+    public static String md5Hex(String src) throws NoSuchAlgorithmException {
+        byte[] bs = md5Byte(src.getBytes());
+        return new String(new Hex().encode(bs));
+    }
+
 }
 

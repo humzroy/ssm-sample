@@ -6,13 +6,18 @@
 package com.test.base;
 
 
-import com.test.utils.MD5Utils;
+import com.test.utils.*;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.apache.commons.codec.binary.Hex;
 
 import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Base Tester.
@@ -83,4 +88,34 @@ public class BaseTest {
     public void testHex() {
 
     }
+
+    @Test
+    public void testCollectionSort() {
+        String timestamp = "1455868453";
+        String nonce = "1677866950";
+        String token = "weixin";
+
+        ArrayList<String> list = new ArrayList<String>();
+        list.add(nonce);
+        list.add(timestamp);
+        list.add(token);
+
+        Collections.sort(list);
+        System.out.println(DigestUtils.sha1Hex(list.get(0) + list.get(1) + list.get(2)));
+        System.out.println("0f829ac4e6689efbd338abda4c090f90bab60725".equals(DigestUtils.sha1Hex(list.get(0) + list.get(1) + list.get(2))));
+    }
+
+
+    @Test
+    public void testMd5() throws NoSuchAlgorithmException {
+        // System.out.println(MD5Utils.addSalt("admin"));
+        // 2ZKzfby13j8E468c
+        // 726bZ8fK06z3ef6ebb3y8e1be3f5ja183fEf54826af8c8c2
+        System.out.println(SaltUtil.getSalt());
+        // XDMkXT0o
+        // System.out.println(SaltUtil.verifyPwd("admin","726bZ8fK06z3ef6ebb3y8e1be3f5ja183fEf54826af8c8c2"));
+
+    }
+
+
 }

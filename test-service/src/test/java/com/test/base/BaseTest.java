@@ -129,10 +129,11 @@ public class BaseTest {
     @Test
     public void testRedis() {
         // redisUtils.set("name", "admin");
-        redisUtils.remove("name");
+        redisUtils.del("name");
         System.out.println(redisUtils.get("name"));
 
         // System.out.println(redisUtils.get("myKey"));
+
 
     }
 

@@ -3,7 +3,7 @@ package com.test.base.web.demo;
 import com.test.base.domain.excel.ExportInfo;
 import com.test.base.domain.excel.ImportInfo;
 import com.test.base.service.demo.IDemoService;
-import com.test.excel.EasyExcelUtil;
+import com.test.excel.easyexcel.EasyExcelUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

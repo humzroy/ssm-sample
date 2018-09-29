@@ -31,6 +31,8 @@
         <lucene.version>7.4.0</lucene.version>
         <!-- poi 版本号 -->
         <poi.version>3.17</poi.version>
+        <!-- easypoi 版本号 -->
+        <easypoi.version>3.3.0</easypoi.version>
     </properties>
 
     <dependencies>
@@ -538,6 +540,7 @@
             <artifactId>easyexcel</artifactId>
             <version>1.0.2</version>
         </dependency>
+        <!-- poi -->
         <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
         <dependency>
             <groupId>org.apache.poi</groupId>
@@ -550,7 +553,25 @@
             <artifactId>poi-ooxml</artifactId>
             <version>${poi.version}</version>
         </dependency>
-
+        <!-- easypoi -->
+        <!-- https://mvnrepository.com/artifact/cn.afterturn/easypoi-base -->
+        <dependency>
+            <groupId>cn.afterturn</groupId>
+            <artifactId>easypoi-base</artifactId>
+            <version>${easypoi.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/cn.afterturn/easypoi-web -->
+        <dependency>
+            <groupId>cn.afterturn</groupId>
+            <artifactId>easypoi-web</artifactId>
+            <version>${easypoi.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/cn.afterturn/easypoi-annotation -->
+        <dependency>
+            <groupId>cn.afterturn</groupId>
+            <artifactId>easypoi-annotation</artifactId>
+            <version>${easypoi.version}</version>
+        </dependency>
         <!-- Excel end-->
     </dependencies>
     <build>

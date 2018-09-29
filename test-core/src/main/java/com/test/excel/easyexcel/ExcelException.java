@@ -1,4 +1,4 @@
-package com.test.excel;
+package com.test.excel.easyexcel;
 
 /**
  * Created with IntelliJ IDEA

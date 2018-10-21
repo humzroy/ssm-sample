@@ -17,10 +17,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!-- spring版本号 -->
-        <spring.version>4.3.5.RELEASE</spring.version>
+        <spring.version>4.3.20.RELEASE</spring.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <jackson.version>2.5.0</jackson.version>
+        <jackson.version>2.9.7</jackson.version>
         <!-- mybatis版本号 -->
         <mybatis.version>3.4.6</mybatis.version>
         <!-- shiro版本号 -->
@@ -411,7 +411,7 @@
         <dependency>
             <groupId>axis</groupId>
             <artifactId>axis-jaxrpc</artifactId>
-            <version>1.2.1</version>
+            <version>1.4</version>
         </dependency>
         <!--axis webservice依赖jar-end-->
 

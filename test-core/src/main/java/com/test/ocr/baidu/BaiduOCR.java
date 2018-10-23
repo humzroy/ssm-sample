@@ -18,7 +18,7 @@ public class BaiduOCR {
     /**
      * 百度通用文字识别（含位置信息版）URL
      */
-    private static final String OCR_HOST = "https://aip.baidubce.com/rest/2.0/ocr/v1/general";
+    private static final String OCR_HOST = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic";
     /**
      * main 方法
      *

@@ -17,7 +17,7 @@ import java.util.Map;
  * @system name:
  * @copyright:
  */
-public class CopyBeanUtils {
+public class BeanUtils {
     /**
      * JavaBean属性值复制
      *

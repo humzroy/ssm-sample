@@ -470,4 +470,51 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
             return str;
         }
     }
+
+    /**
+     * 将数据库字段/表名换成代码中的方法名格式（首字符大写、去_线）
+     * 例如 s_role_all 转换成SRoleAll
+     *
+     * @param name
+     * @return
+     */
+    public static String transDBField2MethodNm(String name) {///
+        if (name == null || name.trim().equals("")) {
+            return name;
+        }
+
+        name = name.toLowerCase();
+        String[] seg = name.split("_");
+        String _field = "";
+        for (String s : seg) {
+            if (!s.trim().equals("")) {
+                _field += upperFirstChar(s);
+            }
+        }
+
+        return _field.trim();
+    }
+
+    /**
+     * 将首字符换成大写
+     *
+     * @param fieldNm
+     * @return
+     */
+    public static String upperFirstChar(String fieldNm) {
+
+        if (fieldNm == null || fieldNm.trim().equals("")) {
+            return "";
+        }
+        fieldNm = fieldNm.toLowerCase();
+        char firstChar = fieldNm.charAt(0);
+        StringBuffer retFields = new StringBuffer();
+
+        if (fieldNm.length() > 1) {
+            retFields.append(String.valueOf(firstChar).toUpperCase()).append(fieldNm.substring(1));
+            return retFields.toString();
+        } else {
+            return String.valueOf(firstChar).toUpperCase();
+        }
+    }
 }

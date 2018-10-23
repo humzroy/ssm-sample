@@ -4,14 +4,14 @@ import com.test.base.domain.excel.ExportInfo;
 import com.test.base.domain.excel.ImportInfo;
 import com.test.base.service.demo.IDemoService;
 import com.test.excel.easyexcel.EasyExcelUtil;
+import com.test.utils.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +25,7 @@ import java.util.List;
  * @Description：
  * @date：2018-09-17 17:24
  */
-@Controller
+@RestController
 @RequestMapping("/demo")
 public class DemoController {
     private static final Logger logger = LoggerFactory.getLogger(DemoController.class);
@@ -41,12 +41,13 @@ public class DemoController {
      * @return
      */
     @RequestMapping("/test")
-    @ResponseBody
-    public String test(HttpServletRequest request) {
+    public Object test(HttpServletRequest request) {
         String name = request.getParameter("name");
         logger.info("请求的参数name = " + name);
         String msg = demoService.sayHello(name);
-        return msg;
+        ResponseUtil responseUtil = ResponseUtil.createResponseUtil();
+        responseUtil.putValueToData("msg", msg);
+        return responseUtil;
     }
 
     /**

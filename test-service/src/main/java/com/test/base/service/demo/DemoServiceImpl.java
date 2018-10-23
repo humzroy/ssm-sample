@@ -26,8 +26,8 @@ public class DemoServiceImpl implements IDemoService {
      */
     @Override
     public String sayHello(String name) {
-
-        JSONObject reqData = new JSONObject();
+        String str;
+        /*JSONObject reqData = new JSONObject();
         JSONObject msg = new JSONObject();
         msg.put("name", name);
         reqData.put("data", msg);
@@ -37,6 +37,9 @@ public class DemoServiceImpl implements IDemoService {
         String resp = HttpClientUtil.doPostJson(url, reqData.toJSONString());
 
         logger.info("service 返回消息为：" + resp);
-        return resp;
+        return resp;*/
+        str = "hello !!";
+        System.out.println(str);
+        return str;
     }
 }

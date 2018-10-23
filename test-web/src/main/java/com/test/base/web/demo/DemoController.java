@@ -40,7 +40,7 @@ public class DemoController {
      * @param request
      * @return
      */
-    @RequestMapping("/test")
+    @RequestMapping(value = "/test", method = RequestMethod.POST)
     public Object test(HttpServletRequest request) {
         String name = request.getParameter("name");
         logger.info("请求的参数name = " + name);

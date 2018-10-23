@@ -2,18 +2,14 @@ package com.test.base.web.outapi;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author wuhengzhen
  * @Description：对外API接口服务
  * @date：2018-09-17 17:17
  */
-@Controller
+@RestController
 @RequestMapping("/outapi")
 public class ApiController {
     private static final Logger logger = LoggerFactory.getLogger(ApiController.class);
@@ -25,7 +21,6 @@ public class ApiController {
     @RequestMapping(value = "testApi", method = RequestMethod.POST)
     public String outApi(@RequestBody String data) {
         logger.info("接收到数据data:" + data);
-        String resp = "Hello World!";
-        return resp;
+        return "Hello World!";
     }
 }

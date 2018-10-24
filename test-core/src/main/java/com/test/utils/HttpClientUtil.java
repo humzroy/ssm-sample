@@ -58,7 +58,7 @@ public class HttpClientUtil {
     /**
      * 日志信息
      */
-    private static Logger logger = LoggerFactory.getLogger(HttpClientUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(HttpClientUtil.class);
     private static RestTemplate restTemplate = new RestTemplate();
     private static final CloseableHttpClient HTTP_CLIENT;
     private static final String CHARSET = "UTF-8";
@@ -261,7 +261,7 @@ public class HttpClientUtil {
         PrintWriter writer = null;
         URL sendUrl;
         BufferedReader in = null;
-        String result = "";
+        StringBuilder result = new StringBuilder();
         try {
             sendUrl = new URL(url);
             //打开连接
@@ -285,7 +285,7 @@ public class HttpClientUtil {
             in = new BufferedReader(new InputStreamReader(connect.getInputStream()));
             String line;
             while ((line = in.readLine()) != null) {
-                result += line;
+                result.append(line);
             }
         } catch (Exception e) {
             logger.error("post请求出现错误！", e);
@@ -303,7 +303,7 @@ public class HttpClientUtil {
                 throw new BusinessException("发送POST请求出现异常！");
             }
         }
-        return result;
+        return result.toString();
     }
 
     /**
@@ -438,14 +438,14 @@ public class HttpClientUtil {
         BufferedReader in = null;
         in = new BufferedReader(
                 new InputStreamReader(connection.getInputStream(), encoding));
-        String result = "";
+        StringBuilder result = new StringBuilder();
         String getLine;
         while ((getLine = in.readLine()) != null) {
-            result += getLine;
+            result.append(getLine);
         }
         in.close();
         System.err.println("result:" + result);
-        return result;
+        return result.toString();
     }
 
     //region Description https请求
@@ -510,20 +510,44 @@ public class HttpClientUtil {
      * @author : wuhengzhen
      * @date : 2018-9-12 9:02
      */
-    public static String execute(HttpPost httpPost) throws IOException {
-        String body = "";
-        //执行请求操作，并拿到结果（同步阻塞）
-        CloseableHttpResponse response = HTTP_CLIENT.execute(httpPost);
-        org.apache.http.HttpEntity entity = response.getEntity();
-        if (entity != null) {
-            //按指定编码转换结果实体为String类型
-            body = EntityUtils.toString(entity, CHARSET);
+    public static String execute(HttpPost httpPost) {
+        String respStr = "";
+        CloseableHttpResponse response = null;
+        try {
+            //执行请求操作，并拿到结果（同步阻塞）
+            response = HTTP_CLIENT.execute(httpPost);
+            int statusCode = response.getStatusLine().getStatusCode();
+            logger.info("HTTP请求，响应码：" + statusCode);
+            org.apache.http.HttpEntity entity = response.getEntity();
+            if (entity != null) {
+                //按指定编码转换结果实体为String类型
+                respStr = EntityUtils.toString(entity, CHARSET);
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            logger.error(ExceptionUtil.getStackTrace(e));
+        } finally {
+            // 释放链接
+            if (httpPost != null) {
+                try {
+                    httpPost.releaseConnection();
+                } catch (Exception e) {
+                    logger.error(ExceptionUtil.getStackTrace(e));
+                }
+            }
+            if (response != null) {
+                try {
+                    //获取结果实体
+                    EntityUtils.consume(response.getEntity());
+                    response.close();
+                } catch (IOException e) {
+                    logger.error(ExceptionUtil.getStackTrace(e));
+                }
+            }
         }
-        //获取结果实体
-        EntityUtils.consume(entity);
-        //释放链接
-        response.close();
-        return body;
+
+        return respStr;
     }
 
     /**

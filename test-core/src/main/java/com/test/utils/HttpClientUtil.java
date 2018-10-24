@@ -64,6 +64,7 @@ public class HttpClientUtil {
     private static final String CHARSET = "UTF-8";
     private static final String HTTP = "http";
     private static final String HTTPS = "https";
+    private static final int MAX_TIMEOUT = 10000;
 
     // 采用静态代码块，初始化超时时间配置，再根据配置生成默认httpClient对象
     static {
@@ -74,9 +75,20 @@ public class HttpClientUtil {
                 .register(HTTP, PlainConnectionSocketFactory.INSTANCE)
                 .register(HTTPS, new SSLConnectionSocketFactory(sslcontext, (String s, SSLSession sslSession) -> true))
                 .build();
-        PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager(socketFactoryRegistry);
-        RequestConfig config = RequestConfig.custom().setConnectTimeout(60000).setSocketTimeout(60000).build();
-        HTTP_CLIENT = HttpClients.custom().setDefaultRequestConfig(config).setConnectionManager(connManager).build();
+        // 设置连接池
+        PoolingHttpClientConnectionManager connMgr = new PoolingHttpClientConnectionManager(socketFactoryRegistry);
+        // 设置连接池大小
+        connMgr.setMaxTotal(100);
+        connMgr.setDefaultMaxPerRoute(connMgr.getMaxTotal());
+        RequestConfig.Builder configBuilder = RequestConfig.custom();
+        // 设置连接超时
+        configBuilder.setConnectTimeout(MAX_TIMEOUT);
+        // 设置读取超时
+        configBuilder.setSocketTimeout(MAX_TIMEOUT);
+        // 设置从连接池获取连接实例的超时
+        configBuilder.setConnectionRequestTimeout(MAX_TIMEOUT);
+        RequestConfig requestConfig = configBuilder.build();
+        HTTP_CLIENT = HttpClients.custom().setDefaultRequestConfig(requestConfig).setConnectionManager(connMgr).build();
     }
 
     /**
@@ -541,7 +553,9 @@ public class HttpClientUtil {
         };
         SSLContext sc = null;
         try {
+            // TLS1.0与SSL3.0基本上没有太大的差别，可粗略理解为TLS是SSL的继承者，但它们使用的是相同的SSLContext
             sc = SSLContext.getInstance("TLS");
+            // 使用TrustManager来初始化该上下文，TrustManager只是被SSL的Socket所使用
             sc.init(null, new TrustManager[]{trustManager}, null);
         } catch (NoSuchAlgorithmException | KeyManagementException e) {
             e.printStackTrace();

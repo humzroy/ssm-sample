@@ -411,11 +411,26 @@ public class RSAUtils {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// OpenSSL 生成的RSA秘钥对
-		String defaultPublicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC4BDPESj4eihcHVoekuFXefa4R\n" + "0JDDwJ7L2adQKomHKMv/jCj29hD5Z7niuSCNY7TR0bEt+2UdAx7LZ/Y6TCkHCiJp\n" + "y0u2SZv577w7LsodGdIv8jZ3WYtjnZk/MwhtnXn1qaPOs0Vnqexd3VoxZ/nu8kJ5\n" + "ubyciD4RRDXUZ62t4wIDAQAB";
+        // OpenSSL 生成的RSA秘钥对
+        String defaultPublicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC4BDPESj4eihcHVoekuFXefa4R\n" +
+                "0JDDwJ7L2adQKomHKMv/jCj29hD5Z7niuSCNY7TR0bEt+2UdAx7LZ/Y6TCkHCiJp\n" +
+                "y0u2SZv577w7LsodGdIv8jZ3WYtjnZk/MwhtnXn1qaPOs0Vnqexd3VoxZ/nu8kJ5\n" +
+                "ubyciD4RRDXUZ62t4wIDAQAB";
 
-		String defaultPrivateKey = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBALgEM8RKPh6KFwdW\n" + "h6S4Vd59rhHQkMPAnsvZp1AqiYcoy/+MKPb2EPlnueK5II1jtNHRsS37ZR0DHstn\n" + "9jpMKQcKImnLS7ZJm/nvvDsuyh0Z0i/yNndZi2OdmT8zCG2defWpo86zRWep7F3d\n" + "WjFn+e7yQnm5vJyIPhFENdRnra3jAgMBAAECgYEAo3xQRZc0Q0uqFAHjdwuydn4w\n" + "VXF3/AI40qEnzchM8UDkpMBwcKDDCeIGuxCAhD1OG49yG4kbF0B7bnmJv9eEJlQM\n" + "zrbYl028orI4pguIyNMn1p159V2l0Do4ZuVsF1bjX/4jxFDiI4jwLBIBZDfdjjdo\n" + "lY+ih7BicGAarbXfNtECQQDgsGFnpDGGMREdA6dWeWqIz560Q64CohUwoJnG/7v9\n" + "8r51xVG2daXFUGV9mphJOKGGFlrJFRAe9cJrHn3Ml83JAkEA0ajbUeGkjyHDcVTu\n" + "38yZsuJL2w8RJhN1Wq626/qjdhuXxBDGrss6FzVMLe+OhvsQ/5QGUT75nicUGc+W\n" + "ubNESwJAbt86QV0pPvFpY2rRIP+qzTW+N2+KJyx5zlQBbcv1pPsqdozWpHVrRnFE\n" + "k3U8niz+r17Kj50AJnbY5+jU5Kcn2QJAd0w4t6fIRjV1C0jDv46hKlt/xD8Xh+3s\n" + "idP+e9obJvpeag8Nrqou/MOz/DNii0XTD0qAKbzGtooP8vvfDP2HbwJBAM78SoPW\n" + "vCEc+OP8cP4jgK4hqBTIj+6+B+SFBdPIovKsYkGZOMEzS4kaIsGltMOBnM9AhCzh\n" + "FvdHl0v57GwfCxk=";
-
+        String defaultPrivateKey = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBALgEM8RKPh6KFwdW\n" +
+                "h6S4Vd59rhHQkMPAnsvZp1AqiYcoy/+MKPb2EPlnueK5II1jtNHRsS37ZR0DHstn\n" +
+                "9jpMKQcKImnLS7ZJm/nvvDsuyh0Z0i/yNndZi2OdmT8zCG2defWpo86zRWep7F3d\n" +
+                "WjFn+e7yQnm5vJyIPhFENdRnra3jAgMBAAECgYEAo3xQRZc0Q0uqFAHjdwuydn4w\n" +
+                "VXF3/AI40qEnzchM8UDkpMBwcKDDCeIGuxCAhD1OG49yG4kbF0B7bnmJv9eEJlQM\n" +
+                "zrbYl028orI4pguIyNMn1p159V2l0Do4ZuVsF1bjX/4jxFDiI4jwLBIBZDfdjjdo\n" +
+                "lY+ih7BicGAarbXfNtECQQDgsGFnpDGGMREdA6dWeWqIz560Q64CohUwoJnG/7v9\n" +
+                "8r51xVG2daXFUGV9mphJOKGGFlrJFRAe9cJrHn3Ml83JAkEA0ajbUeGkjyHDcVTu\n" +
+                "38yZsuJL2w8RJhN1Wq626/qjdhuXxBDGrss6FzVMLe+OhvsQ/5QGUT75nicUGc+W\n" +
+                "ubNESwJAbt86QV0pPvFpY2rRIP+qzTW+N2+KJyx5zlQBbcv1pPsqdozWpHVrRnFE\n" +
+                "k3U8niz+r17Kj50AJnbY5+jU5Kcn2QJAd0w4t6fIRjV1C0jDv46hKlt/xD8Xh+3s\n" +
+                "idP+e9obJvpeag8Nrqou/MOz/DNii0XTD0qAKbzGtooP8vvfDP2HbwJBAM78SoPW\n" +
+                "vCEc+OP8cP4jgK4hqBTIj+6+B+SFBdPIovKsYkGZOMEzS4kaIsGltMOBnM9AhCzh\n" +
+                "FvdHl0v57GwfCxk=";
 		//测试字符串
 		String dataStr = "Test String wuhengzhen";
 
@@ -435,12 +450,12 @@ public class RSAUtils {
 			String privateKeyStr = getPrivateKey(keyPair);
 			String publicKeyStr = getPublicKey(keyPair);
 
-			byte[] encryptData = encryptByPrivateKey(data.getBytes(),privateKeyStr);
+			byte[] encryptData = encryptByPrivateKey(data.getBytes(), privateKeyStr);
 			String encryptStr = Base64Util.encryptBASE64(encryptData);
 			System.out.println("加密后的字符串为：" + encryptStr);
 
 			byte[] decryptData = Base64Util.decryptBASE64(encryptStr);
-			byte[] decrypt = decryptByPublicKey(decryptData,publicKeyStr);
+			byte[] decrypt = decryptByPublicKey(decryptData, publicKeyStr);
 			System.out.println("解密后的字符串为：" + new String(decrypt));
 		} catch (Exception e) {
 			e.printStackTrace();

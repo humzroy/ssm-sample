@@ -119,32 +119,32 @@ public class Base64Util {
      */
     public static boolean base64ToImage(String imgStr, String imgFilePath) throws IOException {
         // 对字节数组字符串进行Base64解码并生成图片
+        boolean flag = false;
         OutputStream out = null;
-        // 图像数据为空
-        if (StringUtils.isEmpty(imgStr)) {
-            return false;
-        }
-        try {
-            // Base64解码
-            byte[] b = decryptBASE64(imgStr);
-            for (int i = 0; i < b.length; ++i) {
-                // 调整异常数据
-                if (b[i] < 0) {
-                    b[i] += 256;
+        // 图像数据不为空
+        if (StringUtils.isNotEmpty(imgStr)) {
+            try {
+                // Base64解码
+                byte[] b = decryptBASE64(imgStr);
+                for (int i = 0; i < b.length; ++i) {
+                    // 调整异常数据
+                    if (b[i] < 0) {
+                        b[i] += 256;
+                    }
+                }
+                out = new FileOutputStream(imgFilePath);
+                out.write(b);
+                out.flush();
+                flag = true;
+            } catch (Exception e) {
+                logger.error(ExceptionUtil.getStackTrace(e));
+            } finally {
+                if (out != null) {
+                    out.close();
                 }
             }
-            out = new FileOutputStream(imgFilePath);
-            out.write(b);
-            out.flush();
-            return true;
-        } catch (Exception e) {
-            logger.error(ExceptionUtil.getStackTrace(e));
-            return false;
-        } finally {
-            if (out != null) {
-                out.close();
-            }
         }
+        return flag;
     }
 
 

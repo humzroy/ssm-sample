@@ -49,7 +49,7 @@ public class Base64Util {
      *
      * @param imgFile 图片本地路径
      * @return
-     * @author ZHANGJL
+     * @author wuhengzhen
      * @dateTime 2018-02-23 14:40:46
      */
     public static String imageToBase64byLocal(String imgFile) throws Exception {
@@ -76,7 +76,7 @@ public class Base64Util {
      *
      * @param imgURL 图片线上路径
      * @return
-     * @author ZHANGJL
+     * @author wuhengzhen
      * @dateTime 2018-02-23 14:43:18
      */
     public static String imageToBase64ByOnline(String imgURL) throws Exception {
@@ -114,7 +114,7 @@ public class Base64Util {
      * @param imgStr      base64字符串
      * @param imgFilePath 图片存放路径
      * @return
-     * @author ZHANGJL
+     * @author wuhengzhen
      * @dateTime 2018-02-23 14:42:17
      */
     public static boolean base64ToImage(String imgStr, String imgFilePath) throws IOException {

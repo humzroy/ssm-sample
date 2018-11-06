@@ -119,7 +119,7 @@ public class FtpUtil {
      * @param localPath  下载后保存到本地的路径
      * @return flag
      */
-    public static boolean downloadFile(String ip, int port, String username, String password, String remotePath, String fileName, String localPath, int fileType) throws Exception {
+    public static boolean downloadFile(String ip, int port, String username, String password, String remotePath, String fileName, String localPath) throws Exception {
 
         log.info("[downloadFile] begin:" + "--> fileName = " + fileName + DateUtils.formatDateTime(new Date()));
         boolean flag = false;
@@ -129,7 +129,8 @@ public class FtpUtil {
             ftp.connect(ip, port);
             // 下面三行代码必须要，而且不能改变编码格式，否则不能正确下载中文文件
             ftp.setControlEncoding(ENCODING_GBK);
-            ftp.setFileType(fileType);
+            // 设置上传文件的类型为二进制类型
+            ftp.setFileType(FTPClient.BINARY_FILE_TYPE);
             FTPClientConfig conf = new FTPClientConfig();
             conf.setServerLanguageCode(LANGUAGE_CODE_ZH);
 

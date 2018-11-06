@@ -61,37 +61,6 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
     }
 
     /**
-     * JavaBean属性值复制
-     *
-     * @param source
-     * @param to
-     * @throws Exception
-     */
-    public static void copy(Object source, Object to) throws Exception {
-        // 获取属性
-        BeanInfo sourceBean = Introspector.getBeanInfo(source.getClass(), Object.class);
-        PropertyDescriptor[] sourceProperty = sourceBean.getPropertyDescriptors();
-
-        BeanInfo destBean = Introspector.getBeanInfo(to.getClass(), Object.class);
-        PropertyDescriptor[] destProperty = destBean.getPropertyDescriptors();
-        try {
-            for (PropertyDescriptor aSourceProperty : sourceProperty) {
-                for (PropertyDescriptor aDestProperty : destProperty) {
-
-                    if (aSourceProperty.getName().equals(aDestProperty.getName())) {
-                        // 调用source的getter方法和dest的setter方法
-                        aDestProperty.getWriteMethod().invoke(to, aSourceProperty.getReadMethod().invoke(source));
-                        break;
-                    }
-                }
-            }
-        } catch (Exception e) {
-            throw new Exception("属性复制失败:" + e.getMessage());
-        }
-    }
-
-
-    /**
      * 公共方法：将一个 Map对象转化为一个JavaBean
      *
      * @param type 要转化的类型

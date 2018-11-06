@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableMap;
 import jodd.datetime.JDateTime;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.log4j.Logger;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -314,6 +313,26 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
+     * description : 获取当前时间（格式：YYYY-MM-DD hh:mm:ss）
+     * author : wuhengzhen
+     * date : 2018-11-6 16:35
+     */
+    public static String getCurrentDateTime() {
+        JDateTime jdt = new JDateTime();
+        return jdt.toString("YYYY-MM-DD hh:mm:ss");
+    }
+
+    /**
+     * description :获取当前时间（格式：YYYY-MM-DD hh:mm:ss:mss）
+     * author : wuhengzhen
+     * date : 2018-11-6 16:35
+     */
+    public static String getCurrentDateTimeMillis() {
+        JDateTime jdt = new JDateTime();
+        return jdt.toString(JDateTime.DEFAULT_FORMAT);
+    }
+
+    /**
      * 将指定的日期转换为YYYY-MM-DD格式
      *
      * @param dateStr
@@ -330,5 +349,9 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         }
 
         return date;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(getCurrentDateTime());
     }
 }

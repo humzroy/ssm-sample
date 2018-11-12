@@ -156,4 +156,10 @@ public class BaseTest {
                             "QlVH";
         System.out.println(new String(Base64Util.decryptBASE64(base64fozu)));
     }
+
+    @Test
+    public void testIdNo(){
+        String idNo = "37028519940507323x";
+        System.out.println(RegexUtils.isIDNumber(idNo));
+    }
 }

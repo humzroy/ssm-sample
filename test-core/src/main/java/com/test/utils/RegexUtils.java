@@ -526,7 +526,7 @@ public class RegexUtils {
      * @return
      * @author wuhengzhen
      */
-    private static boolean match(String text, String reg) {
+    public static boolean match(String text, String reg) {
         if (StringUtils.isBlank(text) || StringUtils.isBlank(reg)) {
             return false;
         }

@@ -30,8 +30,8 @@ import java.util.Collections;
  * @version 1.0
  * @since <pre>09/07/2018</pre>
  */
-// @RunWith(SpringJUnit4ClassRunner.class)
-// @ContextConfiguration(locations = {"/spring-redis.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"/spring-redis.xml"})
 // @ContextConfiguration(locations = {"/spring-test.xml", })
 public class BaseTest {
     private static final Logger logger = LoggerFactory.getLogger(BaseTest.class);
@@ -131,8 +131,8 @@ public class BaseTest {
     @Test
     public void testRedis() {
         // redisUtils.set("name", "admin");
-        redisUtils.del("name");
-        System.out.println(redisUtils.get("name"));
+        // redisUtils.del("name");
+        // System.out.println(redisUtils.get("themisToken"));
 
         // System.out.println(redisUtils.get("myKey"));
 

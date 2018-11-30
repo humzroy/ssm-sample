@@ -62,6 +62,7 @@
         <property name="poolConfig" ref="jedisPoolConfig"/>
         <!--IP地址 -->
         <property name="hostName" value="127.0.0.1"/>
+        <!--<property name="hostName" value="10.10.10.242"/>-->
         <!--端口号  -->
         <property name="port" value="6379"/>
         <!--如果Redis设置有密码  -->

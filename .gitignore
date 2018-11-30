@@ -44,10 +44,3 @@ Icon?
 ehthumbs.db
 Thumbs.db
 /rebel.xml
-/test-api/src/main/resources/rebel.xml
-/test-core/src/main/resources/rebel.xml
-/test-outapiweb/src/main/resources/rebel.xml
-/test-parent/src/main/resources/rebel.xml
-/test-plugins/src/main/resources/rebel.xml
-/test-service/src/main/resources/rebel.xml
-/test-web/src/main/resources/rebel.xml

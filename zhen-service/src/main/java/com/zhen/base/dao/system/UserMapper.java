@@ -60,4 +60,11 @@ public interface UserMapper {
      * @return
      */
     int insertBatch(@Param("userList") List<User> userList);
+
+    /**
+     * description :根据用户名查询用户信息
+     * author : wuhengzhen
+     * date : 2018-12-4 10:40
+     */
+    User selectUserByUsername(String userName);
 }

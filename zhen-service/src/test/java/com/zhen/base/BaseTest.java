@@ -128,9 +128,9 @@ public class BaseTest {
      */
     @Test
     public void testRedis() {
-        // redisUtils.set("name", "admin");
+        redisUtils.set("name", "admin");
         // redisUtils.del("name");
-        // System.out.println(redisUtils.get("themisToken"));
+        System.out.println(redisUtils.get("name"));
 
         // System.out.println(redisUtils.get("myKey"));
 

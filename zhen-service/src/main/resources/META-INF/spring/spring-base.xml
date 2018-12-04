@@ -8,7 +8,7 @@
 	default-lazy-init="true">
    <!-- Service列表 -->
    <!-- 账号服务 -->
-	<dubbo:service interface="com.zhen.base.service.IAccountService" ref="accountServiceImpl" />
+	<dubbo:service interface="com.zhen.base.service.ILoginService" ref="loginServiceImpl" />
 	<dubbo:service interface="com.zhen.base.service.jms.IJmsSenderService" ref="jmsSenderServiceImpl"/>
 	<dubbo:service interface="com.zhen.base.service.demo.IDemoService" ref="demoServiceImpl"/>
 

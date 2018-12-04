@@ -18,7 +18,7 @@
         <!-- mybatis版本号 -->
         <mybatis.version>3.4.6</mybatis.version>
         <!-- shiro版本号 -->
-        <shiro.version>1.2.2</shiro.version>
+        <shiro.version>1.4.0</shiro.version>
         <!-- drools版本号 -->
         <drools.version>6.5.0.Final</drools.version>
         <!-- lucene版本号 -->

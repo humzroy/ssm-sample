@@ -23,7 +23,6 @@ public class ActivemqController {
      * 获取 jmsService 对象
      */
     @Autowired
-    @Qualifier("jmsSenderService")
     private IJmsSenderService jmsSenderService;
 
     /**

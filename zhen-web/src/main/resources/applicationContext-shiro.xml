@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+    <!-- 1. 配置securityManager，也就是shiro的核心。-->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="myRealm"/>
+        <!-- 缓存管理器 -->
+        <property name="cacheManager" ref="cacheManager"/>
+    </bean>
+    <!-- 2. 配置cacheManager(缓存管理) -->
+    <bean id="cacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager">
+    </bean>
+    <!-- 3. 配置Realm，自己定义的shiroRealm，必须实现org.apache.shiro.realm.Realm这个接口  -->
+    <bean id="myRealm" class="com.zhen.base.web.shiro.realm.UserRealm"></bean>
+    <!-- 4.配置lifecycleBeanPostProcessor， 可以自动的来调用配置在spring IOC 容器中shiro bean的生命周期方法 -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+    <!-- 5.启用IOC容器中使用shiro的注解，但必须在配置 lifecycleBeanPostProcessor才可以使用-->
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+          depends-on="lifecycleBeanPostProcessor"/>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+    <!-- 6. 配置shiroFilter -->
+    <!--    6.1 id必须和web.xml 文件中配置的DelegatingFilterProxy的filter-name一致 -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <property name="loginUrl" value="/login.jsp"/>
+        <property name="successUrl" value="/user/list.do"/>
+        <property name="unauthorizedUrl" value="/login.jsp"/>
+        <!-- 配置哪些页面需要受保护 -->
+        <!-- 以及访问这些页面需要的权限 -->
+        <!-- anon可以被匿名访问，或者说游客可以访问 -->
+        <!-- authc 必须认证之后才能访问，即登录后才能访问的页面 -->
+        <!--<property name="filterChainDefinitions">
+            <value>
+                /login = anon
+                /index = anon
+                /** = authc
+            </value>
+        </property>-->
+        <!-- 访问地址的过滤规则,从上至下的优先级,如果有匹配的规则,就会返回,不会再进行匹配 -->
+        <property name="filterChainDefinitions"  value="#{shiroManager.loadFilterChainDefinitions()}"/>
+    </bean>
+    <bean id="shiroManager" class="com.zhen.base.web.shiro.service.impl.ShiroManagerImpl"/>
+
+    <!-- session管理器 -->
+    <!--shiro的session管理器为DefaultWebSessionManager，这个管理器直接抛弃了容器的session管理器，自己来维护session
+	如果我们不做设置，那么shiro将使用默认的session管理器ServletContainerSessionManager：Web 环境，其直接使用 Servlet 容器的会话
+	如果我们非要使用DefaultWebSessionManager的话，我们就要重写一个SingleSignOutFilter、SingleSignOutHandler和SessionMappingStorage了。-->
+    <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+        <!--超时时间 10000*60 一分钟 此处改为9小时-->
+        <property name="globalSessionTimeout" value="324000000"/>
+        <!--session存储的实现 -->
+        <property name="sessionDAO" ref="shiroSessionDao"/>
+        <!--sessionIdCookie的实现,用于重写覆盖容器默认的JSESSIONID -->
+        <property name="sessionIdCookie" ref="sharesession"/>
+        <!--定时检查失效的session -->
+        <property name="sessionValidationSchedulerEnabled" value="true" />
+    </bean>
+
+    <!-- sessionIdCookie的实现,用于重写覆盖容器默认的JSESSIONID -->
+    <bean id="sharesession" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <!--cookie的name,对应的默认是 JSESSIONID -->
+        <constructor-arg name="name" value="SHAREJSESSIONID"/>
+    </bean>
+
+    <!-- session存储的实现 -->
+    <bean id="shiroSessionDao" class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO" />
+
+    <!-- 设置SecurityUtils，相当于调用SecurityUtils.setSecurityManager(securityManager) -->
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="org.apache.shiro.SecurityUtils.setSecurityManager"/>
+        <property name="arguments" ref="securityManager"/>
+    </bean>
+
+    <context:component-scan base-package="com.zhen">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+</beans>

@@ -1,6 +1,6 @@
 package com.zhen.base.web;
 
-import com.zhen.base.service.IAccountService;
+import com.zhen.base.service.ILoginService;
 import com.zhen.utils.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,7 +23,7 @@ import java.util.Map;
 @RequestMapping("/hm_users")
 public class UserController {
     @Autowired
-    private IAccountService accountService;
+    private ILoginService accountService;
 
     /**
      * @description :新增用户

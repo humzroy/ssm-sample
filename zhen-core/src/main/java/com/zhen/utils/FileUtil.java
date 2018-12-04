@@ -238,6 +238,91 @@ public class FileUtil {
 
 
     /**
+     * 函数名：getFileAndFold
+     * 作用：使用递归，获取指定文件夹内的所有文件
+     *
+     * @param path：文件夹路径
+     * @param deep：表示文件的层次深度，控制前置空格的个数 前置空格缩进，显示文件层次结构
+     */
+    public static String getFileAndFold(String path, int deep) {
+        // 获得指定文件对象
+        File file = new File(path);
+        // 获得该文件夹内的所有文件
+        File[] array = file.listFiles();
+        StringBuilder fileName = new StringBuilder();
+
+        for (File anArray : array) {
+            //如果是文件
+            if (anArray.isFile()) {
+                // 只输出文件名字
+                logger.info("文件名称：" + anArray.getName());
+                fileName.append(anArray.getName()).append(";");
+            } else if (anArray.isDirectory()) {
+                // 如果是文件夹
+                logger.info("文件夹名称：" + anArray.getName());
+                fileName.append(anArray.getName()).append(";");
+                // 文件夹需要调用递归 ，深度+1
+                getFileAndFold(anArray.getPath(), deep + 1);
+            }
+        }
+        return fileName.toString();
+    }
+
+    /**
+     * 函数名：getFile
+     * 获取指定文件夹里的所有文件
+     *
+     * @param path：文件夹路径
+     * @return
+     * @author wuhengzhen
+     * @date 2018/8/27 13:48
+     */
+    public static String getFile(String path) throws Exception {
+        // 获得指定文件对象
+        File file = new File(path);
+        // 获得该文件夹内的所有文件
+        File[] array = file.listFiles();
+        StringBuilder fileName = new StringBuilder();
+        for (File anArray : array) {
+            //如果是文件
+            if (anArray.isFile()) {
+                // 只输出文件名字
+                logger.info("文件名称：" + anArray.getName());
+                fileName.append(anArray.getName()).append(";");
+            }
+        }
+        return fileName.toString();
+    }
+
+    /**
+     * 移动文件去指定的文件夹
+     *
+     * @param oriPath:原始文件夹路径
+     * @param newPath:新文件夹路径
+     * @return
+     * @author wuhengzhen
+     * @date 2018/8/27 13:52
+     */
+    public static boolean moveFile(String oriPath, String newPath) throws Exception {
+        // 获得指定文件对象
+        File oriFile = new File(oriPath);
+        File newFile = new File(newPath);
+        if (newFile.exists()) {
+            newFile.delete();
+        }
+        if (oriFile.renameTo(new File(newPath))) {
+            logger.info("File is moved successful！");
+            logger.info("文件转移成功！");
+            return true;
+        } else {
+            logger.info("File is failed to move！");
+            logger.info("文件转移失败！");
+            return false;
+        }
+    }
+
+
+    /**
      * description :从网络Url中下载文件,fileName图片名称
      * author : wuhengzhen
      * date : 2018-10-23 10:59

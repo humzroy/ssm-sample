@@ -23,6 +23,8 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     private static Pattern pattern = Pattern.compile("<(span)?\\sstyle.*?style>|(span)?\\sstyle=.*?>", Pattern.DOTALL);
     private static Pattern pattern2 = Pattern.compile("(<[^>]+>)", Pattern.DOTALL);
     private static Pattern patterncomma = Pattern.compile("(&[^;]+;)", Pattern.DOTALL);
+    private static Pattern linePattern = Pattern.compile("_(\\w)");
+    private static Pattern humpPattern = Pattern.compile("[A-Z]");
     /**
      * 字母
      */
@@ -472,49 +474,128 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     }
 
     /**
-     * 将数据库字段/表名换成代码中的方法名格式（首字符大写、去_线）
-     * 例如 s_role_all 转换成SRoleAll
+     * 下划线转驼峰
      *
-     * @param name
+     * @param str
      * @return
      */
-    public static String transDBField2MethodNm(String name) {///
-        if (name == null || name.trim().equals("")) {
-            return name;
+    public static String lineToHump(String str) {
+        if (null == str || "".equals(str)) {
+            return str;
         }
-
-        name = name.toLowerCase();
-        String[] seg = name.split("_");
-        String _field = "";
-        for (String s : seg) {
-            if (!s.trim().equals("")) {
-                _field += upperFirstChar(s);
-            }
+        str = str.toLowerCase();
+        Matcher matcher = linePattern.matcher(str);
+        StringBuffer sb = new StringBuffer();
+        while (matcher.find()) {
+            matcher.appendReplacement(sb, matcher.group(1).toUpperCase());
         }
+        matcher.appendTail(sb);
 
-        return _field.trim();
+        str = sb.toString();
+        str = str.substring(0, 1).toUpperCase() + str.substring(1);
+
+        return str;
     }
 
     /**
-     * 将首字符换成大写
+     * 驼峰转下划线,效率比上面高
      *
-     * @param fieldNm
+     * @param str
      * @return
      */
-    public static String upperFirstChar(String fieldNm) {
-
-        if (fieldNm == null || fieldNm.trim().equals("")) {
-            return "";
+    public static String humpToLine(String str) {
+        Matcher matcher = humpPattern.matcher(str);
+        StringBuffer sb = new StringBuffer();
+        while (matcher.find()) {
+            matcher.appendReplacement(sb, "_" + matcher.group(0).toLowerCase());
         }
-        fieldNm = fieldNm.toLowerCase();
-        char firstChar = fieldNm.charAt(0);
-        StringBuffer retFields = new StringBuffer();
+        matcher.appendTail(sb);
+        return sb.toString();
+    }
 
-        if (fieldNm.length() > 1) {
-            retFields.append(String.valueOf(firstChar).toUpperCase()).append(fieldNm.substring(1));
-            return retFields.toString();
+    /**
+     * 驼峰转下划线(简单写法，效率低于{@link #humpToLine(String)})
+     *
+     * @param str
+     * @return
+     */
+    public static String humpToLine2(String str) {
+        return str.replaceAll("[A-Z]", "_$0").toLowerCase();
+    }
+
+    /**
+     * 首字母转小写
+     *
+     * @param s
+     * @return
+     */
+    public static String toLowerCaseFirstOne(String s) {
+        if (org.apache.commons.lang.StringUtils.isBlank(s)) {
+            return s;
+        }
+        if (Character.isLowerCase(s.charAt(0))) {
+            return s;
         } else {
-            return String.valueOf(firstChar).toUpperCase();
+            return (new StringBuilder()).append(Character.toLowerCase(s.charAt(0))).append(s.substring(1)).toString();
+        }
+    }
+
+    /**
+     * 首字母转大写
+     *
+     * @param s
+     * @return
+     */
+    public static String toUpperCaseFirstOne(String s) {
+        if (org.apache.commons.lang.StringUtils.isBlank(s)) {
+            return s;
+        }
+        if (Character.isUpperCase(s.charAt(0))) {
+            return s;
+        } else {
+            return (new StringBuffer()).append(Character.toUpperCase(s.charAt(0))).append(s.substring(1)).toString();
+        }
+    }
+
+    /**
+     * object转Integer
+     *
+     * @param object
+     * @return
+     */
+    public static int getInt(Object object) {
+        return getInt(object, -1);
+    }
+
+    public static int getInt(Object object, Integer defaultValue) {
+        if (null == object) {
+            return defaultValue;
+        }
+        try {
+            return Integer.parseInt(object.toString());
+        } catch (Exception e) {
+            return defaultValue;
+        }
+    }
+
+    /**
+     * object转Boolean
+     *
+     * @param object
+     * @return
+     */
+    public static boolean getBoolean(Object object) {
+        return getBoolean(object, false);
+    }
+
+    public static boolean getBoolean(Object object, Boolean defaultValue) {
+        if (null == object) {
+            return defaultValue;
+        }
+        try {
+            return Boolean.parseBoolean(object.toString());
+        } catch (Exception e) {
+            return defaultValue;
         }
     }
 }

@@ -175,5 +175,15 @@
       #{item.createTime}
     </foreach>
   </insert>
-
+  <!-- 根据用户姓名查询用户信息 -->
+  <select id="selectUserByUsername" resultMap="BaseResultMap" parameterType="string">
+    select
+    <include refid="Base_Column_List" />
+    from s_user
+    <where>
+      <if test="userName != null ">
+        loginName = #{userName, jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
 </mapper>

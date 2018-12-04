@@ -1,5 +1,7 @@
 package com.zhen.base.service.demo;
 
+import com.zhen.base.domain.system.RequestLog;
+
 /**
  * demo interface
  */
@@ -10,4 +12,6 @@ public interface IDemoService {
      * @return
      */
     String sayHello(String name);
+
+    void insertUpmsLogSelective(RequestLog reqlog);
 }

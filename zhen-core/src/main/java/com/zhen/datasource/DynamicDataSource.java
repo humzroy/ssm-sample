@@ -1,5 +1,7 @@
 package com.zhen.datasource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
 /**
@@ -11,6 +13,11 @@ import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
  */
 public class DynamicDataSource extends AbstractRoutingDataSource {
     /**
+     * logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(DynamicDataSource.class);
+
+    /**
      * Determine the current lookup key. This will typically be
      * implemented to check a thread-bound transaction context.
      * <p>Allows for arbitrary keys. The returned key needs
@@ -19,6 +26,8 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
      */
     @Override
     protected Object determineCurrentLookupKey() {
-        return DataSourceContextHolder.getDataSourceType();
+        String dataSource = DataSourceContextHolder.getDataSourceType();
+        logger.info("当前操作使用的数据源：{}", dataSource);
+        return dataSource;
     }
 }

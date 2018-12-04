@@ -19,9 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author : wuhengzhen
- * @Description : AccountController
+ * @description : LoginController
  * @date : 2018/08/02 18:54
- * @copyright:长安新生（深圳）金融投资有限公司
  */
 @Controller
 @RequestMapping("/login")
@@ -32,7 +31,7 @@ public class LoginController {
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     @Autowired
-    private ILoginService accountService;
+    private ILoginService loginService;
 
     /**
      * @description :用户登录

@@ -16,7 +16,6 @@ public class DataSourceContextHolder {
     /**
      * @param dataSourceType 数据库类型
      * @return void
-     * @throws
      * @Description: 设置数据源类型
      */
     public static void setDataSourceType(String dataSourceType) {
@@ -29,9 +28,7 @@ public class DataSourceContextHolder {
     }
 
     /**
-     * @param
      * @return String
-     * @throws
      * @Description: 获取数据源类型
      */
     public static String getDataSourceType() {
@@ -39,9 +36,7 @@ public class DataSourceContextHolder {
     }
 
     /**
-     * @param
      * @return void
-     * @throws
      * @Description: 清除数据源类型
      */
     public static void clearDataSourceType() {

@@ -1,5 +1,6 @@
 package com.zhen.base.service.demo;
 
+import com.zhen.base.domain.system.RequestLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -36,5 +37,10 @@ public class DemoServiceImpl implements IDemoService {
         str = "hello !!";
         System.out.println(str);
         return str;
+    }
+
+    @Override
+    public void insertUpmsLogSelective(RequestLog reqlog) {
+        logger.info("请求日志入库...");
     }
 }

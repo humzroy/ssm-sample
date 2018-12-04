@@ -86,7 +86,6 @@
             classpath:applicationContext.xml,
             classpath:dubboContext.xml,
             classpath:dubboContext-reference.xml,
-            classpath:applicationContext-shiro.xml,
         </param-value>
     </context-param>
 
@@ -154,7 +153,9 @@
             <!-- 3、<param-value>classpath*:dispatcher-servlet.xml</param-value> -->
             <!-- 4、多个值用逗号分隔 -->
             <param-value>
-                classpath:spring-mvc.xml
+                classpath:spring-mvc.xml,
+                <!-- springMVC的核心控制器 -->
+                classpath*:springMVC-servlet.xml
             </param-value>
         </init-param>
         <!-- 取消其自动注册的异常解析器 -->
@@ -175,7 +176,6 @@
         <!-- 此处会拦截URL中带“/”的请求。-->
         <url-pattern>/</url-pattern>
     </servlet-mapping>
-
     <filter>
         <filter-name>DruidWebStatFilter</filter-name>
         <filter-class>com.alibaba.druid.support.http.WebStatFilter</filter-class>
@@ -199,11 +199,11 @@
             <param-value>users.username</param-value>
         </init-param>
     </filter>
-    <!-- shiro -->
-    <filter>
+    <!-- shiro start-->
+    <!--<filter>
         <filter-name>shiroFilter</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-        <!-- 该值缺省为false,表示生命周期由SpringApplicationContext管理,设置为true则表示由ServletContainer管理 -->
+        &lt;!&ndash; 该值缺省为false,表示生命周期由SpringApplicationContext管理,设置为true则表示由ServletContainer管理 &ndash;&gt;
         <init-param>
             <param-name>targetFilterLifecycle</param-name>
             <param-value>true</param-value>
@@ -212,8 +212,9 @@
     <filter-mapping>
         <filter-name>shiroFilter</filter-name>
         <url-pattern>/*</url-pattern>
-    </filter-mapping>
-    <!-- shiro -->
+    </filter-mapping>-->
+    <!-- shiro end-->
+
     <filter-mapping>
         <filter-name>DruidWebStatFilter</filter-name>
         <url-pattern>/*</url-pattern>

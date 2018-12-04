@@ -13,7 +13,7 @@
 
 	<web>
 		<link target="/">
-			<dir name="E:/workspace/github/SSMDemo/test-outapiweb/src/main/webapp">
+			<dir name="E:/workspace/github/SSMDemo/zhen-outapiweb/src/main/webapp">
 			</dir>
 		</link>
 	</web>

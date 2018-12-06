@@ -15,8 +15,8 @@ public class ExceptionUtil {
     /**
      * 获取异常的堆栈信息
      *
-     * @param t
-     * @return
+     * @param t 异常
+     * @return String
      */
     public static String getStackTrace(Throwable t) {
         StringWriter sw = new StringWriter();
@@ -29,4 +29,23 @@ public class ExceptionUtil {
         }
     }
 
+    public static RuntimeException unchecked(Exception e) {
+        if ((e instanceof RuntimeException)) {
+            return (RuntimeException) e;
+        }
+        return new RuntimeException(e);
+    }
+
+    public static boolean isCausedBy(Exception ex, Class<? extends Exception>[] causeExceptionClasses) {
+        Throwable cause = ex;
+        while (cause != null) {
+            for (Class causeClass : causeExceptionClasses) {
+                if (causeClass.isInstance(cause)) {
+                    return true;
+                }
+            }
+            cause = cause.getCause();
+        }
+        return false;
+    }
 }

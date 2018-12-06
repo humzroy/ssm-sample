@@ -128,11 +128,11 @@ public class BaseTest {
      */
     @Test
     public void testRedis() {
-        redisUtils.set("name", "admin");
+        // redisUtils.set("name", "admin");
         // redisUtils.del("name");
-        System.out.println(redisUtils.get("name"));
+        System.out.println(redisUtils.getObject("179F45AC44D31E4882DD42A2C3AEB30E").toString());
 
-        // System.out.println(redisUtils.get("myKey"));
+        // System.out.println(redisUtils.getObject("myKey"));
 
 
     }

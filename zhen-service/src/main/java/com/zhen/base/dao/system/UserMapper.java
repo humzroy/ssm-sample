@@ -66,5 +66,5 @@ public interface UserMapper {
      * author : wuhengzhen
      * date : 2018-12-4 10:40
      */
-    User selectUserByUsername(String userName);
+    User selectUserByUsername(@Param("userName") String userName);
 }

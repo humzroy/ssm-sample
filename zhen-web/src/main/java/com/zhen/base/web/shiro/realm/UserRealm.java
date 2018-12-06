@@ -3,6 +3,7 @@ package com.zhen.base.web.shiro.realm;
 import com.zhen.base.domain.system.User;
 import com.zhen.base.service.ILoginService;
 import com.zhen.exception.BusinessException;
+import com.zhen.utils.shiro.ShiroUser;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -77,14 +78,12 @@ public class UserRealm extends AuthorizingRealm {
         //2.获取token中的登录账户
         String userName = userToken.getUsername();
         //3.查询数据库，是否存在指定的用户名和密码的用户(主键/账户/密码/账户状态/盐)
-        // 用户名
-        // String userName = (String) authenticationToken.getPrincipal();
         logger.info("userName:" + userName);
         // 密码
         String password = new String((char[]) authenticationToken.getCredentials());
         logger.info("password:" + password);
         // client无密认证
-        // String upmsType = PropertiesFileUtil.getInstance("zhen-upms-client").get("zhen.upms.type");
+        // String upmsType = PropertiesFileUtil.getInstance("zhen-upms-client").getObject("zhen.upms.type");
         // if ("client".equals(upmsType)) {
         //     return new SimpleAuthenticationInfo(userName, password, getName());
         // }
@@ -107,7 +106,11 @@ public class UserRealm extends AuthorizingRealm {
         // }
 
         //4.2 如果查询到了，封装查询结果，
-        Object principal = user.getLoginName();
+        ShiroUser principal = new ShiroUser();
+        principal.setUserCde(user.getLoginName());
+        principal.setUserName(user.getUserName());
+        principal.setEmail(user.getEmail());
+        // Object principal = user.getLoginName();
         Object credentials = user.getPassword();
         String realmName = this.getName();
         // String salt = user.getSalt();
@@ -116,7 +119,5 @@ public class UserRealm extends AuthorizingRealm {
         SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(principal, credentials, realmName);
         //5. 返回给调用login(token)方法
         return info;
-
-        // return new SimpleAuthenticationInfo(userName, password, getName());
     }
 }

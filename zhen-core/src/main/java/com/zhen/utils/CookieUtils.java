@@ -1,5 +1,9 @@
 package com.zhen.utils;
 
+import com.zhen.exception.BusinessException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +18,11 @@ import java.net.URLEncoder;
  * @copyright:
  */
 public final class CookieUtils {
+    /**
+     * logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(CookieUtils.class);
+
     /**
      * 得到Cookie的值, 不编码
      *
@@ -140,14 +149,16 @@ public final class CookieUtils {
             if (cookieValue == null) {
                 cookieValue = "";
             } else if (isEncode) {
-                cookieValue = URLEncoder.encode(cookieValue, "utf-8");
+                cookieValue = URLEncoder.encode(cookieValue, "UTF-8");
             }
             Cookie cookie = new Cookie(cookieName, cookieValue);
-            if (cookieMaxage > 0)
+            if (cookieMaxage > 0) {
                 cookie.setMaxAge(cookieMaxage);
-            if (null != request) {// 设置域名的cookie
+            }
+            // 设置域名的cookie
+            if (null != request) {
                 String domainName = getDomainName(request);
-                System.out.println(domainName);
+                logger.info("域名:" + domainName);
                 if (!"localhost".equals(domainName)) {
                     cookie.setDomain(domainName);
                 }
@@ -155,7 +166,8 @@ public final class CookieUtils {
             cookie.setPath("/");
             response.addCookie(cookie);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(ExceptionUtil.getStackTrace(e));
+            throw new BusinessException("存入Cookie失败！");
         }
     }
 
@@ -173,9 +185,11 @@ public final class CookieUtils {
                 cookieValue = URLEncoder.encode(cookieValue, encodeString);
             }
             Cookie cookie = new Cookie(cookieName, cookieValue);
-            if (cookieMaxage > 0)
+            if (cookieMaxage > 0) {
                 cookie.setMaxAge(cookieMaxage);
-            if (null != request) {// 设置域名的cookie
+            }
+            // 设置域名的cookie
+            if (null != request) {
                 String domainName = getDomainName(request);
                 System.out.println(domainName);
                 if (!"localhost".equals(domainName)) {
@@ -186,6 +200,7 @@ public final class CookieUtils {
             response.addCookie(cookie);
         } catch (Exception e) {
             e.printStackTrace();
+            throw new BusinessException("存入Cookie失败！");
         }
     }
 
@@ -206,8 +221,15 @@ public final class CookieUtils {
             final String[] domains = serverName.split("\\.");
             int len = domains.length;
             if (len > 3) {
-                // www.xxx.com.cn
-                domainName = "." + domains[len - 3] + "." + domains[len - 2] + "." + domains[len - 1];
+                if (serverName.indexOf(":") > 0) {
+                    // 10.10.10.172:9898
+                    String[] ary = serverName.split("\\:");
+                    // 去除端口取ip
+                    domainName = ary[0];
+                } else {
+                    // www.xxx.com.cn
+                    domainName = "." + domains[len - 3] + "." + domains[len - 2] + "." + domains[len - 1];
+                }
             } else if (len <= 3 && len > 1) {
                 // xxx.com or xxx.cn
                 domainName = "." + domains[len - 2] + "." + domains[len - 1];

@@ -3,8 +3,10 @@ package com.zhen.base.web.demo;
 import com.zhen.base.domain.excel.ExportInfo;
 import com.zhen.base.domain.excel.ImportInfo;
 import com.zhen.base.service.demo.IDemoService;
+import com.zhen.common.master.BaseRequest;
+import com.zhen.common.master.Master;
 import com.zhen.excel.easyexcel.EasyExcelUtil;
-import com.zhen.utils.ResponseUtil;
+import com.zhen.common.master.BaseResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,13 +43,15 @@ public class DemoController {
      * @return
      */
     @RequestMapping(value = "/test", method = RequestMethod.POST)
-    public Object test(HttpServletRequest request) {
+    public Object test(HttpServletRequest request, Master master) {
         String name = request.getParameter("name");
         logger.info("请求的参数name = " + name);
-        String msg = demoService.sayHello(name);
-        ResponseUtil responseUtil = ResponseUtil.createResponseUtil();
-        responseUtil.putValueToData("msg", msg);
-        return responseUtil;
+        BaseRequest baseRequest = BaseRequest.createRequest(request, master);
+        baseRequest.putValueToData("name", name);
+        String msg = demoService.sayHello(baseRequest);
+        BaseResult baseResult = BaseResult.createBaseResult();
+        baseResult.putValueToData("msg", msg);
+        return baseResult;
     }
 
     /**

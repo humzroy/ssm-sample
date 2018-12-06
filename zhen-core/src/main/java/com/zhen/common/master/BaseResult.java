@@ -1,20 +1,27 @@
-package com.zhen.utils;
+package com.zhen.common.master;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @Description:接口返回工具类
- * @author:
- * @date:2018-8-2 20:41:37
- * @system name:新一代消费金融系统
- * @copyright:长安新生（深圳）金融投资有限公司
+ * Created with IntelliJ IDEA
+ * <p>
+ * Description：封装返回
+ * Auth：wuhengzhen
+ * Date：2018-12-05
+ * Time：16:50
  */
-public class ResponseUtil implements Serializable {
+public class BaseResult implements Serializable {
+    /**
+     * 私有的构造方法，防止new
+     */
+    private BaseResult() {
+    }
+
     private static final long serialVersionUID = 8194010942134363408L;
     /**
-     * 成功失败标志
+     * 成功失败标志，默认true
      */
     private boolean success = true;
     /**
@@ -30,16 +37,8 @@ public class ResponseUtil implements Serializable {
      */
     private Map<Object, Object> data = new HashMap<>();
 
-
-    /**
-     * 私有的构造方法，防止new
-     */
-    private ResponseUtil() {
-    }
-
-    public static ResponseUtil createResponseUtil() {
-        ResponseUtil responseUtil = new ResponseUtil();
-        return responseUtil;
+    public static BaseResult createBaseResult() {
+        return new BaseResult();
     }
 
     /**

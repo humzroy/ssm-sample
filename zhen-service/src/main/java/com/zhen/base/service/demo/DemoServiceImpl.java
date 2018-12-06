@@ -1,6 +1,10 @@
 package com.zhen.base.service.demo;
 
 import com.zhen.base.domain.system.RequestLog;
+import com.zhen.common.master.BaseRequest;
+import com.zhen.common.master.Master;
+import com.zhen.utils.shiro.ShiroUser;
+import com.zhen.utils.shiro.ShiroUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -12,16 +16,16 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class DemoServiceImpl implements IDemoService {
-    private static Logger logger = LoggerFactory.getLogger(DemoServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(DemoServiceImpl.class);
 
     /**
      * say hello
      *
-     * @param name
+     * @param request
      * @return
      */
     @Override
-    public String sayHello(String name) {
+    public String sayHello(BaseRequest request) {
         String str;
         /*JSONObject reqData = new JSONObject();
         JSONObject msg = new JSONObject();
@@ -34,8 +38,13 @@ public class DemoServiceImpl implements IDemoService {
 
         logger.info("service 返回消息为：" + resp);
         return resp;*/
-        str = "hello !!";
-        System.out.println(str);
+        str = " hello !!";
+        // 获取登陆信息
+        Master master = (Master) request.getValueFormData("master");
+        ShiroUser user = ShiroUtil.getSessionInfo(master);
+        logger.info(user.toString());
+        String userCde = user.getUserCde();
+        System.out.println(userCde + str);
         return str;
     }
 

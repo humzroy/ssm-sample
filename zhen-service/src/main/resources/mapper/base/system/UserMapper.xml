@@ -182,7 +182,7 @@
     from s_user
     <where>
       <if test="userName != null ">
-        loginName = #{userName, jdbcType=VARCHAR}
+        login_name = #{userName, jdbcType=VARCHAR}
       </if>
     </where>
   </select>

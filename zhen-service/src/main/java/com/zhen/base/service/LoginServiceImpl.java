@@ -5,6 +5,8 @@ import com.zhen.base.domain.system.User;
 import com.zhen.datasource.DataSourceConstant;
 import com.zhen.datasource.DataSourceContextHolder;
 import com.zhen.exception.BusinessException;
+import com.zhen.utils.RedisUtils;
+import com.zhen.utils.shiro.ShiroUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,5 +55,24 @@ public class LoginServiceImpl implements ILoginService {
             throw new BusinessException("用户信息查询为空！");
         }
         return user;
+    }
+
+    /**
+     * description : 将用户信息缓存到Redis
+     * author : wuhengzhen
+     * date : 2018-12-5 15:27
+     *
+     * @param shiroUser
+     */
+    @Override
+    public void saveUserInfoToRedis(ShiroUser shiroUser) {
+        // 将用户信息缓存到redis，并设置失效时间为：30分钟 1800ms
+        boolean flag = RedisUtils.set(shiroUser.getSessionId(), shiroUser, 1800);
+        if (flag) {
+            logger.info(shiroUser.getUserCde() + "将登陆信息放入Redis成功！");
+        } else {
+            logger.info(shiroUser.getUserCde() + "将登陆信息放入Redis失败！");
+            throw new BusinessException("redis data exception！");
+        }
     }
 }

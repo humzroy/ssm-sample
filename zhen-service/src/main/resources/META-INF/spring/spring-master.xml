@@ -6,8 +6,12 @@
     http://www.springframework.org/schema/beans/spring-beans.xsd
     http://www.springframework.org/schema/context
     http://www.springframework.org/schema/context/spring-context-2.5.xsd">
-    <context:component-scan base-package="com.zhen.base"/>
+    <bean id="springContextUtil" class="com.zhen.utils.SpringContextUtil"/>
+    <context:component-scan base-package="com.zhen.*"/>
     <!-- core注入的bean-->
+    <!--自定义redis工具类,在需要缓存的地方注入此类 取消 -->
+    <!--<bean id="redisUtils" class="com.zhen.utils.RedisUtils"/>-->
+
     <bean id="queueReceiver1" class="com.zhen.base.mq.consumer.queue.QueueReceiver1"/>
     <bean id="queueReceiver2" class="com.zhen.base.mq.consumer.queue.QueueReceiver2"/>
     <bean id="topicReceiver1" class="com.zhen.base.mq.consumer.topic.TopicReceiver1"/>

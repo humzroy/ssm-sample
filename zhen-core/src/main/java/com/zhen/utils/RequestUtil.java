@@ -66,15 +66,15 @@ public class RequestUtil {
     public static String getIpAddr(HttpServletRequest request) {
         // 网宿cdn的真实ip
         String ip = request.getHeader("Cdn-Src-Ip");
-        if (ip == null || ip.length() == 0 || " unknown".equalsIgnoreCase(ip)) {
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             // 蓝讯cdn的真实ip
             ip = request.getHeader("HTTP_CLIENT_IP");
         }
-        if (ip == null || ip.length() == 0 || " unknown".equalsIgnoreCase(ip)) {
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             // 获取代理ip
             ip = request.getHeader("X-Forwarded-For");
         }
-        if (ip == null || ip.length() == 0 || " unknown".equalsIgnoreCase(ip)) {
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             // 获取代理ip
             ip = request.getHeader("Proxy-Client-IP");
         }

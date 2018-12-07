@@ -40,12 +40,15 @@ public class BusinessException extends RuntimeException {
         super(message, cause);
     }
 
+    public void addErrorMessage(String fieldName, String message) {
+        this.errorMessages.put(fieldName, message);
+    }
+
     public void addBindingResultTo(BindingResult result) {
         for (String key : this.errorMessages.keySet()) {
             result.rejectValue(key, "", (String) this.errorMessages.get(key));
         }
     }
-
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }

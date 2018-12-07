@@ -2,7 +2,9 @@ package com.zhen.base.web;
 
 import com.alibaba.fastjson.JSON;
 import com.zhen.base.service.ILoginService;
+import com.zhen.common.master.BaseRequest;
 import com.zhen.common.master.BaseResult;
+import com.zhen.common.master.Master;
 import com.zhen.exception.BusinessException;
 import com.zhen.utils.CookieUtils;
 import com.zhen.utils.ExceptionUtil;
@@ -19,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
@@ -48,7 +49,7 @@ public class LoginController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public Object accountLogin(HttpServletRequest request, HttpServletResponse response) {
+    public Object accountLogin(HttpServletRequest request, HttpServletResponse response, Master master) {
         // 获得当前请求的sessionId
         String sessionId = request.getSession().getId();
         // 用户名
@@ -58,12 +59,13 @@ public class LoginController {
         logger.info("登陆用户名：" + userName);
         logger.info("登陆密码：" + password);
         logger.info("sessionId：" + sessionId);
+        BaseRequest baseRequest = BaseRequest.createRequest(request, master);
         BaseResult baseResult = BaseResult.createBaseResult();
 
         // 判断当前用户是否已登录
         if (!ShiroUtil.isLogin()) {
             try {
-                saveSignInfo(sessionId, userName, password);
+                saveSignInfo(sessionId, userName, password, baseRequest);
                 saveCookie(request, response);
                 baseResult.setMessage("登陆验证成功！");
                 baseResult.setMessageCode("0000");
@@ -150,17 +152,18 @@ public class LoginController {
     /**
      * 保存登录信息
      *
-     * @param sessionId session
-     * @param userName  登录用户名
-     * @param password  密码
+     * @param sessionId   session
+     * @param userName    登录用户名
+     * @param password    密码
+     * @param baseRequest 公共参数
      */
-    private void saveSignInfo(String sessionId, String userName, String password) {
+    private void saveSignInfo(String sessionId, String userName, String password, BaseRequest baseRequest) {
         UsernamePasswordToken token = new UsernamePasswordToken(userName, password);
         ShiroUtil.getSubject().login(token);
         ShiroUtil.getShiroUser().setSessionId(sessionId);
         logger.info(userName + " -> Shiro验证成功！");
-
+        baseRequest.putValueToData("shiroUser", ShiroUtil.getShiroUser());
         // 将用户信息放入到redis
-        loginService.saveUserInfoToRedis(ShiroUtil.getShiroUser());
+        loginService.saveUserInfoToRedis(baseRequest);
     }
 }

@@ -1,7 +1,7 @@
 package com.zhen.base.service;
 
 import com.zhen.base.domain.system.User;
-import com.zhen.utils.shiro.ShiroUser;
+import com.zhen.common.master.BaseRequest;
 
 public interface ILoginService {
     /**
@@ -18,12 +18,12 @@ public interface ILoginService {
      * author : wuhengzhen
      * date : 2018-12-4 10:24
      */
-    User selectUserByUsername(String userName);
+    User selectUserByUsername(BaseRequest baseRequest);
 
     /**
      * description : 将用户信息缓存到Redis
      * author : wuhengzhen
      * date : 2018-12-5 15:27
      */
-    void saveUserInfoToRedis(ShiroUser shiroUser);
+    void saveUserInfoToRedis(BaseRequest baseRequest);
 }

@@ -28,8 +28,8 @@ import java.util.Collections;
  * @version 1.0
  * @since <pre>09/07/2018</pre>
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/spring-redis.xml"})
+// @RunWith(SpringJUnit4ClassRunner.class)
+// @ContextConfiguration(locations = {"/spring-redis.xml"})
 // @ContextConfiguration(locations = {"/spring-zhen.xml", })
 public class BaseTest {
     private static final Logger logger = LoggerFactory.getLogger(BaseTest.class);
@@ -92,6 +92,7 @@ public class BaseTest {
      */
     @Test
     public void testHex() {
+        System.out.println(StringUtils.getStringRandom(12));
 
     }
 

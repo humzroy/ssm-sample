@@ -2,6 +2,7 @@ package com.zhen.base.service;
 
 import com.zhen.base.dao.system.UserMapper;
 import com.zhen.base.domain.system.User;
+import com.zhen.common.master.BaseRequest;
 import com.zhen.datasource.DataSourceConstant;
 import com.zhen.datasource.DataSourceContextHolder;
 import com.zhen.exception.BusinessException;
@@ -41,12 +42,14 @@ public class LoginServiceImpl implements ILoginService {
      * author : wuhengzhen
      * date : 2018-12-4 10:24
      *
-     * @param userName 用户名
+     * @param baseRequest 公共参数
      */
     @Override
-    public User selectUserByUsername(String userName) {
+    public User selectUserByUsername(BaseRequest baseRequest) {
         // 切换数据库
         DataSourceContextHolder.setDataSourceType(DataSourceConstant.MYSQL);
+        // 获取参数
+        String userName = baseRequest.getValueFormData("userName");
         User user = userMapper.selectUserByUsername(userName);
         if (user != null) {
             logger.info(userName + "用户信息查询成功！");
@@ -62,10 +65,11 @@ public class LoginServiceImpl implements ILoginService {
      * author : wuhengzhen
      * date : 2018-12-5 15:27
      *
-     * @param shiroUser
+     * @param baseRequest
      */
     @Override
-    public void saveUserInfoToRedis(ShiroUser shiroUser) {
+    public void saveUserInfoToRedis(BaseRequest baseRequest) {
+        ShiroUser shiroUser = baseRequest.getValueFormData("shiroUser");
         // 将用户信息缓存到redis，并设置失效时间为：30分钟 1800ms
         boolean flag = RedisUtils.set(shiroUser.getSessionId(), shiroUser, 1800);
         if (flag) {

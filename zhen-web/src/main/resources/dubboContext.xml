@@ -20,5 +20,7 @@
 	<!-- 使用zookeeper广播注册中心暴露服务地址   127.0.0.1:2181-->
 	<dubbo:registry protocol="zookeeper" address="${dubbo.server.address}" />
 
+    <!-- dubbo:filter 消费者日志记录-->
+    <dubbo:consumer filter="LogFilter"/>
 
 </beans>

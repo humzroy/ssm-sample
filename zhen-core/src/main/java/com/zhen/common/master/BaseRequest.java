@@ -19,6 +19,7 @@ import java.util.Map;
  * Date：2018-12-05
  * Time：16:50
  */
+@SuppressWarnings("unchecked")
 public class BaseRequest implements Serializable {
     /**
      * 私有的构造方法，防止new
@@ -37,12 +38,25 @@ public class BaseRequest implements Serializable {
      */
     private Map<String, Object> data = new HashMap<>();
 
+    /**
+     * 日志追踪ID
+     */
+    private String traceId;
+
     public Map<String, Object> getData() {
         return data;
     }
 
     public void setData(Map<String, Object> data) {
         this.data = data;
+    }
+
+    public String getTraceId() {
+        return traceId;
+    }
+
+    public void setTraceId(String traceId) {
+        this.traceId = traceId;
     }
 
     /**
@@ -59,10 +73,10 @@ public class BaseRequest implements Serializable {
      * 根据key获取data的值
      *
      * @param key key
-     * @return Object
+     * @return <T>	序列化对象
      */
-    public Object getValueFormData(String key) {
-        return this.getData().get(key);
+    public <T> T getValueFormData(String key) {
+        return (T) this.getData().get(key);
     }
 
     /**
@@ -97,5 +111,13 @@ public class BaseRequest implements Serializable {
         // 在此方法内进行master的赋值,可省略外部controller的多次赋值.
         baseRequest.putValueToData("master", master);
         return baseRequest;
+    }
+
+    @Override
+    public String toString() {
+        return "BaseRequest{" +
+                "data=" + data +
+                ", traceId='" + traceId + '\'' +
+                '}';
     }
 }

@@ -1,5 +1,7 @@
 package com.zhen.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.FatalBeanException;
 import org.springframework.util.Assert;
@@ -8,6 +10,7 @@ import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -23,6 +26,11 @@ import java.util.Map;
  * @copyright:
  */
 public class BeanUtils extends org.springframework.beans.BeanUtils {
+
+    /**
+     * logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(BeanUtils.class);
 
     /**
      * description :JavaBean之间的属性复制，属性值非null才进行复制（推荐）
@@ -145,4 +153,27 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
         return returnMap;
     }
 
+    /**
+     * <p>Discription:[返回指定的字段名fileName的File对象]</p>
+     * Created on 2018年12月6日 下午3:48:03
+     *
+     * @param fieldName 指定的字段名
+     * @param object    当前dubbo调用的参数
+     * @return Field 返回指定的字段名fileName的File对象
+     * @author: wuhengzhen
+     */
+    public static Field getFieldByClass(String fieldName, Object object) {
+        Field field = null;
+        Class<?> clazz = object.getClass();
+        // getSuperclass获取普通函数的父类Class对象
+        for (; clazz != Object.class; clazz = clazz.getSuperclass()) {
+            try {
+                // getDeclaredField获取指定name的类里属性
+                field = clazz.getDeclaredField(fieldName);
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+            }
+        }
+        return field;
+    }
 }

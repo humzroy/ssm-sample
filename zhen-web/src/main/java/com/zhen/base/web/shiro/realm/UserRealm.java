@@ -2,16 +2,22 @@ package com.zhen.base.web.shiro.realm;
 
 import com.zhen.base.domain.system.User;
 import com.zhen.base.service.ILoginService;
+import com.zhen.common.master.BaseRequest;
+import com.zhen.common.master.Master;
 import com.zhen.exception.BusinessException;
 import com.zhen.utils.shiro.ShiroUser;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.web.subject.WebSubject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created with IntelliJ IDEA
@@ -90,8 +96,12 @@ public class UserRealm extends AuthorizingRealm {
 
         // 查询用户信息
         User user = null;
+        HttpServletRequest request = (HttpServletRequest) ((WebSubject) SecurityUtils.getSubject()).getServletRequest();
+        Master master = new Master();
+        BaseRequest baseRequest = BaseRequest.createRequest(request, master);
+        baseRequest.putValueToData("userName", userName);
         try {
-            user = loginService.selectUserByUsername(userName);
+            user = loginService.selectUserByUsername(baseRequest);
         } catch (BusinessException e) {
             throw new UnknownAccountException();
         }

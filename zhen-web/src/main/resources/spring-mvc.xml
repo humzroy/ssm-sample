@@ -23,7 +23,6 @@
                                 expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
     </context:component-scan>
 
-
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="true">
             <!-- 将StringHttpMessageConverter的默认编码设为UTF-8 -->
@@ -39,7 +38,13 @@
     <mvc:view-controller path="/" view-name="redirect:/base/index" />
 
     -->
-
+    <!-- 拦截器-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="com.zhen.base.interceptor.ThreadInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 
     <!-- 避免IE执行AJAX时,返回JSON出现下载文件 -->
     <bean id="mappingJacksonHttpMessageConverter"
@@ -114,9 +119,5 @@
         </property>
     </bean>
     -->
-    <!-- 日志记录AOP实现 -->
-    <bean class="com.zhen.base.interceptor.LogAspect"/>
-    <!-- 日志记录AOP实现 -->
-    <bean class="com.zhen.common.aspect.RpcLogAspect"/>
 
 </beans>

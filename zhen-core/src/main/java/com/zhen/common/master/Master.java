@@ -73,4 +73,15 @@ public class Master implements Serializable {
     public void setRemoteLocalAddr(String remoteLocalAddr) {
         this.remoteLocalAddr = remoteLocalAddr;
     }
+
+    @Override
+    public String toString() {
+        return "Master{" +
+                "apiCode='" + apiCode + '\'' +
+                ", serialNumber='" + serialNumber + '\'' +
+                ", applicationCode='" + applicationCode + '\'' +
+                ", sign='" + sign + '\'' +
+                ", remoteLocalAddr='" + remoteLocalAddr + '\'' +
+                '}';
+    }
 }

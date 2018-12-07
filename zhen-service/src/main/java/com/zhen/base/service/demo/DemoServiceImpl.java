@@ -40,12 +40,12 @@ public class DemoServiceImpl implements IDemoService {
         return resp;*/
         str = " hello !!";
         // 获取登陆信息
-        Master master = (Master) request.getValueFormData("master");
+        Master master = request.getValueFormData("master");
         ShiroUser user = ShiroUtil.getSessionInfo(master);
         logger.info(user.toString());
         String userCde = user.getUserCde();
         System.out.println(userCde + str);
-        return str;
+        return userCde + str;
     }
 
     @Override

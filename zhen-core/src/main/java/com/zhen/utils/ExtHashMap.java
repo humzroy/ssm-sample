@@ -6,7 +6,7 @@ import java.util.HashMap;
  * Created with IntelliJ IDEA
  * <p>
  * Description：自定义HashMap(用于查询结果列名的转换)
- * Auth：wuhengzhen
+ * Author：wuhengzhen
  * Date：2018-10-23
  * Time：10:34
  */

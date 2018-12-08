@@ -10,7 +10,7 @@ import java.util.List;
  * Created with IntelliJ IDEA
  * <p>
  * Description：修改ORACL版本工具
- * Auth：wuhengzhen
+ * Author：wuhengzhen
  * Date：2018-11-01
  * Time：10:56
  */

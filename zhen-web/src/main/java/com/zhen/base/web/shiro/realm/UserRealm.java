@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
  * Created with IntelliJ IDEA
  * <p>
  * Description：自定义Realm
- * Auth：wuhengzhen
+ * Author：wuhengzhen
  * Date：2018-12-03
  * Time：17:23
  */

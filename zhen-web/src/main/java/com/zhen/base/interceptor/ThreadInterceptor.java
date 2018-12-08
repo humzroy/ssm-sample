@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
  * Created with IntelliJ IDEA
  * <p>
  * Description：将当前线程设置一个唯一的Name，用于日志追踪
- * Auth：wuhengzhen
+ * Author：wuhengzhen
  * Date：2018-12-06
  * Time：17:09
  */

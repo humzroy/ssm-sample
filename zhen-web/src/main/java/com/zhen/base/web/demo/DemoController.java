@@ -48,7 +48,12 @@ public class DemoController {
         logger.info("请求的参数name = " + name);
         BaseRequest baseRequest = BaseRequest.createRequest(request, master);
         baseRequest.putValueToData("name", name);
-        String msg = demoService.sayHello(baseRequest);
+        String msg = null;
+        try {
+            msg = demoService.sayHello(baseRequest);
+        } catch (Exception e) {
+            return "error!";
+        }
         BaseResult baseResult = BaseResult.createBaseResult();
         baseResult.putValueToData("msg", msg);
         return baseResult;

@@ -12,7 +12,7 @@ import java.util.*;
  * Created with IntelliJ IDEA
  * <p>
  * Description：SFTP工具类
- * Auth：wuhengzhen
+ * Author：wuhengzhen
  * Date：2018-10-23
  * Time：10:57
  */

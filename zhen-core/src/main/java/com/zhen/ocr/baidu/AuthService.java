@@ -16,7 +16,7 @@ import java.util.Map;
  * Created with IntelliJ IDEA
  * <p>
  * Description：百度云API获取token类(官方提供)
- * Auth：wuhengzhen
+ * Author：wuhengzhen
  * Date：2018-10-23
  * Time：13:59
  */

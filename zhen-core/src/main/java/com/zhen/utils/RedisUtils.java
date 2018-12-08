@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Description：Redis工具类
- * Auth：wuhengzhen
+ * Author：wuhengzhen
  * Date：2018-09-20
  * Time：16:00
  */

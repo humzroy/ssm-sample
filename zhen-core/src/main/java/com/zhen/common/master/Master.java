@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created with IntelliJ IDEA
  * <p>
  * Description：公共参数
- * Auth：wuhengzhen
+ * Author：wuhengzhen
  * Date：2018-12-05
  * Time：16:16
  */

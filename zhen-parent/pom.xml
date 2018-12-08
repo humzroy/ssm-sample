@@ -17,6 +17,8 @@
         <jackson.version>2.9.7</jackson.version>
         <!-- mybatis版本号 -->
         <mybatis.version>3.4.6</mybatis.version>
+        <!-- dubbo版本号 -->
+        <dubbo.version>2.5.5</dubbo.version>
         <!-- shiro版本号 -->
         <shiro.version>1.4.0</shiro.version>
         <!-- drools版本号 -->

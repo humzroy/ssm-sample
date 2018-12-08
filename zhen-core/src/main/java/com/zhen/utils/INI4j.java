@@ -10,7 +10,7 @@ import java.util.Map;
  * Created with IntelliJ IDEA
  * <p>
  * Description：读取ini文件
- * Auth：wuhengzhen
+ * Author：wuhengzhen
  * Date：2018-12-03
  * Time：21:32
  */

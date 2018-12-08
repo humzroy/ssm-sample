@@ -10,7 +10,7 @@ import java.net.URLEncoder;
  * Created with IntelliJ IDEA
  * <p>
  * Description：百度OCR文字识别Demo
- * Auth：wuhengzhen
+ * Author：wuhengzhen
  * Date：2018-10-23
  * Time：13:55
  */

@@ -13,7 +13,7 @@ import javax.jms.TextMessage;
  * Created with IntelliJ IDEA
  * <p>
  * Description：MQ消费者
- * Auth：wuhengzhen
+ * Author：wuhengzhen
  * Date：2018-12-04
  * Time：15:49
  */

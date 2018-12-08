@@ -13,7 +13,7 @@ import java.lang.reflect.Field;
  * Created with IntelliJ IDEA
  * <p>
  * Description：[dubbo消费者日志过滤器Filter]
- * Auth：wuhengzhen
+ * Author：wuhengzhen
  * Date：2018-12-06
  * Time：15:57
  */
@@ -50,19 +50,19 @@ public class LogFilter implements Filter {
             if (object.getClass().isPrimitive() ||
                     "class java.lang.String".equals(object.getClass().toString()) ||
                     "class java.lang.Boolean".equals(object.getClass().toString())) {
-                sb.append("参数").append(index).append(" :").append(String.valueOf(object));
+                sb.append("参数").append(index).append(":").append(String.valueOf(object));
                 if (index != invocation.getArguments().length) {
                     sb.append("\r\n");
                 }
             } else {
                 // isPrimitive()为false则当前object的类类型不是基本类型的，是Object，是对象
                 try {
-                    sb.append("参数").append(index).append(" :").append(JSONObject.fromObject(object).toString());
+                    sb.append("参数").append(index).append(":").append(JSONObject.fromObject(object).toString());
                     if (index != invocation.getArguments().length) {
                         sb.append("\r\n");
                     }
                 } catch (Exception e) {
-                    sb.append("参数").append(index).append(" :").append(object.toString());
+                    sb.append("参数").append(index).append(":").append(object.toString());
                     if (index != invocation.getArguments().length) {
                         sb.append("\r\n");
                     }
@@ -89,9 +89,9 @@ public class LogFilter implements Filter {
         } else {
             long elapsed = System.currentTimeMillis() - start;
             try {
-                log.info("RPC({}) 调用结束, 返回值{}, 耗时:{} 毫秒", serverIp, JSONObject.fromObject(result.getValue()).toString(), elapsed);
+                log.info("RPC({}) 调用结束, 返回值:{}, 耗时:{}ms", serverIp, JSONObject.fromObject(result.getValue()).toString(), elapsed);
             } catch (Exception e) {
-                log.info("RPC({}) 调用结束, 返回值{}, 耗时:{} 毫秒", serverIp, result.getValue().toString(), elapsed);
+                log.info("RPC({}) 调用结束, 返回值:{}, 耗时:{}ms", serverIp, result.getValue().toString(), elapsed);
             }
         }
         return result;

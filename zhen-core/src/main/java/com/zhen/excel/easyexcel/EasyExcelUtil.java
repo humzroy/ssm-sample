@@ -15,7 +15,7 @@ import java.util.List;
  * Created with IntelliJ IDEA
  * <p>
  * Description：EasyExcel工具类
- * Auth：wuhengzhen
+ * Author：wuhengzhen
  * Date：2018-09-26
  * Time：14:11
  */

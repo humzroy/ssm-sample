@@ -4,7 +4,7 @@ package com.zhen.common.constant;
  * Created with IntelliJ IDEA
  * <p>
  * Description：基础常量
- * Auth：wuhengzhen
+ * Author：wuhengzhen
  * Date：2018-12-05
  * Time：15:09
  */

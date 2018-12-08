@@ -4,7 +4,7 @@ package com.zhen.utils;
  * Created with IntelliJ IDEA
  * <p>
  * Description：银行卡Util
- * Auth：wuhengzhen
+ * Author：wuhengzhen
  * Date：2018-11-13
  * Time：13:32
  */

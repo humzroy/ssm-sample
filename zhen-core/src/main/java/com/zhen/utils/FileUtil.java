@@ -14,7 +14,7 @@ import java.util.List;
  * Created with IntelliJ IDEA
  * <p>
  * Description：File操作工具类
- * Auth：wuhengzhen
+ * Author：wuhengzhen
  * Date：2018-10-23
  * Time：13:58
  */

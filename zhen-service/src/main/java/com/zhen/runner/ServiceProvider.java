@@ -7,7 +7,7 @@ import com.zhen.utils.Base64Util;
  * Created with IntelliJ IDEA
  * <p>
  * Description：启动类
- * Auth：wuhengzhen
+ * Author：wuhengzhen
  * Date：2018-09-27
  * Time：14:54
  */

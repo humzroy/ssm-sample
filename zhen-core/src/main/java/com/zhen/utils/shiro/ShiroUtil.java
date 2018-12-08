@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
  * Created with IntelliJ IDEA
  * <p>
  * Description：Shiro工具类
- * Auth：wuhengzhen
+ * Author：wuhengzhen
  * Date：2018-12-05
  * Time：14:57
  */

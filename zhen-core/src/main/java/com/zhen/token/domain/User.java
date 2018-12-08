@@ -2,7 +2,7 @@ package com.zhen.token.domain;
 
 /**
  * Description:
- * Auth: wuhengzhen
+ * Author: wuhengzhen
  * Date: 2017-11-06
  * Time: 上午 10:49
  */

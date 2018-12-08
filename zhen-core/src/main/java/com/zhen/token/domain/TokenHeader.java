@@ -7,7 +7,7 @@ package com.zhen.token.domain;
  * 1,声明类型，这里是jwt
  * 2,声明加密的算法 通常直接使用 HMAC SHA256
  * </p>
- * Auth: wuhengzhen
+ * Author: wuhengzhen
  * Date: 2018-09-20
  * Time: 下午 5:08
  */

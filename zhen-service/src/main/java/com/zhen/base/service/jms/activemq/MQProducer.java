@@ -10,7 +10,7 @@ import javax.jms.Destination;
  * Created with IntelliJ IDEA
  * <p>
  * Description：MQ消息生产者
- * Auth：wuhengzhen
+ * Author：wuhengzhen
  * Date：2018-12-05
  * Time：14:00
  */

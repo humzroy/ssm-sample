@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 /**
  * Description：正则（校验）工具类
- * Auth：wuhengzhen
+ * Author：wuhengzhen
  * Date：2018-09-20
  * Time：16:00
  */

@@ -6,7 +6,7 @@ import java.util.Random;
  * Created with IntelliJ IDEA
  * <p>
  * Description：手机号码工具类
- * Auth：wuhengzhen
+ * Author：wuhengzhen
  * Date：2018-11-16
  * Time：9:27
  */

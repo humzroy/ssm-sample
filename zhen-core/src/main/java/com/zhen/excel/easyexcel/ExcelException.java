@@ -4,7 +4,7 @@ package com.zhen.excel.easyexcel;
  * Created with IntelliJ IDEA
  * <p>
  * Description：Excel解析Exception
- * Auth：wuhengzhen
+ * Author：wuhengzhen
  * Date：2018-09-26
  * Time：14:12
  */

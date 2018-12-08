@@ -26,7 +26,7 @@ import java.util.Map;
  * 由于非对称加密速度极其缓慢，一般文件不使用它来加密而是使用对称加密，<br/>
  * 非对称加密算法可以用来对对称加密的密钥加密，这样保证密钥的安全也就保证了数据的安全
  * </p>
- * Auth：wuhengzhen
+ * Author：wuhengzhen
  * Date：2018-10-24
  * Time：17:50
  */

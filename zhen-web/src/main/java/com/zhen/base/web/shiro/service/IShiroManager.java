@@ -4,7 +4,7 @@ package com.zhen.base.web.shiro.service;
  * Created with IntelliJ IDEA
  * <p>
  * Description：shiro
- * Auth：wuhengzhen
+ * Author：wuhengzhen
  * Date：2018-12-03
  * Time：21:14
  */

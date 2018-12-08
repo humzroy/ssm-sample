@@ -2,7 +2,7 @@ package com.zhen.redis;
 
 /**
  * Description：Redis模板类
- * Auth：wuhengzhen
+ * Author：wuhengzhen
  * Date：2018-09-20
  * Time：14:02
  */

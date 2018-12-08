@@ -15,7 +15,7 @@ package com.zhen.token.domain;
  * iat: jwt的签发时间
  * jti: jwt的唯一身份标识，主要用来作为一次性token,从而回避重放
  * </p>
- * Auth: wuhengzhen
+ * Author: wuhengzhen
  * Date: 2018-09-20
  * Time: 下午 5:10
  */

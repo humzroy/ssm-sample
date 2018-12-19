@@ -69,7 +69,27 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
     }
 
     /**
-     * 公共方法：将一个 Map对象转化为一个JavaBean
+     * Map --> Bean: 利用org.apache.commons.beanutils 工具类实现 Map --> Bean
+     *
+     * @param map  要转换的Map
+     * @param type JavaBean的类型
+     * @return JavaBean
+     * @throws IllegalAccessException
+     * @throws InstantiationException
+     * @throws InvocationTargetException
+     */
+    public static Object transMap2Bean(Map map, Class type) throws IllegalAccessException, InstantiationException, InvocationTargetException {
+        if (map == null) {
+            return null;
+        }
+        // 创建 JavaBean 对象
+        Object obj = type.newInstance();
+        org.apache.commons.beanutils.BeanUtils.populate(obj, map);
+        return obj;
+    }
+
+    /**
+     * Map --> Bean：利用Introspector,PropertyDescriptor实现 Map --> Bean
      *
      * @param type 要转化的类型
      * @param map  包含属性值的 map
@@ -78,13 +98,14 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
      * @throws IllegalAccessException    如果实例化 JavaBean 失败
      * @throws InstantiationException    如果实例化 JavaBean 失败
      * @throws InvocationTargetException 如果调用属性的 setter 方法失败
-     * @Author: wuhengzhen
-     * @Date: 2018-7-4 09:40:46
+     * @author: wuhengzhen
+     * @date: 2018-7-4 09:40:46
      */
     @SuppressWarnings("rawtypes")
-    public static Object convertMapToBean(Class type, Map map)
-            throws IntrospectionException, IllegalAccessException,
-            InstantiationException, InvocationTargetException {
+    public static Object transMap2Bean2(Map map, Class type) throws IntrospectionException, IllegalAccessException, InstantiationException, InvocationTargetException {
+        if (map == null) {
+            return null;
+        }
         // 获取类属性
         BeanInfo beanInfo = Introspector.getBeanInfo(type);
         // 创建 JavaBean 对象
@@ -120,37 +141,48 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
     }
 
     /**
-     * 公共方法：将一个 JavaBean对象转化为一个Map
+     * JavaBean -> Map
      *
-     * @param bean 要转化的JavaBean 对象
-     * @return 转化出来的  Map 对象
-     * @throws IntrospectionException    如果分析类属性失败
-     * @throws IllegalAccessException    如果实例化 JavaBean 失败
-     * @throws InvocationTargetException 如果调用属性的 setter 方法失败
-     * @Author: wuhengzhen
-     * @Date: 2018-7-4 09:40:46
+     * @param object 要转换的Javabean
+     * @return Map
+     * @throws IllegalAccessException    异常
+     * @throws NoSuchMethodException     异常
+     * @throws InvocationTargetException 异常
      */
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    public static Map<String, Object> convertBeanToMap(Object bean)
-            throws IntrospectionException, IllegalAccessException, InvocationTargetException {
-        Class type = bean.getClass();
-        Map<String, Object> returnMap = new HashMap<>();
-        BeanInfo beanInfo = Introspector.getBeanInfo(type);
+    public static Map transObject2Map(Object object) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+        if (object == null) {
+            return null;
+        }
+        return org.apache.commons.beanutils.BeanUtils.describe(object);
+    }
 
-        PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
-        for (PropertyDescriptor descriptor : propertyDescriptors) {
-            String propertyName = descriptor.getName();
-            if (!"class".equals(propertyName)) {
-                Method readMethod = descriptor.getReadMethod();
-                Object result = readMethod.invoke(bean);
-                if (result != null) {
-                    returnMap.put(propertyName, result);
-                } else {
-                    returnMap.put(propertyName, "");
+    /**
+     * JavaBean -> Map (忽略serialVersionUID)
+     *
+     * @param obj JavaBean
+     * @return Map
+     */
+    public static Map<String, Object> transObject2Map2(Object obj) {
+        Map<String, Object> map = new HashMap<>();
+        if (obj != null) {
+            //查询出对象所有的属性
+            Field[] fields = obj.getClass().getDeclaredFields();
+            for (Field field : fields) {
+                //不检查 直接取值
+                field.setAccessible(true);
+                System.out.println("field.getName()=" + field.getName());
+                try {
+                    if (!"serialVersionUID".equals(field.getName())) {
+                        //不为空
+                        System.out.println("field.get(obj)=" + field.get(obj));
+                        map.put(field.getName(), field.get(obj));
+                    }
+                } catch (IllegalArgumentException | IllegalAccessException e) {
+                    e.printStackTrace();
                 }
             }
         }
-        return returnMap;
+        return map;
     }
 
     /**
@@ -175,5 +207,48 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
             }
         }
         return field;
+    }
+
+    /**
+     * 判断对象是否为空，包括全部字段为空
+     *
+     * @param obj 对象名
+     * @return 是否不为空
+     */
+    public static boolean isNotEmpty(Object obj) {
+        if (null == obj) {
+            return false;
+        }
+        //查询出对象所有的属性
+        Field[] fields = obj.getClass().getDeclaredFields();
+        //用于判断所有属性是否为空,如果参数为空则不查询
+        boolean flag = false;
+        for (Field field : fields) {
+            //不检查 直接取值
+            field.setAccessible(true);
+            System.out.println("field.getName()=" + field.getName());
+            try {
+                if (StringUtils.isNotBlank(field.get(obj)) && !"serialVersionUID".equals(field.getName())) {
+                    //不为空
+                    flag = true;
+                    //当有任何一个参数不为空的时候则跳出判断直接查询
+                    break;
+                }
+            } catch (IllegalArgumentException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        return flag;
+    }
+
+    /**
+     * 判断对象为空
+     *
+     * @param obj 对象名
+     * @return 是否不为空
+     */
+    public static boolean isEmpty(Object obj) {
+        return !isNotEmpty(obj);
+
     }
 }

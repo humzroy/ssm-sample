@@ -28,16 +28,28 @@ public class OSSClientUtil {
      */
     private static final Logger logger = LoggerFactory.getLogger(OSSClientUtil.class);
 
-    // endpoint以杭州为例，其它region请按实际情况填写
-
+    /**
+     * OSS endpoint
+     */
     private String endpoint;
+    /**
+     * 阿里云主账号AccessKey拥有所有API的访问权限，风险很高。强烈建议您创建并使用RAM账号进行API访问或日常运维，请登录 https://ram.console.aliyun.com 创建RAM账号。
+     */
     private String accessKeyId;
+    /**
+     * 这里是'ossuser'的权限
+     */
     private String accessKeySecret;
 
-    //空间
+    /**
+     * 存储空间
+     */
     private String bucketName;
-    //文件存储目录
+    /**
+     * 文件存储目录
+     */
     private String filedir;
+
     private OSSClient ossClient;
 
     public OSSClientUtil(String endpoint, String accessKeyId, String accessKeySecret, String bucketName, String filedir) {
@@ -97,7 +109,7 @@ public class OSSClientUtil {
         ossClient.shutdown();
     }
 
-    /*
+    /**
      * 获得图片路径
      *
      * @param fileUrl
@@ -154,6 +166,15 @@ public class OSSClientUtil {
             }
         }
         return ret;
+    }
+
+    /**
+     * 删除文件
+     *
+     * @param fileName 文件名
+     */
+    public void deleteFile(String fileName) {
+        ossClient.deleteObject(bucketName, fileName);
     }
 
     /**

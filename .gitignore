@@ -58,10 +58,8 @@ logs
 
 # OS generated files #
 ######################
-.DS_Store?
 ._*
 .Spotlight-V100
 .Trashes
 Icon?
-ehthumbs.db
 /rebel.xml

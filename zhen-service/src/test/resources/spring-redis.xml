@@ -61,12 +61,12 @@
     <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
         <property name="poolConfig" ref="jedisPoolConfig"/>
         <!--IP地址 -->
-        <property name="hostName" value="127.0.0.1"/>
+        <property name="hostName" value="47.95.208.138"/>
         <!--<property name="hostName" value="10.10.10.242"/>-->
         <!--端口号  -->
         <property name="port" value="6379"/>
         <!--如果Redis设置有密码  -->
-        <!--<property name="password" value="${redis.password}" />-->
+        <property name="password" value="123456a!" />
         <!--客户端超时时间单位是毫秒  -->
         <!--<property name="timeout" value="${redis.timeout}"></property>-->
     </bean>
@@ -104,5 +104,6 @@
     </bean>
 
     <!--自定义redis工具类,在需要缓存的地方注入此类  -->
-    <bean id="redisUtils" class="com.zhen.utils.RedisUtils"/>
+    <!--<bean id="redisUtils" class="com.zhen.utils.RedisUtils"/>-->
+    <!--<bean id="springContextUtil" class="com.zhen.utils.SpringContextUtil"/>-->
 </beans>

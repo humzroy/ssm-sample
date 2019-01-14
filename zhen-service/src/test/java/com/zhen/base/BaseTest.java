@@ -8,13 +8,13 @@ package com.zhen.base;
 
 import com.zhen.utils.*;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.context.ApplicationContext;
+import redis.clients.jedis.Jedis;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -31,15 +31,35 @@ import java.util.Collections;
 // @RunWith(SpringJUnit4ClassRunner.class)
 // @ContextConfiguration(locations = {"/spring-redis.xml"})
 // @ContextConfiguration(locations = {"/spring-zhen.xml", })
+//extends AbstractJUnit4SpringContextTests
 public class BaseTest {
     private static final Logger logger = LoggerFactory.getLogger(BaseTest.class);
 
+    @Before
+    public void before() throws Exception {
+    }
+
+    @After
+    public void after() throws Exception {
+    }
+
+    // public <T> T getBean(Class<T> type) {
+    //     return applicationContext.getBean(type);
+    // }
+    //
+    // public Object getBean(String beanName) {
+    //     return applicationContext.getBean(beanName);
+    // }
+    //
+    // protected ApplicationContext getContext() {
+    //     return applicationContext;
+    // }
     // @Autowired
     // IUsrRoleService usrRoleService;
     // @Autowired
     // private UserMapper userMapper;
-    @Autowired
-    private RedisUtils redisUtils;
+    // @Autowired
+    // private RedisUtils redisUtils;
 
     @Test
     public void test() throws Exception {
@@ -66,7 +86,6 @@ public class BaseTest {
 		logger.info(userList.toString());
 		int row = userMapper.insertBatch(userList);
 		logger.info(Integer.toString(row));*/
-
 
 
     }
@@ -129,9 +148,10 @@ public class BaseTest {
      */
     @Test
     public void testRedis() {
-        // redisUtils.set("name", "admin");
         // redisUtils.del("name");
-        System.out.println(redisUtils.getObject("179F45AC44D31E4882DD42A2C3AEB30E").toString());
+        Jedis redis = JedisUtil.getInstance().getJedis();
+        redis.set("name", "admin");
+        System.out.println(redis.get("name"));
 
         // System.out.println(redisUtils.getObject("myKey"));
 
@@ -140,24 +160,24 @@ public class BaseTest {
 
     public void pritNoBug() throws Exception {
         String base64fozu = "Li4uLi4uLi4uLi4uLi4uLi4uLuaIkeS9m+aFiOaCsi4uLi4uLi4uLi4uLi4uLi4uLi4KICAgICAg\n" +
-                            "ICAgICAgICAgICAgIF9vb09vb18KICAgICAgICAgICAgICAgICAgbzg4ODg4ODhvCiAgICAgICAg\n" +
-                            "ICAgICAgICAgIDg4IiAuICI4OAogICAgICAgICAgICAgICAgICAofCAtXy0gfCkKICAgICAgICAg\n" +
-                            "ICAgICAgICAgT1wgID0gIC9PCiAgICAgICAgICAgICAgIF9fX18vYC0tLSdcX19fXwogICAgICAg\n" +
-                            "ICAgICAgLicgIFxcfCAgICAgfC8vICBgLgogICAgICAgICAgICAvICBcXHx8fCAgOiAgfHx8Ly8g\n" +
-                            "IFwKICAgICAgICAgICAvICBffHx8fHwgLTotIHx8fHx8LSAgXAogICAgICAgICAgIHwgICB8IFxc\n" +
-                            "XCAgLSAgLy8vIHwgICB8CiAgICAgICAgICAgfCBcX3wgICcnXC0tLS8nJyAgfCAgIHwKICAgICAg\n" +
-                            "ICAgICBcICAuLVxfXyAgYC1gICBfX18vLS4gLwogICAgICAgICBfX19gLiAuJyAgLy0tLi0tXCAg\n" +
-                            "YC4gLiBfXwogICAgICAuIiIgJzwgIGAuX19fXF88fD5fL19fXy4nICA+JyIiLgogICAgIHwgfCA6\n" +
-                            "ICBgLSBcYC47YFwgXyAvYDsuYC8gLSBgIDogfCB8CiAgICAgXCAgXCBgLS4gICBcXyBfX1wgL19f\n" +
-                            "IF8vICAgLi1gIC8gIC8KPT09PT09YC0uX19fX2AtLl9fX1xfX19fXy9fX18uLWBfX19fLi0nPT09\n" +
-                            "PT09CiAgICAgICAgICAgICAgICAgICBgPS0tLT0nCl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5e\n" +
-                            "Xl5eXl5eXl5eXl5eXl5eXl5eXgogICAgICAgICAgICDkvZvnpZbkv53kvZEgICAgICAg5rC45peg\n" +
-                            "QlVH";
+                "ICAgICAgICAgICAgIF9vb09vb18KICAgICAgICAgICAgICAgICAgbzg4ODg4ODhvCiAgICAgICAg\n" +
+                "ICAgICAgICAgIDg4IiAuICI4OAogICAgICAgICAgICAgICAgICAofCAtXy0gfCkKICAgICAgICAg\n" +
+                "ICAgICAgICAgT1wgID0gIC9PCiAgICAgICAgICAgICAgIF9fX18vYC0tLSdcX19fXwogICAgICAg\n" +
+                "ICAgICAgLicgIFxcfCAgICAgfC8vICBgLgogICAgICAgICAgICAvICBcXHx8fCAgOiAgfHx8Ly8g\n" +
+                "IFwKICAgICAgICAgICAvICBffHx8fHwgLTotIHx8fHx8LSAgXAogICAgICAgICAgIHwgICB8IFxc\n" +
+                "XCAgLSAgLy8vIHwgICB8CiAgICAgICAgICAgfCBcX3wgICcnXC0tLS8nJyAgfCAgIHwKICAgICAg\n" +
+                "ICAgICBcICAuLVxfXyAgYC1gICBfX18vLS4gLwogICAgICAgICBfX19gLiAuJyAgLy0tLi0tXCAg\n" +
+                "YC4gLiBfXwogICAgICAuIiIgJzwgIGAuX19fXF88fD5fL19fXy4nICA+JyIiLgogICAgIHwgfCA6\n" +
+                "ICBgLSBcYC47YFwgXyAvYDsuYC8gLSBgIDogfCB8CiAgICAgXCAgXCBgLS4gICBcXyBfX1wgL19f\n" +
+                "IF8vICAgLi1gIC8gIC8KPT09PT09YC0uX19fX2AtLl9fX1xfX19fXy9fX18uLWBfX19fLi0nPT09\n" +
+                "PT09CiAgICAgICAgICAgICAgICAgICBgPS0tLT0nCl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5e\n" +
+                "Xl5eXl5eXl5eXl5eXl5eXl5eXgogICAgICAgICAgICDkvZvnpZbkv53kvZEgICAgICAg5rC45peg\n" +
+                "QlVH";
         System.out.println(new String(Base64Util.decryptBASE64(base64fozu)));
     }
 
     @Test
-    public void testIdNo(){
+    public void testIdNo() {
         String idNo = "37028519940507323x";
         System.out.println(RegexUtils.isIDNumber(idNo));
     }

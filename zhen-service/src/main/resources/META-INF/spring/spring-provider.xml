@@ -145,7 +145,7 @@
         <property name="targetDataSources">
             <map key-type="java.lang.String">
                 <entry value-ref="mysqlDataSource" key="MYSQL"></entry>
-                <entry value-ref="oracleDataSource" key="ORACLE"></entry>
+                <!--<entry value-ref="oracleDataSource" key="ORACLE"></entry>-->
             </map>
         </property>
         <!--<property name="defaultTargetDataSource" ref="mysqlDataSource"></property>-->
@@ -174,7 +174,7 @@
                 <bean class="com.github.pagehelper.PageHelper">
                     <property name="properties">
                         <value>
-                            dialect=oracle
+                            dialect=mysql
                             pageSizeZero=true
                         </value>
                     </property>

@@ -58,8 +58,8 @@
                             <mainClass>com.zhen.runner.ServiceProvider</mainClass>
                             <!-- 是否指定项目classpath下的依赖 -->
                             <addClasspath>true</addClasspath>
-                            <!-- 指定依赖的时候声明前缀 -->
-                            <classpathPrefix>./</classpathPrefix>
+                            <!-- 指定依赖的时候声明前缀 生成的manifest中classpath的前缀，因为要把第三方jar放到lib目录下，所以classpath的前缀是lib -->
+                            <classpathPrefix>lib/</classpathPrefix>
                         </manifest>
                     </archive>
                 </configuration>
@@ -69,6 +69,10 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <!-- 配置执行器 -->
                 <configuration>
+                    <!-- 自定义文件包名 -->
+                    <finalName>service</finalName>
+                    <!--  打包后的包名是否包含assembly的id名 -->
+                    <appendAssemblyId>true</appendAssemblyId>
                     <!-- 配置描述文件路径 -->
                     <descriptor>src/main/assembly/assembly.xml</descriptor>
                 </configuration>

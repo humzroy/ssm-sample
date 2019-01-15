@@ -1,12 +1,12 @@
 <assembly>
     <id>assembly</id>
-    <!-- 打包的文件格式,也可以有：war zip -->
+    <!-- 打包的文件格式，支持 zip，tar，tar.gz，tar.bz2，jar，dir，war 等 -->
     <formats>
         <!--<format>zip</format>-->
-        <format>dir</format>
+        <format>tar.gz</format>
     </formats>
     <!--tar.gz压缩包下是否生成和项目名相同的根目录-->
-    <includeBaseDirectory>true</includeBaseDirectory>
+    <includeBaseDirectory>false</includeBaseDirectory>
     <!-- Adds dependencies to zip package under lib directory -->
     <dependencySets>
         <dependencySet>
@@ -40,7 +40,7 @@
             </includes>
         </fileSet>
 
-        <!-- 把项目的脚本文件目录（ src/main/scripts ）中的启动脚本文件，打包进zip文件的跟目录 -->
+        <!-- 把项目的脚本文件目录（src/main/scripts）中的启动脚本文件，打包进zip文件的跟目录 -->
         <fileSet>
             <directory>${project.build.scriptSourceDirectory}</directory>
             <outputDirectory></outputDirectory>

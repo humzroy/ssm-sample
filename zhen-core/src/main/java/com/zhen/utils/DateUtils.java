@@ -351,6 +351,25 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         return date;
     }
 
+    /**
+     * 日期格式互相转换
+     * yyyyMMdd --> yyyy-MM-dd
+     * yyyy-MM-dd --> yyyyMMdd
+     *
+     * @param date         日期字符串
+     * @param sourceFormat 源格式
+     * @param targetFormat 目标格式
+     * @return 返回格式化的日期
+     * @throws ParseException 分析时意外地出现了错误异常
+     */
+    public static String formatStrDate(String date, String sourceFormat, String targetFormat) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat(sourceFormat);
+        formatter.setLenient(false);
+        Date newDate = formatter.parse(date);
+        formatter = new SimpleDateFormat(targetFormat);
+        return formatter.format(newDate);
+    }
+
     public static void main(String[] args) {
         System.out.println(getCurrentDateTime());
     }

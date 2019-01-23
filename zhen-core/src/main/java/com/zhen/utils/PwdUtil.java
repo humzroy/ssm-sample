@@ -39,6 +39,15 @@ public class PwdUtil {
         return SaltUtil.verifyPwd(pwd, pwdSalt);
     }
 
+    /**
+     * 八位数字+字母+特殊字符随机密码生成
+     *
+     * @return 随机密码
+     */
+    public static String generatePwdStr() {
+        return UUIDUtil.generatePwdStr();
+    }
+
     public static void main(String[] args) throws Exception {
         String pass = "#@%￥#￥……%~！@#￥%……&**……1q2w3e4r";
         String salt = getEncryptePwd(pass);

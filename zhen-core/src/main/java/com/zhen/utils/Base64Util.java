@@ -167,7 +167,7 @@ public class Base64Util {
         System.out.println("base64：" + cipherStr.trim());
         System.out.println("base64长度：" + cipherStr.trim().length());*/
 
-        //本地图片地址
+        // 本地图片地址
         String url = "E:/img/38.jpg";
         //在线图片地址
         String string = "http://bpic.588ku.com//element_origin_min_pic/17/03/03/7bf4480888f35addcf2ce942701c728a.jpg";

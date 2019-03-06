@@ -5,6 +5,8 @@
     http://www.springframework.org/schema/beans/spring-beans.xsd        
     http://code.alibabatech.com/schema/dubbo        
     http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+	<!-- 要引用的服务 -->
+
 
 	
 

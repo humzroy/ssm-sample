@@ -6,7 +6,7 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
 		http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd"
 	default-lazy-init="true">
-   <!-- Service列表 -->
+	<!-- 要暴露的服务接口 -->
    <!-- 账号服务 -->
 	<dubbo:service interface="com.zhen.base.service.ILoginService" ref="loginServiceImpl" />
 	<dubbo:service interface="com.zhen.base.service.jms.IJmsSenderService" ref="jmsSenderServiceImpl"/>

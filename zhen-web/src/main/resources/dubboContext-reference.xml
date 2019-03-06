@@ -5,7 +5,7 @@
     http://www.springframework.org/schema/beans/spring-beans.xsd        
     http://code.alibabatech.com/schema/dubbo        
     http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
-
+	<!-- 要引用的服务 -->
 	<dubbo:reference id="loginService" interface="com.zhen.base.service.ILoginService" timeout="30000"/>
 	<dubbo:reference id="jmsSenderService" interface="com.zhen.base.service.jms.IJmsSenderService" timeout="30000"/>
 	<dubbo:reference id="demoService" interface="com.zhen.base.service.demo.IDemoService" timeout="30000"/>

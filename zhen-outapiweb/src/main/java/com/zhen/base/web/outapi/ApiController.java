@@ -23,4 +23,13 @@ public class ApiController {
         logger.info("接收到数据data:" + data);
         return "Hello World!";
     }
+
+    /**
+     * helloWorld
+     * @return
+     */
+    @RequestMapping(value = "helloWorld")
+    public String testApi() {
+        return "Hello World!";
+    }
 }

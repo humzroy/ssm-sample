@@ -6,11 +6,11 @@ import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.serializer.SimpleDateFormatSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.sf.json.util.JSONTokener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -84,23 +84,44 @@ public class JsonUtils {
         return null;
     }
 
+    /**
+     * json字符串转Map
+     *
+     * @param jsonStr json字符串
+     * @return
+     */
+    public static Map jsonToMap(String jsonStr) {
+        if (StringUtils.isEmpty(jsonStr)) {
+            return null;
+        }
+        Map map = new HashMap();
+        try {
+            map = JSONObject.parseObject(jsonStr, Map.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
+
     public static void main(String[] args) {
 
         /*
          *json解析时自动判断是object还是array
          */
         String json = "{\"scm\":[{\"key1\":\"vlaue1\",\"key2\":\"vlaue2\"},{\"key11\":\"vlaue11\",\"key22\":\"vlaue22\"}]}";
-        JSONObject jsonObject = JSONObject.parseObject(json);
-        Object object = new JSONTokener(jsonObject.getString("scm")).nextValue();
-        if (object instanceof net.sf.json.JSONArray) {
-            net.sf.json.JSONArray jsonArray = (net.sf.json.JSONArray) object;
-            for (int k = 0; k < jsonArray.size(); k++) {
-                net.sf.json.JSONObject parameterObject = jsonArray.getJSONObject(k);
-                System.out.println(parameterObject);
-            }
-        } else if (object instanceof net.sf.json.JSONObject) {
-            net.sf.json.JSONObject jsonObject3 = (net.sf.json.JSONObject) object;
-            System.out.println(jsonObject3);
-        }
+        Map map = jsonToMap(json);
+        System.out.println(map);
+        // JSONObject jsonObject = JSONObject.parseObject(json);
+        // Object object = new JSONTokener(jsonObject.getString("scm")).nextValue();
+        // if (object instanceof net.sf.json.JSONArray) {
+        //     net.sf.json.JSONArray jsonArray = (net.sf.json.JSONArray) object;
+        //     for (int k = 0; k < jsonArray.size(); k++) {
+        //         net.sf.json.JSONObject parameterObject = jsonArray.getJSONObject(k);
+        //         System.out.println(parameterObject);
+        //     }
+        // } else if (object instanceof net.sf.json.JSONObject) {
+        //     net.sf.json.JSONObject jsonObject3 = (net.sf.json.JSONObject) object;
+        //     System.out.println(jsonObject3);
+        // }
     }
 }

@@ -607,6 +607,16 @@
             <version>23.0</version>
         </dependency>
 
+        <!--&lt;!&ndash; 加入恒生ETS40依赖(本地jar包，lib文件夹与src同级) start&ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>com.hundsun.wm</groupId>-->
+            <!--<artifactId>bus-platform</artifactId>-->
+            <!--<version>4.0.0.13</version>-->
+            <!--<scope>system</scope>-->
+            <!--<systemPath>${basedir}/lib/bus-platform-sdk-4.0.0.13.jar</systemPath>-->
+        <!--</dependency>-->
+        <!--&lt;!&ndash; 加入恒生ETS40依赖 end&ndash;&gt;-->
+
     </dependencies>
     <build>
         <finalName>zhen-core</finalName>

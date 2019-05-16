@@ -100,7 +100,7 @@ public class User implements Serializable {
      *
      * @mbg.generated Thu Sep 13 22:13:06 CST 2018
      */
-    private Date createTime;
+    private String createTime;
 
     /**
      *
@@ -276,7 +276,7 @@ public class User implements Serializable {
      *
      * @mbg.generated Thu Sep 13 22:13:06 CST 2018
      */
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
@@ -288,7 +288,7 @@ public class User implements Serializable {
      *
      * @mbg.generated Thu Sep 13 22:13:06 CST 2018
      */
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 

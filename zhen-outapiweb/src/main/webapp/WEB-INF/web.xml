@@ -8,7 +8,7 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
          http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <!--定义了WEB应用的名字-->
-    <display-name>test-outapiweb</display-name>
+    <display-name>zhen-outapiweb</display-name>
     <!-- 在Spring框架中是如何解决从页面传来的字符串的编码问题的呢？-->
     <!-- 下面我们来看看Spring框架给我们提供过滤器CharacterEncodingFilter -->
     <!-- 这个过滤器就是针对于每次浏览器请求进行过滤的，然后再其之上添加了父类没有的功能即处理字符编码。 -->

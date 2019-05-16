@@ -3,6 +3,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans.xsd
     http://code.alibabatech.com/schema/dubbo
@@ -10,7 +11,7 @@
     http://www.springframework.org/schema/tx
     http://www.springframework.org/schema/tx/spring-tx.xsd
     http://www.springframework.org/schema/context
-    http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
 
     <context:component-scan base-package="com.zhen.*"/>
@@ -148,7 +149,7 @@
                 <!--<entry value-ref="oracleDataSource" key="ORACLE"></entry>-->
             </map>
         </property>
-        <!--<property name="defaultTargetDataSource" ref="mysqlDataSource"></property>-->
+        <property name="defaultTargetDataSource" ref="mysqlDataSource"></property>
     </bean>
 
     <!-- 配置事务管理器 -->
@@ -188,4 +189,13 @@
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
 
+    <bean id="dataSourceAspect" class="com.zhen.aspect.DataSourceAspect"/>
+    <aop:config>
+        <aop:aspect ref="dataSourceAspect">
+            <!-- 拦截所有service方法 -->
+            <aop:pointcut id="dataSourcePointcut" expression="execution(* com.zhen.*.service..*.*(..))"/>
+            <aop:before pointcut-ref="dataSourcePointcut" method="before"/>
+            <aop:after pointcut-ref="dataSourcePointcut" method="after"/>
+        </aop:aspect>
+    </aop:config>
 </beans>

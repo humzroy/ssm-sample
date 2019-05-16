@@ -1,37 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:context="http://www.springframework.org/schema/context"
-	   xmlns:util="http://www.springframework.org/schema/util"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
-
-
-
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd"
-	   default-lazy-init="true">
+       default-lazy-init="true">
 
-	<!-- 启用spring注解 -->
-	<context:annotation-config />
-	<!-- 自动将控制器加载到bean -->
-	<context:component-scan base-package="com.zhen.base.web">
-		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-	</context:component-scan>
+    <!-- 启用spring注解 -->
+    <context:annotation-config/>
+    <!-- 自动将控制器加载到bean -->
+    <context:component-scan base-package="com.zhen.base.web">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
 
-	<!-- 配置dubbo直连文件（开发环境使用，日构建取消） start-->
-	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-		<!-- targetObject确定目标Bean，指定调用哪个Bean -->
-		<property name="targetObject" value="#{@systemProperties}"/>
-		<!-- targetMethod确定目标方法，指定调用目标Bean的哪个方法 -->
-		<property name="targetMethod" value="putAll"/>
-		<!-- 确定调用目标方法的参数 -->
-		<property name="arguments">
-			<util:properties location="file:${CONF_HOME}/dubbo-resolve.properties"/>
-		</property>
-	</bean>
-	<!-- 配置dubbo直连文件（开发环境使用，日构建取消） end -->
+    <!-- 配置dubbo直连文件（开发环境使用，日构建取消） start-->
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <!-- targetObject确定目标Bean，指定调用哪个Bean -->
+        <property name="targetObject" value="#{@systemProperties}"/>
+        <!-- targetMethod确定目标方法，指定调用目标Bean的哪个方法 -->
+        <property name="targetMethod" value="putAll"/>
+        <!-- 确定调用目标方法的参数 -->
+        <property name="arguments">
+            <util:properties location="file:${CONF_HOME}/dubbo-resolve.properties"/>
+        </property>
+    </bean>
+    <!-- 配置dubbo直连文件（开发环境使用，日构建取消） end -->
 
-
-	
 </beans>
 

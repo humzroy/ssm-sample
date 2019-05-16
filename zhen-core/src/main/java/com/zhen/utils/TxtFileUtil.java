@@ -81,6 +81,6 @@ public class TxtFileUtil {
      * date : 2019/4/11 14:10
      */
     public static void main(String[] args) {
-        writeFile();
+        readFile();
     }
 }

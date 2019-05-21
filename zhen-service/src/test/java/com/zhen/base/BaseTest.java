@@ -161,7 +161,24 @@ public class BaseTest {
 
     }
 
+    @Test
     public void pritNoBug() throws Exception {
+
+        String s = "\n" +
+                "   █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗\n" +
+                " ▓██   ▒ ██  ▓██▒▒██▀ ▀█   ██▄█▒        ██╔══██╗██║   ██║██╔════╝\n" +
+                " ▒████ ░▓██  ▒██░▒▓█    ▄ ▓███▄░        ██████╔╝██║   ██║██║  ███╗\n" +
+                " ░▓█▒  ░▓▓█  ░██░▒▓▓▄ ▄██▒▓██ █▄        ██╔══██╗██║   ██║██║   ██║\n" +
+                " ░▒█░   ▒▒█████▓ ▒ ▓███▀ ░▒██▒ █▄       ██████╔╝╚██████╔╝╚██████╔╝\n" +
+                "  ▒ ░   ░▒▓▒ ▒ ▒ ░ ░▒ ▒  ░▒ ▒▒ ▓▒       ╚═════╝  ╚═════╝  ╚═════╝\n" +
+                "  ░     ░░▒░ ░ ░   ░  ▒   ░ ░▒ ▒░\n" +
+                "  ░ ░    ░░░ ░ ░ ░        ░ ░░ ░\n" +
+                "           ░     ░ ░      ░  ░\n";
+
+        System.out.println(s);
+        System.out.println(Base64Util.encryptBASE64(s.getBytes("utf-8")));
+
+
         String base64fozu = "Li4uLi4uLi4uLi4uLi4uLi4uLuaIkeS9m+aFiOaCsi4uLi4uLi4uLi4uLi4uLi4uLi4KICAgICAg\n" +
                 "ICAgICAgICAgICAgIF9vb09vb18KICAgICAgICAgICAgICAgICAgbzg4ODg4ODhvCiAgICAgICAg\n" +
                 "ICAgICAgICAgIDg4IiAuICI4OAogICAgICAgICAgICAgICAgICAofCAtXy0gfCkKICAgICAgICAg\n" +
@@ -176,7 +193,7 @@ public class BaseTest {
                 "PT09CiAgICAgICAgICAgICAgICAgICBgPS0tLT0nCl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5e\n" +
                 "Xl5eXl5eXl5eXl5eXl5eXl5eXgogICAgICAgICAgICDkvZvnpZbkv53kvZEgICAgICAg5rC45peg\n" +
                 "QlVH";
-        System.out.println(new String(Base64Util.decryptBASE64(base64fozu)));
+        System.out.println(new String(Base64Util.decryptBASE64(s)));
     }
 
     @Test

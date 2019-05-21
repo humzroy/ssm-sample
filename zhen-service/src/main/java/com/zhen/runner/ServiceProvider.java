@@ -18,7 +18,8 @@ public class ServiceProvider {
      * date : 2018-9-27 14:55
      */
     public static void main(String[] args) throws Exception {
-        pritNoBug();
+        // pritNoBug();
+        printFuckBug();
         Main.main(args);
     }
 
@@ -43,5 +44,23 @@ public class ServiceProvider {
                             "Xl5eXl5eXl5eXl5eXl5eXl5eXgogICAgICAgICAgICDkvZvnpZbkv53kvZEgICAgICAg5rC45peg\n" +
                             "QlVH";
         System.out.println(new String(Base64Util.decryptBASE64(base64fozu)));
+    }
+
+    /**
+     * printFuckBug
+     */
+    private static void printFuckBug() {
+        String str = "\n" +
+                "   █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗\n" +
+                " ▓██   ▒ ██  ▓██▒▒██▀ ▀█   ██▄█▒        ██╔══██╗██║   ██║██╔════╝\n" +
+                " ▒████ ░▓██  ▒██░▒▓█    ▄ ▓███▄░        ██████╔╝██║   ██║██║  ███╗\n" +
+                " ░▓█▒  ░▓▓█  ░██░▒▓▓▄ ▄██▒▓██ █▄        ██╔══██╗██║   ██║██║   ██║\n" +
+                " ░▒█░   ▒▒█████▓ ▒ ▓███▀ ░▒██▒ █▄       ██████╔╝╚██████╔╝╚██████╔╝\n" +
+                "  ▒ ░   ░▒▓▒ ▒ ▒ ░ ░▒ ▒  ░▒ ▒▒ ▓▒       ╚═════╝  ╚═════╝  ╚═════╝\n" +
+                "  ░     ░░▒░ ░ ░   ░  ▒   ░ ░▒ ▒░\n" +
+                "  ░ ░    ░░░ ░ ░ ░        ░ ░░ ░\n" +
+                "           ░     ░ ░      ░  ░\n";
+
+        System.out.println(str);
     }
 }

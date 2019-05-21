@@ -59,4 +59,17 @@ public class ApiController {
         }
         return exceptionStackTrace;
     }
+
+    /**
+     * @description：测试接口方法
+     * @author：wuhengzhen
+     * @date：2019/5/21 19:00
+     * @param：[]
+     * @return：java.lang.String
+     **/
+    @RequestMapping(value = "testInterface", method = RequestMethod.GET)
+    public String testInterface() {
+        demoService.testInterface();
+        return "0000";
+    }
 }

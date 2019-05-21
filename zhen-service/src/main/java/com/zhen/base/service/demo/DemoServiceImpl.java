@@ -91,4 +91,16 @@ public class DemoServiceImpl implements IDemoService {
         int i = 1 / 0;
         // throw new ExcelException("抛出 ExcelException!");
     }
+
+    @Override
+    public void testInterface() {
+        System.out.println("testInterface");
+        testInterface1();
+    }
+
+    @Override
+    public void testInterface1() {
+
+        System.out.println("testInterface1");
+    }
 }

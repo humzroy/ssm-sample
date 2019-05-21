@@ -27,4 +27,8 @@ public interface IDemoService {
      */
     @DataSource(DataSourceConstant.MYSQL)
     void testException() throws BusinessException;
+
+    void testInterface();
+
+    void testInterface1();
 }

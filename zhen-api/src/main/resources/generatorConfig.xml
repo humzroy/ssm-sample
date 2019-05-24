@@ -50,17 +50,21 @@
         <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
 
         <!-- 这里的type里写的是你的实现类的类全路径 -->
-        <commentGenerator type="com.zhen.plugins.mybatis.generator.CommentGenerator"/>
-        <!-- <commentGenerator> -->
+        <commentGenerator type="com.zhen.plugins.mybatis.generator.CommentGenerator">
             <!-- true:不生成注释，false:生成注释 -->
             <!--<property name="suppressAllComments" value="true"/>-->
             <!-- 在注释中，true:不显示时间戳 ,false:显示时间戳 -->
-            <!--<property name="suppressDate" value="true"/>-->
-        <!-- </commentGenerator> -->
+            <property name="suppressDate" value="true"/>
+        </commentGenerator>
 
         <!-- 1.指定JDBC数据库连接信息 -->
         <jdbcConnection driverClass="${mbg.db.driverClassName}" connectionURL="${mbg.db.url}"
                         userId="${mbg.db.username}" password="${mbg.db.password}">
+            <!-- 针对oracle数据库 -->
+            <property name="remarksReporting" value="true"></property>
+            <!-- 针对mysql数据库 -->
+            <!--<property name="useInformationSchema" value="true"></property>-->
+
         </jdbcConnection>
 
         <!-- 类型解析器 -->
@@ -74,7 +78,7 @@
         <!-- 生成领域模型（实体类）和查询对象，	在tragetProject目录下的targetPackage(demo.model)包中生成与数据表同名的领域模型 (Pet.java)， 生成名为PetExample.java的查询对象 -->
         <javaModelGenerator targetPackage="com.zhen.base.domain.system"
                             targetProject="./src/main/java">
-            <property name="IntRat" value="true"/>
+            <property name="WmsHundsunApiLog" value="true"/>
             <property name="trimStrings" value="true"/>
             <!-- 不使用setProperty方法，而是使用构造函数为每个字段赋值，推荐不设置此属性 -->
             <!-- <property name="immutable" value="true" /> -->
@@ -90,16 +94,21 @@
         <!-- type表示javaClient的类型，支持XMLMAPPER:SQL映射文件+接口，ANNOTATEDMAPPER：SQLBuilder+注解+接口，MIXEDMAPPER：混合形式 -->
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.zhen.base.dao.system"
                              targetProject="${mbg.path}/java">
-            <property name="IntRatDao" value="true"/>
+            <property name="WmsHundsunApiLogDao" value="true"/>
             <!-- 指定父接口，一般不使用 -->
             <!-- <property name="rootInterface" value="hello" /> -->
         </javaClientGenerator>
 
         <!-- 3. 指定为哪些数据表生成MyBatis文件 -->
 
-        <table tableName="S_INT_RAT" domainObjectName="IntRat"
+        <table tableName="WMS_HUNDSUN_API_LOG" domainObjectName="WmsHundsunApiLog"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
+               selectByExampleQueryId="false">
+
+            <columnOverride column="REQ_JSON" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <columnOverride column="RES_JSON" javaType="java.lang.String" jdbcType="VARCHAR"/>
+
+        </table>
     </context>
 </generatorConfiguration>

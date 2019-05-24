@@ -418,7 +418,7 @@ public class BaseTest {
     }
 
     @Test
-    public void testList(){
+    public void testList() {
         List<String> list = new ArrayList<>();
         list.add("1");
         list.add("11");
@@ -441,5 +441,30 @@ public class BaseTest {
 
     }
 
+
+    @Test
+    public void testOption() {
+        String str = null;
+        String optional = null;
+        try {
+            optional = Optional.ofNullable(str).orElseThrow(BusinessException::new);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
+        System.out.println(optional);
+    }
+
+
+    @Test
+    public void testJosn() {
+        Map<String, Object> reqMap = HundsunReqParamUtil.createReqMap();
+        reqMap.put("list", new ArrayList<>());
+        reqMap.put("null1", "");
+        reqMap.put("null2", null);
+        reqMap.put("date", DateUtils.getCurrentDate());
+
+        System.out.println(JsonUtils.obj2Json(reqMap));
+
+    }
 
 }

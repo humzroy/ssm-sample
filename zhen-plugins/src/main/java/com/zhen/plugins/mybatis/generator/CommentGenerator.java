@@ -22,14 +22,12 @@ import java.util.Properties;
  */
 public class CommentGenerator extends DefaultCommentGenerator {
 
-    private Properties properties;
     private Properties systemPro;
     private boolean suppressDate;
     private String nowTime;
 
     public CommentGenerator() {
         super();
-        properties = new Properties();
         systemPro = System.getProperties();
         suppressDate = false;
         nowTime = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(new Date());

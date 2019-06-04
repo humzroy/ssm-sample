@@ -76,38 +76,38 @@
 
         <!-- 2. 指定采用何种方式，生成何种对象 -->
         <!-- 生成领域模型（实体类）和查询对象，	在tragetProject目录下的targetPackage(demo.model)包中生成与数据表同名的领域模型 (Pet.java)， 生成名为PetExample.java的查询对象 -->
-        <javaModelGenerator targetPackage="com.zhen.base.domain.system"
+        <javaModelGenerator targetPackage="com.zhen.base.domain.hundsun"
                             targetProject="./src/main/java">
-            <property name="WmsHundsunApiLog" value="true"/>
+            <property name="WmsHundsunTradeResult" value="true"/>
             <property name="trimStrings" value="true"/>
             <!-- 不使用setProperty方法，而是使用构造函数为每个字段赋值，推荐不设置此属性 -->
             <!-- <property name="immutable" value="true" /> -->
         </javaModelGenerator>
 
         <!-- 生成 MyBatis的SQL映射文件，PetMapper.xml -->
-        <sqlMapGenerator targetPackage="mapper.base.system"
+        <sqlMapGenerator targetPackage="mapper.base.hundsun"
                          targetProject="${mbg.path}/resources">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
 
         <!--生成MyBatis的DAO接口，PetMapper.java -->
         <!-- type表示javaClient的类型，支持XMLMAPPER:SQL映射文件+接口，ANNOTATEDMAPPER：SQLBuilder+注解+接口，MIXEDMAPPER：混合形式 -->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.zhen.base.dao.system"
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.zhen.base.dao.hundsun"
                              targetProject="${mbg.path}/java">
-            <property name="WmsHundsunApiLogDao" value="true"/>
+            <property name="WmsHundsunTradeResultDao" value="true"/>
             <!-- 指定父接口，一般不使用 -->
             <!-- <property name="rootInterface" value="hello" /> -->
         </javaClientGenerator>
 
         <!-- 3. 指定为哪些数据表生成MyBatis文件 -->
 
-        <table tableName="WMS_HUNDSUN_API_LOG" domainObjectName="WmsHundsunApiLog"
+        <table tableName="WMS_HUNDSUN_TRADE_RESULT" domainObjectName="WmsHundsunTradeResult"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
 
-            <columnOverride column="REQ_JSON" javaType="java.lang.String" jdbcType="VARCHAR"/>
-            <columnOverride column="RES_JSON" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <!--<columnOverride column="REQ_JSON" javaType="java.lang.String" jdbcType="VARCHAR"/>-->
+            <!--<columnOverride column="RES_JSON" javaType="java.lang.String" jdbcType="VARCHAR"/>-->
 
         </table>
     </context>

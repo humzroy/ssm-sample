@@ -66,7 +66,31 @@ public class BaseTest {
 
     @Test
     public void test() throws Exception {
-        pritNoBug();
+
+        // System.out.println("211476b12b1d48cabf0b15abd473351b".length());
+        // int i = 8;
+        // int j = 8;
+        // System.out.println(i==j);
+        String str = "23423423";
+        String str1 = "";
+        String str2 = "dfafdsf";
+        StringBuilder stringBuilder = new StringBuilder();
+        if (StringUtils.isNotBlank(str)) {
+            stringBuilder.append(str).append(",");
+        }
+        if (StringUtils.isNotBlank(str1)) {
+            stringBuilder.append(str1).append(",");
+        }
+        if (StringUtils.isNotBlank(str2)) {
+            stringBuilder.append(str2).append(",");
+        }
+
+
+        System.out.println(stringBuilder.deleteCharAt(stringBuilder.length() - 1).toString());
+
+        System.out.println(stringBuilder.toString().replaceAll(",", "\r\n"));
+        System.out.println("heeeeee");
+        // pritNoBug();
         // UUIDUtil uuidUtil = new UUIDUtil();
         // logger.info(uuidUtil.getUnid());
 
@@ -106,15 +130,6 @@ public class BaseTest {
         // System.out.println(md5salt);
 
         System.out.println(MD5Utils.checkPassword("admin", "vALIddME", "7E5089D8E64E39A26D2F1D38EFBB5003"));
-
-    }
-
-    /**
-     * 16进制
-     */
-    @Test
-    public void testHex() {
-        System.out.println(StringUtils.getStringRandom(12));
 
     }
 
@@ -204,7 +219,7 @@ public class BaseTest {
 
 
     @Test
-    public void testProperties() {
+    public void testReadProperties() {
         System.out.println(PropertiesFileUtil.getInstance("../dubbo-resolve").get("dubbo.server.address"));
     }
 
@@ -418,53 +433,18 @@ public class BaseTest {
     }
 
     @Test
-    public void testList() {
-        List<String> list = new ArrayList<>();
-        list.add("1");
-        list.add("11");
-        list.add("2");
-        list.add("22");
-        List<String> list1 = new ArrayList<>();
-        List<String> list2 = new ArrayList<>();
+    public void testSFTP() {
 
-        for (String s : list) {
-            if (s.contains("1")) {
-                list1.add(s);
+        logger.info("测试登录sftp..");
+        String host = "10.192.9.3";
+        int port = 9022;
+        String loginUser = "hundsun";
+        String password = "yitsaitest";
 
-            } else if (s.contains("2")) {
-                list2.add(s);
-            }
-        }
+        SftpUtil instance = SftpUtil.getInstance(host, port, loginUser, password, null, null);
 
-        System.out.println(list1);
-        System.out.println(list2);
-
-    }
-
-
-    @Test
-    public void testOption() {
-        String str = null;
-        String optional = null;
-        try {
-            optional = Optional.ofNullable(str).orElseThrow(BusinessException::new);
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
-        System.out.println(optional);
-    }
-
-
-    @Test
-    public void testJosn() {
-        Map<String, Object> reqMap = HundsunReqParamUtil.createReqMap();
-        reqMap.put("list", new ArrayList<>());
-        reqMap.put("null1", "");
-        reqMap.put("null2", null);
-        reqMap.put("date", DateUtils.getCurrentDate());
-
-        System.out.println(JsonUtils.obj2Json(reqMap));
-
+        List<String> fileNames = instance.batchDownLoadFile("/YC_FILE/20190618/", "D:\\test\\", "OFD", ".TXT", false);
+        System.out.println(fileNames.toString());
     }
 
 }

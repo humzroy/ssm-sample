@@ -16,24 +16,31 @@ import java.util.*;
  * Date：2018-10-23
  * Time：10:57
  */
-public class SFTPUtil {
-    private static final Logger logger = LoggerFactory.getLogger(SFTPUtil.class);
+public class SftpUtil {
+    private static final Logger logger = LoggerFactory.getLogger(SftpUtil.class);
+
     private static ChannelSftp sftp;
-    private static SFTPUtil instance = null;
+    private static SftpUtil instance = null;
     private final static String BUSIMG_FILENAME_SEPARATOR = "|";
+
+    private SftpUtil() {
+
+    }
 
     /**
      * 登录本地sftp
      *
-     * @param host
-     * @param port
-     * @param userName
-     * @param passWord
+     * @param host       ip
+     * @param port       端口
+     * @param userName   登录用户
+     * @param passWord   登录密码
+     * @param keyFile    秘钥文件
+     * @param passphrase
      * @return
      */
-    public static SFTPUtil getInstance(String host, int port, String userName, String passWord, String keyFile, String passphrase) {
+    public static SftpUtil getInstance(String host, int port, String userName, String passWord, String keyFile, String passphrase) {
         if (instance == null) {
-            instance = new SFTPUtil();
+            instance = new SftpUtil();
             //获取连接
             sftp = instance.connect(host, port, userName, passWord, keyFile, passphrase);
         } else {
@@ -73,14 +80,14 @@ public class SFTPUtil {
             sshConfig.put("StrictHostKeyChecking", "no");
             sshSession.setConfig(sshConfig);
             sshSession.connect();
-            logger.info("SFTP服务器【" + host + " : " + port + "】登录成功...");
+            logger.info("SFTP服务器【{}:{}】登录成功...", host, port);
             // 打开Channel
             Channel channel = sshSession.openChannel("sftp");
             channel.connect();
             sftp = (ChannelSftp) channel;
-            logger.info("成功连接SFTP服务器【" + host + " : " + port + "】...");
+            logger.info("成功连接SFTP服务器【{}:{}】...", host, port);
         } catch (Exception e) {
-            logger.error("连接sftp服务器失败..." + e.getMessage());
+            logger.error("连接sftp服务器失败...异常信息：{}", e.getMessage());
         }
         return sftp;
     }
@@ -101,8 +108,8 @@ public class SFTPUtil {
             //  makeAndCdDirectory(directory);
             makeAndcdDirectory(basePath, directory);
             // 多文件拆分
-            if (uploadFile.indexOf(SFTPUtil.BUSIMG_FILENAME_SEPARATOR) != -1) {
-                String[] uploadFiles = StringUtils.splitPreserveAllTokens(uploadFile, SFTPUtil.BUSIMG_FILENAME_SEPARATOR);
+            if (uploadFile.contains(SftpUtil.BUSIMG_FILENAME_SEPARATOR)) {
+                String[] uploadFiles = StringUtils.splitPreserveAllTokens(uploadFile, SftpUtil.BUSIMG_FILENAME_SEPARATOR);
                 for (String file : uploadFiles) {
                     upload(localPath + file);
                 }
@@ -130,12 +137,12 @@ public class SFTPUtil {
             fileInputStream = new FileInputStream(file);
             sftp.put(fileInputStream, file.getName());
             fileInputStream.close();
-            logger.info("文件【" + uploadFile + "】成功上传到SFTP服务器！");
+            logger.info("文件【{}】成功上传到SFTP服务器！", uploadFile);
         } catch (IOException e) {
-            logger.error("文件【" + uploadFile + "】上传IO异常" + e.getMessage());
+            logger.error("文件【{}】上传IO异常！异常信息：{}", uploadFile, e.getMessage());
             throw e;
         } catch (Exception e) {
-            logger.error("文件【" + uploadFile + "】上传异常" + e.getMessage());
+            logger.error("文件【{}】上传异常！异常信息：{}", uploadFile, e.getMessage());
             throw e;
         } finally {
             try {
@@ -201,7 +208,7 @@ public class SFTPUtil {
                 }
             }
         } catch (Exception e) {
-            logger.error("创建远程目录结构异常", e);
+            logger.error("创建远程目录结构异常！", e);
             throw e;
         }
     }
@@ -209,9 +216,9 @@ public class SFTPUtil {
     /**
      * 下载文件(对外调用)
      *
-     * @param downLoadFilePath  下载目录
-     * @param downloadFile      下载的文件
-     * @param localSaveFilePath 存在本地的路径
+     * @param downLoadFilePath  远程文件目录
+     * @param downloadFile      下载的文件，如果是多个文件，以“|”分隔
+     * @param localSaveFilePath 本地保存路径
      */
     public boolean downLoadFile(String downLoadFilePath, String downloadFile, String localSaveFilePath) throws Exception {
         try {
@@ -220,24 +227,23 @@ public class SFTPUtil {
                 makeMultiDirectory(localSaveFilePath);
                 if (!new File(localSaveFilePath).isDirectory()) {
                     // 创建文件夹失败，抛出异常
-                    logger.error("创建本地文件夹【" + localSaveFilePath + "】失败！");
+                    logger.error("创建本地文件夹【{}】失败！", localSaveFilePath);
                     throw new Exception("创建本地文件夹【" + localSaveFilePath + "】失败！");
                 }
             }
             // 进入下载目录
             sftp.cd(downLoadFilePath);
-            // 如果是多个下载文件，需要
-            if (downloadFile.indexOf(SFTPUtil.BUSIMG_FILENAME_SEPARATOR) != -1) {
-                String[] downloadFiles = StringUtils.splitPreserveAllTokens(downloadFile, SFTPUtil.BUSIMG_FILENAME_SEPARATOR);
+            // 如果是多个下载文件，需要以“|”分隔
+            if (downloadFile.contains(SftpUtil.BUSIMG_FILENAME_SEPARATOR)) {
+                String[] downloadFiles = StringUtils.splitPreserveAllTokens(downloadFile, SftpUtil.BUSIMG_FILENAME_SEPARATOR);
                 for (String file : downloadFiles) {
                     downLoad(file, localSaveFilePath + File.separator + file);
                 }
-            } else if (downloadFile.equalsIgnoreCase("*")) {
-                logger.info("--------进入了} else if (remoteFileName.equalsIgnoreCase(*)) 中{------");
+            } else if ("*".equalsIgnoreCase(downloadFile)) {
                 String[] fileNames = getAllFilesInPath();
                 for (String file : fileNames) {
                     if ("..".equals(file.trim()) || ".".equals(file.trim())) {
-                        logger.info("-----“..”和“.”不下载-----");
+                        // “..”和“.”不下载
                         continue;
                     }
                     downLoad(file, localSaveFilePath + File.separator + file);
@@ -249,6 +255,8 @@ public class SFTPUtil {
         } catch (Exception e) {
             logger.error(e.getMessage());
             throw new Exception();
+        } finally {
+            disconnect();
         }
     }
 
@@ -265,12 +273,12 @@ public class SFTPUtil {
             fileOutputStream = new FileOutputStream(file);
             sftp.get(downLoadFile, fileOutputStream);
             fileOutputStream.close();
-            logger.info("文件【" + downLoadFile + "】成功从SFTP服务器下载！");
+            logger.info("文件【{}】成功从SFTP服务器下载！", downLoadFile);
         } catch (IOException e) {
-            logger.error("下载文件【" + downLoadFile + "】IO异常！");
+            logger.error("下载文件【{}】IO异常！", downLoadFile);
         } catch (Exception e) {
             logger.error(e.getMessage());
-            logger.error("下载文件【" + downLoadFile + "】异常！");
+            logger.error("下载文件【{}】异常！", downLoadFile);
         } finally {
             try {
                 if (fileOutputStream != null) {
@@ -284,6 +292,115 @@ public class SFTPUtil {
     }
 
     /**
+     * 批量下载文件
+     *
+     * @param remotePath  远程文件目录
+     * @param localPath   本地保存目录
+     * @param filepPrefix 文件前缀
+     * @param fileSuffix  文件后缀
+     * @param del         下载成功后是否删除sftp上的文件
+     * @return 批量下载成功的文件名集合
+     */
+    public List<String> batchDownLoadFile(String remotePath, String localPath, String filepPrefix, String fileSuffix, boolean del) {
+        List<String> filenames = new ArrayList<>();
+        String dateStr = DateUtils.format(new Date(), DateUtils.PATTERN_STANDARD08W);
+        localPath = localPath + dateStr + File.separator;
+        try {
+            List<String> files = listFiles(remotePath);
+            if (files.size() > 0) {
+                // 有文件
+                logger.info("本次处理文件个数不为零,开始下载...fileSize=" + files.size());
+                for (String fileName : files) {
+                    boolean flag;
+                    String localFileName = localPath + fileName;
+                    filepPrefix = filepPrefix == null ? "" : filepPrefix.trim();
+                    fileSuffix = fileSuffix == null ? "" : fileSuffix.trim();
+                    // 三种情况
+                    if (filepPrefix.length() > 0) {
+                        if (fileName.startsWith(filepPrefix) && fileName.endsWith(fileSuffix)) {
+                            flag = downloadFile(remotePath, fileName, localPath, fileName);
+                            if (flag) {
+                                filenames.add(localFileName);
+                                if (del) {
+                                    delete(remotePath, fileName);
+                                }
+                            }
+                        }
+                    } else if (fileSuffix.length() > 0 && StringUtils.isBlank(filepPrefix)) {
+                        if (fileName.endsWith(fileSuffix)) {
+                            flag = downloadFile(remotePath, fileName, localPath, fileName);
+                            if (flag) {
+                                filenames.add(localFileName);
+                                if (del) {
+                                    delete(remotePath, fileName);
+                                }
+                            }
+                        }
+                    } else {
+                        flag = downloadFile(remotePath, fileName, localPath, fileName);
+                        if (flag) {
+                            filenames.add(localFileName);
+                            if (del) {
+                                delete(remotePath, fileName);
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            disconnect();
+        }
+
+        return filenames;
+    }
+
+    /**
+     * 下载单个文件
+     *
+     * @param remotePath：远程下载目录(以路径符号结束)
+     * @param remoteFileName：下载文件名
+     * @param localPath：本地保存目录(以路径符号结束)
+     * @param localFileName：保存文件名
+     * @return
+     */
+    public boolean downloadFile(String remotePath, String remoteFileName, String localPath, String localFileName) {
+        FileOutputStream fieloutput = null;
+        try {
+            // 如果本地文件夹不存在，则先创建文件夹
+            if (!new File(localPath).isDirectory()) {
+                makeMultiDirectory(localPath);
+                if (!new File(localPath).isDirectory()) {
+                    // 创建文件夹失败，抛出异常
+                    logger.error("创建本地文件夹【{}】失败！", localPath);
+                    return false;
+                }
+            }
+            File file = new File(localPath + localFileName);
+            fieloutput = new FileOutputStream(file);
+            sftp.get(remotePath + remoteFileName, fieloutput);
+            if (logger.isInfoEnabled()) {
+                logger.info("download success from sftp, fileName:{}", remoteFileName);
+            }
+            return true;
+        } catch (FileNotFoundException e) {
+            logger.error(e.getMessage() + "download file is Fail File not Found");
+        } catch (SftpException e) {
+            logger.error(e.getMessage() + "download file is Fail sftp server error");
+        } finally {
+            if (null != fieloutput) {
+                try {
+                    fieloutput.close();
+                } catch (IOException e) {
+                    logger.error(e.getMessage());
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
      * 在指定位置（本地）建立多级目录结构
      *
      * @param localSaveFilePath
@@ -293,7 +410,7 @@ public class SFTPUtil {
         if (!(new File(localSaveFilePath).isDirectory())) {
             // 依次建立各级目录
             String[] dirStrArray = StringUtils.splitPreserveAllTokens(localSaveFilePath, File.separator);
-            StringBuffer dirStr = new StringBuffer(dirStrArray[0]);
+            StringBuilder dirStr = new StringBuilder(dirStrArray[0]);
             for (int i = 0; i < dirStrArray.length - 1; i++) {
                 dirStr.append(File.separator);
                 dirStr.append(dirStrArray[i + 1]);
@@ -309,24 +426,21 @@ public class SFTPUtil {
      * 路径下的全部文件
      *
      * @return
-     * @throws Exception
      */
-    private String[] getAllFilesInPath() throws Exception {
+    private String[] getAllFilesInPath() {
         String[] names = null;
         String curPath = null;
         try {
             curPath = sftp.pwd();
 
             Vector files = sftp.ls(".");
-            logger.info("--------总共有" + files.size() + "个文件------");
+            logger.info("总共有{}个文件.", files.size());
             for (int i = 0; i < files.size(); i++) {
-                logger.info("--------进入for循环中了！------");
                 LsEntry entry = (LsEntry) files.get(i);
                 if ("..".equals(entry.getFilename().trim()) || ".".equals(entry.getFilename().trim())) {
-                    logger.info("------------进入“..”和“.”的 if else 判断中");
                     files.removeElementAt(i);
                 }
-                logger.info("文件名称为:" + entry.getFilename());
+                logger.info("文件名称为:{}", entry.getFilename());
             }
 
             names = new String[files.size()];
@@ -361,9 +475,8 @@ public class SFTPUtil {
             return fileNameList;
         }
         try {
-            Iterator it = fileList.iterator();
-            while (it.hasNext()) {
-                String fileName = ((LsEntry) it.next()).getFilename();
+            for (Object aFileList : fileList) {
+                String fileName = ((LsEntry) aFileList).getFilename();
                 if (".".equals(fileName) || "..".equals(fileName)) {
                     continue;
                 }
@@ -386,9 +499,9 @@ public class SFTPUtil {
         try {
             sftp.cd(directory);
             sftp.rm(deleteFile);
-            logger.info("删除文件【" + deleteFile + "】成功！");
+            logger.info("删除文件【{}】成功！", deleteFile);
         } catch (Exception e) {
-            logger.info("删除文件【" + deleteFile + "】失败！" + e.getMessage());
+            logger.info("删除文件【{}】失败！异常信息：{}", deleteFile, e.getMessage());
         }
     }
 
@@ -400,9 +513,9 @@ public class SFTPUtil {
     public void deleteFolder(String deleteFolder) {
         try {
             sftp.rmdir(deleteFolder);
-            logger.info("删除文件夹【" + deleteFolder + "】成功！");
+            logger.info("删除文件夹【{}】成功！", deleteFolder);
         } catch (Exception e) {
-            logger.info("删除文件夹【" + deleteFolder + "】失败！" + e.getMessage());
+            logger.info("删除文件夹【{}】失败！异常信息：{}", deleteFolder, e.getMessage());
         }
     }
 
@@ -415,15 +528,16 @@ public class SFTPUtil {
                 if (sftp.isConnected()) {
                     sftp.disconnect();
                 }
-            }
-            Session session = sftp.getSession();
-            if (session != null) {
-                if (session.isConnected()) {
-                    session.disconnect();
+                Session session = sftp.getSession();
+                if (session != null) {
+                    if (session.isConnected()) {
+                        session.disconnect();
+                    }
                 }
             }
+            logger.info("关闭sftp成功！");
         } catch (JSchException e) {
-            logger.error(e.getMessage());
+            logger.error("关闭sftp异常！{}", e.getMessage());
         }
     }
 

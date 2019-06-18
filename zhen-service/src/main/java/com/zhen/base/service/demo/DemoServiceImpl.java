@@ -17,7 +17,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
+
+import javax.resource.spi.TransactionSupport;
 
 /**
  * @author wuhengzhen
@@ -73,10 +77,9 @@ public class DemoServiceImpl implements IDemoService {
      * date : 2019/5/16 15:28
      */
     @Override
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = BusinessException.class)
     public void testException() throws BusinessException {
         logger.info("测试异常接口！" + DateUtils.getCurrentDateTimeMillis());
-
 
         User user = new User();
         user.setLoginName("admin");
@@ -88,8 +91,15 @@ public class DemoServiceImpl implements IDemoService {
         user.setCreateUser("system");
         userMapper.insertSelective(user);
         logger.info("insert！！！");
-        int i = 1 / 0;
-        // throw new ExcelException("抛出 ExcelException!");
+        try {
+            int i = 1 / 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            // TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            throw new BusinessException("dddddddddddd");
+        }
+        System.out.println("sssssssssss");
+
     }
 
     @Override

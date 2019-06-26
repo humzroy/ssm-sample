@@ -436,6 +436,12 @@ public class BaseTest {
     public void testSFTP() {
 
         logger.info("测试登录sftp..");
+        // String host = "47.95.208.138";
+        // int port = 9022;
+        // String loginUser = "mysftp";
+        // String password = "mysftp";
+
+
         String host = "10.192.9.3";
         int port = 9022;
         String loginUser = "hundsun";
@@ -443,8 +449,13 @@ public class BaseTest {
 
         SftpUtil instance = SftpUtil.getInstance(host, port, loginUser, password, null, null);
 
-        List<String> fileNames = instance.batchDownLoadFile("/YC_FILE/20190618/", "D:\\test\\", "OFD", ".TXT", false);
-        System.out.println(fileNames.toString());
+        // try {
+        //     instance.uploadFile("/upload/", "/test/", "D:\\", "CentOS-Base.repo");
+        // } catch (Exception e) {
+        //     e.printStackTrace();
+        // }
+        // List<String> fileNames = instance.batchDownLoadFile("/YC_FILE/20190618/", "D:\\test\\", "OFD", ".TXT", false);
+        // System.out.println(fileNames.toString());
     }
 
 }

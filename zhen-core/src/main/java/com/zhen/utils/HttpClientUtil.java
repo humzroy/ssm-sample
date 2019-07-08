@@ -1,13 +1,17 @@
 package com.zhen.utils;
 
-import com.zhen.exception.BusinessException;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
@@ -16,9 +20,11 @@ import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,16 +35,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
+import javax.net.ssl.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
-import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
@@ -46,6 +49,7 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author : wuhengzhen
@@ -73,7 +77,12 @@ public class HttpClientUtil {
         // 设置协议http和https对应的处理socket链接工厂的对象
         Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory>create()
                 .register(HTTP, PlainConnectionSocketFactory.INSTANCE)
-                .register(HTTPS, new SSLConnectionSocketFactory(sslcontext, (String s, SSLSession sslSession) -> true))
+                .register(HTTPS, new SSLConnectionSocketFactory(sslcontext, new HostnameVerifier() {
+                    @Override
+                    public boolean verify(String s, SSLSession sslSession) {
+                        return true;
+                    }
+                }))
                 .build();
         // 设置连接池
         PoolingHttpClientConnectionManager connMgr = new PoolingHttpClientConnectionManager(socketFactoryRegistry);
@@ -92,13 +101,144 @@ public class HttpClientUtil {
     }
 
     /**
+     * 封装HTTP GET方法
+     * 无参数的Get请求
+     *
+     * @param
+     * @return
+     * @throws ClientProtocolException
+     * @throws java.io.IOException
+     */
+    public static String get(String url) throws ClientProtocolException, IOException {
+        //首先需要先创建一个DefaultHttpClient的实例
+        HttpClient httpClient = new DefaultHttpClient();
+        //先创建一个HttpGet对象,传入目标的网络地址,然后调用HttpClient的execute()方法即可:
+        HttpGet httpGet = new HttpGet();
+        httpGet.setURI(URI.create(url));
+        HttpResponse response = httpClient.execute(httpGet);
+        String httpEntityContent = getHttpEntityContent(response);
+        httpGet.abort();
+        return httpEntityContent;
+    }
+
+    /**
+     * 封装HTTP GET方法 UrlEncoded
+     * 有参数的Get请求
+     *
+     * @param
+     * @param
+     * @return
+     * @throws ClientProtocolException
+     * @throws java.io.IOException
+     */
+    public static String get(String url, Map<String, String> paramMap) throws ClientProtocolException, IOException {
+        String httpEntityContent;
+        HttpClient httpClient = new DefaultHttpClient();
+        try {
+            HttpGet httpGet = new HttpGet();
+            List<NameValuePair> formParams = setHttpParams(paramMap);
+            String param = URLEncodedUtils.format(formParams, "UTF-8");
+            httpGet.setURI(URI.create(url + "?" + param));
+            HttpResponse response = httpClient.execute(httpGet);
+            httpEntityContent = getHttpEntityContent(response);
+            httpGet.abort();
+        } finally {
+            httpClient.getConnectionManager().shutdown();
+        }
+        return httpEntityContent;
+    }
+
+    /**
+     * 封装HTTP POST方法 UrlEncoded
+     *
+     * @param
+     * @param
+     * @return
+     * @throws ClientProtocolException
+     * @throws java.io.IOException
+     */
+    public static String post(String url, Map<String, String> paramMap) throws ClientProtocolException, IOException {
+        String httpEntityContent;
+        HttpClient httpClient = new DefaultHttpClient();
+        try {
+            httpClient.getParams().setIntParameter(CoreConnectionPNames.SO_TIMEOUT, 5000);
+            httpClient.getParams().setIntParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 3000);
+            HttpPost httpPost = new HttpPost(url);
+            List<NameValuePair> formParams = setHttpParams(paramMap);
+            UrlEncodedFormEntity param = new UrlEncodedFormEntity(formParams, "UTF-8");
+            //通过setEntity()设置参数给post
+            httpPost.setEntity(param);
+            //利用httpClient的execute()方法发送请求并且获取返回参数
+            HttpResponse response = httpClient.execute(httpPost);
+            httpEntityContent = getHttpEntityContent(response);
+            httpPost.abort();
+        } finally {
+            httpClient.getConnectionManager().shutdown();
+        }
+        return httpEntityContent;
+    }
+
+    /**
+     * 设置请求参数
+     *
+     * @param
+     * @return
+     */
+    private static List<NameValuePair> setHttpParams(Map<String, String> paramMap) {
+        List<NameValuePair> formParams = new ArrayList<>();
+        Set<Map.Entry<String, String>> set = paramMap.entrySet();
+        for (Map.Entry<String, String> entry : set) {
+            formParams.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
+        }
+        return formParams;
+    }
+
+    /**
+     * 获得响应HTTP实体内容
+     *
+     * @param response
+     * @return
+     * @throws java.io.IOException
+     * @throws java.io.UnsupportedEncodingException
+     */
+    private static String getHttpEntityContent(HttpResponse response) throws IOException, UnsupportedEncodingException {
+        //通过HttpResponse 的getEntity()方法获取返回信息
+        org.apache.http.HttpEntity entity = response.getEntity();
+        System.out.println("返回响应码：" + response.getStatusLine().getStatusCode());
+        if (entity != null) {
+            InputStream is = entity.getContent();
+            BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
+            String line = br.readLine();
+            StringBuilder sb = new StringBuilder();
+            while (line != null) {
+                sb.append(line).append("\n");
+                line = br.readLine();
+            }
+            br.close();
+            is.close();
+            return sb.toString();
+        }
+        return "";
+    }
+
+    /**
+     * get请求
+     *
+     * @param url
+     * @return
+     */
+    public static String doGet(String url) {
+        return doGet(url, null);
+    }
+
+    /**
      * get请求
      *
      * @param url
      * @param param
      * @return
      */
-    public static String doGet(String url, Map<String, String> param) {
+    public static String doGet(String url, Map<String, Object> param) {
 
         // 创建Httpclient对象
         CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -110,7 +250,7 @@ public class HttpClientUtil {
             URIBuilder builder = new URIBuilder(url);
             if (param != null) {
                 for (String key : param.keySet()) {
-                    builder.addParameter(key, param.get(key));
+                    builder.addParameter(key, String.valueOf(param.get(key)));
                 }
             }
             URI uri = builder.build();
@@ -153,13 +293,13 @@ public class HttpClientUtil {
     }
 
     /**
-     * get请求
+     * post请求
      *
      * @param url
      * @return
      */
-    public static String doGet(String url) {
-        return doGet(url, null);
+    public static String doPost(String url) {
+        return doPost(url, null);
     }
 
     /**
@@ -204,14 +344,40 @@ public class HttpClientUtil {
         return resultString;
     }
 
+
     /**
-     * post请求
+     * POST请求，数据格式为JSON
      *
      * @param url
+     * @param json
      * @return
      */
-    public static String doPost(String url) {
-        return doPost(url, null);
+    public static String doPostJson(String url, String json) {
+        // 创建Httpclient对象
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        CloseableHttpResponse response = null;
+        String resultString = "";
+        try {
+            // 创建Http Post请求
+            HttpPost httpPost = new HttpPost(url);
+            // 创建请求内容
+            StringEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
+            httpPost.setEntity(entity);
+            // 执行http请求
+            response = httpClient.execute(httpPost);
+            resultString = EntityUtils.toString(response.getEntity(), "utf-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                closeResource(httpClient, response);
+            } catch (IOException e) {
+                logger.error("关闭资源异常!", e);
+                e.printStackTrace();
+            }
+        }
+
+        return resultString;
     }
 
 
@@ -379,7 +545,7 @@ public class HttpClientUtil {
      * @author : wuhengzhen
      * @date : 2018-9-12 9:02
      */
-    public static String httpsPostJson(String url, String jsonStr) throws IOException {
+    public static String httpsPostJson(String url, String jsonStr) {
         //创建post方式请求对象
         HttpPost httpPost = new HttpPost(url);
         //设置参数到请求对象中

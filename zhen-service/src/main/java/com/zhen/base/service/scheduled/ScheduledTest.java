@@ -38,7 +38,7 @@ public class ScheduledTest {
     /**
      * 测试定时任务 //每隔1min执行一次
      */
-    @Scheduled(cron = "0 0/1 * * * ? ")
+    // @Scheduled(cron = "0 0/1 * * * ? ")
     public void testScheduled() {
         String appClientId = "QINGDAOYICAICFFSDPL40";
         String appId = "web1.1";

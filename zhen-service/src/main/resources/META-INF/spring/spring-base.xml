@@ -11,6 +11,7 @@
 	<dubbo:service interface="com.zhen.base.service.ILoginService" ref="loginServiceImpl" />
 	<dubbo:service interface="com.zhen.base.service.jms.IJmsSenderService" ref="jmsSenderServiceImpl"/>
 	<dubbo:service interface="com.zhen.base.service.demo.IDemoService" ref="demoServiceImpl"/>
+    <dubbo:service interface="com.zhen.base.service.mybatisplus.MybatisPlusUserService" ref="mybatisPlusUserServiceImpl"/>
 
 
 

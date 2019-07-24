@@ -61,7 +61,7 @@ public class BaseTest {
     // @Autowired
     // IUsrRoleService usrRoleService;
     // @Autowired
-    // private UserMapper userMapper;
+    // private MybatisPlusUserMapper userMapper;
     // @Autowired
     // private RedisUtils redisUtils;
 

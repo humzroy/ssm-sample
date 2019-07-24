@@ -607,6 +607,13 @@
             <version>23.0</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.baomidou/mybatis-plus -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus</artifactId>
+            <version>3.1.2</version>
+        </dependency>
+
         <!--&lt;!&ndash; 加入恒生ETS40依赖(本地jar包，lib文件夹与src同级) start&ndash;&gt;-->
         <!--<dependency>-->
             <!--<groupId>com.hundsun.wm</groupId>-->

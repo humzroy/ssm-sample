@@ -1,5 +1,6 @@
 package com.zhen.base.service.mybatisplus;
 
+import com.baomidou.mybatisplus.service.IService;
 import com.zhen.base.domain.mybatisplus.User;
 import com.zhen.datasource.DataSource;
 import com.zhen.datasource.DataSourceConstant;
@@ -14,7 +15,7 @@ import java.util.List;
  * @Date：2019-07-24 16:56
  */
 @DataSource(DataSourceConstant.MYSQL)
-public interface MybatisPlusUserService {
+public interface MybatisPlusUserService extends IService<User> {
     /**
      * 1.查询所有的用户
      *

@@ -1,6 +1,17 @@
 package com.zhen.base.domain.mybatisplus;
 
+import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA
@@ -10,97 +21,37 @@ import java.io.Serializable;
  * @Author：wuhengzhen
  * @Date：2019-07-24 16:49
  */
-public class User implements Serializable {
+@TableName("t_user")
+@Data
+@EqualsAndHashCode(callSuper = false)
+@AllArgsConstructor
+@NoArgsConstructor
+public class User extends Model<User> {
 
-    private static final long serialVersionUID = -3778655381224099403L;
-    private int userId;
+    private static final long serialVersionUID = 1L;
+
+    @TableId(value = "user_id", type = IdType.AUTO)
+    private Integer userId;
+    @TableField("user_login_name")
     private String userLoginName;
+    @TableField("user_pwd")
     private String userPwd;
+    @TableField("user_name")
     private String userName;
-    private int state;
-    private String createTime;
-    private int delState;
+    /**
+     * state 1启用 0冻结
+     */
+    private Integer state;
+    @TableField("create_time")
+    private Date createTime;
+    /**
+     * delState 删除状态1 删除 0未删除
+     */
+    @TableField("del_state")
+    private Integer delState;
 
-    public User(String userLoginName, String userPwd) {
-        super();
-        this.userLoginName = userLoginName;
-        this.userPwd = userPwd;
-    }
-
-    public User(String userName, int state) {
-        super();
-        this.userName = userName;
-        this.state = state;
-    }
-
-    public User(int userId, String userLoginName, String userPwd, String userName, int state, String createTime, int delState) {
-        super();
-        this.userId = userId;
-        this.userLoginName = userLoginName;
-        this.userPwd = userPwd;
-        this.userName = userName;
-        this.state = state;
-        this.createTime = createTime;
-        this.delState = delState;
-    }
-
-    public User() {
-        super();
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public String getUserLoginName() {
-        return userLoginName;
-    }
-
-    public void setUserLoginName(String userLoginName) {
-        this.userLoginName = userLoginName;
-    }
-
-    public String getUserPwd() {
-        return userPwd;
-    }
-
-    public void setUserPwd(String userPwd) {
-        this.userPwd = userPwd;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public int getState() {
-        return state;
-    }
-
-    public void setState(int state) {
-        this.state = state;
-    }
-
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
-    }
-
-    public int getDelState() {
-        return delState;
-    }
-
-    public void setDelState(int delState) {
-        this.delState = delState;
+    @Override
+    protected Serializable pkVal() {
+        return this.userId;
     }
 }

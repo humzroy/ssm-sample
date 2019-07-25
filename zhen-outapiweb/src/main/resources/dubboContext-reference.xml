@@ -8,6 +8,7 @@
 	<!-- 要引用的服务 -->
     <dubbo:reference id="demoService" interface="com.zhen.base.service.demo.IDemoService" timeout="30000"/>
 
+    <dubbo:reference id="mybatisPlusUserService" interface="com.zhen.base.service.mybatisplus.MybatisPlusUserService" timeout="30000"/>
 
 	
 

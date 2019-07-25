@@ -1,5 +1,6 @@
 package com.zhen.base.dao.mybatisplus;
 
+import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.zhen.base.domain.mybatisplus.User;
 
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
  * @Author：wuhengzhen
  * @Date：2019-07-24 16:52
  */
-public interface MybatisPlusUserMapper {
+public interface MybatisPlusUserMapper extends BaseMapper<User> {
     /**
      * 查询所有用户
      *

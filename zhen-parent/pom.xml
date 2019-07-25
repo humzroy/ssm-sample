@@ -31,6 +31,8 @@
         <easypoi.version>3.3.0</easypoi.version>
         <!-- baidu api版本号 -->
         <baidu-version>4.7.0</baidu-version>
+        <!-- mybatis plus 版本号 -->
+        <mybaitsplus.version>2.0.5</mybaitsplus.version>
     </properties>
     <version>1.0-SNAPSHOT</version>
 

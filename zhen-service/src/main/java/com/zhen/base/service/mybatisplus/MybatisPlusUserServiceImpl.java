@@ -1,10 +1,10 @@
 package com.zhen.base.service.mybatisplus;
 
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.zhen.base.dao.mybatisplus.MybatisPlusUserMapper;
 import com.zhen.base.domain.mybatisplus.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.List;
  */
 @Component
 @Transactional
-public class MybatisPlusUserServiceImpl implements MybatisPlusUserService {
+public class MybatisPlusUserServiceImpl extends ServiceImpl<MybatisPlusUserMapper, User> implements MybatisPlusUserService {
 
     @Autowired
     private MybatisPlusUserMapper mybatisPlusUserMapper;

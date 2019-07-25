@@ -1,5 +1,6 @@
 package com.zhen.base.web.mybatisplus;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.zhen.base.domain.mybatisplus.User;
 import com.zhen.base.service.mybatisplus.MybatisPlusUserService;
 import com.zhen.utils.JsonUtils;
@@ -29,7 +30,7 @@ public class UserController {
      */
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
-    MybatisPlusUserService mybatisPlusUserService;
+    private MybatisPlusUserService mybatisPlusUserService;
 
     @RequestMapping("/list")
     @ResponseBody
@@ -51,5 +52,16 @@ public class UserController {
             // return "ridrect:/user/list";
             return "insert faild!";
         }
+    }
+
+    @RequestMapping("/mpList")
+    @ResponseBody
+    public String mpList() {
+        logger.info("mp test start.");
+        List<User> userList = mybatisPlusUserService.selectList(new EntityWrapper<>());
+        for (User user : userList) {
+            System.out.println(user.toString());
+        }
+        return "mpList";
     }
 }

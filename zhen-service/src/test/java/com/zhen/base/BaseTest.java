@@ -384,18 +384,6 @@ public class BaseTest {
         }
     }
 
-    @Test
-    public void testMap1() {
-        Map<String, Object> req1 = HundsunReqParamUtil.createReqMap();
-        System.out.println(req1);
-        req1.put("1", "1");
-        System.out.println(req1);
-
-        Map<String, Object> req2 = HundsunReqParamUtil.createReqMap();
-
-        System.out.println(req2);
-
-    }
 
     @Test
     public void testDate1() {
@@ -437,16 +425,10 @@ public class BaseTest {
     public void testSFTP() {
 
         logger.info("测试登录sftp..");
-        // String host = "47.95.208.138";
-        // int port = 9022;
-        // String loginUser = "mysftp";
-        // String password = "mysftp";
-
-
-        String host = "10.192.9.3";
+        String host = "47.95.208.138";
         int port = 9022;
-        String loginUser = "hundsun";
-        String password = "yitsaitest";
+        String loginUser = "mysftp";
+        String password = "mysftp";
 
         SftpUtil instance = SftpUtil.getInstance(host, port, loginUser, password, null, null);
 

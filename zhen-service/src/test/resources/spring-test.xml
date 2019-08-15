@@ -128,7 +128,7 @@
 
 
     <!-- 多数据源切换 -->
-    <!--<bean id="dataSource" class="com.caxs.cfs.datasource.DataSources">-->
+    <!--<bean id="dataSource" class="com.zhen.datasource.DataSources">-->
     <!--<property name="targetDataSources">
         <map key-type="java.lang.String">
             <entry value-ref="mysqlDataSource" key="MYSQL"></entry>

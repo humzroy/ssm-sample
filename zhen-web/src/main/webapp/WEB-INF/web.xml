@@ -248,14 +248,14 @@
             <param-value>service:jmx:rmi:///jndi/rmi://192.168.1.76:9004/jmxrmi</param-value>
         </init-param> -->
         <!--  用户名和密码 -->
-        <init-param>
-            <param-name>loginUsername</param-name>
-            <param-value>caxsdruid</param-value>
-        </init-param>
-        <init-param>
-            <param-name>loginPassword</param-name>
-            <param-value>caxs!123</param-value>
-        </init-param>
+        <!--<init-param>-->
+            <!--<param-name>loginUsername</param-name>-->
+            <!--<param-value>testdruid</param-value>-->
+        <!--</init-param>-->
+        <!--<init-param>-->
+            <!--<param-name>loginPassword</param-name>-->
+            <!--<param-value>123456a!</param-value>-->
+        <!--</init-param>-->
     </servlet>
     <servlet-mapping>
         <servlet-name>DruidStatView</servlet-name>

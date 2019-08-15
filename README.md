@@ -166,7 +166,6 @@ log.info("用户id=" + id + ",登录成功!");
       "mobile": "string, 手机号",
       "email": "string, 邮箱",
       "userType": "string, 用户类型",
-      "caxsFlag": "string, 是否新生员工",
       "name": "string, 姓名",
       "nickName": "string, 昵称",
       "gender": "string, 用户性别",
@@ -251,7 +250,7 @@ web
 
 ## 问题背景
 目前项目中实体类都没有重写toString方法，这样在打印实体的时候只能打印出来一个对象的地址信息,比如：
->com.caxs.mdd.base.domain.TokenUserAccount@46c1e988
+>com.zhen.base.domain.TokenUserAccount@46c1e988
 
 这样的信息对我们来说没有意义，所以需要重写toString方法得到如下结果：
 >TokenUserAccount(token=chenli1527640011072, userNo=chenli, userName=陈力, mobile=null, firstLogin=null)

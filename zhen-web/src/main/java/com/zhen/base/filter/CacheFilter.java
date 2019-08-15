@@ -1,8 +1,3 @@
-/**
- * 软件著作权：长安新生（深圳）金融投资有限公司
- * <p>
- * 系统名称：马达贷
- */
 package com.zhen.base.filter;
 
 import org.springframework.web.filter.OncePerRequestFilter;

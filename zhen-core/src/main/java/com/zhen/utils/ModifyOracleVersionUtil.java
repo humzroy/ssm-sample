@@ -116,7 +116,7 @@ public class ModifyOracleVersionUtil {
 
         // 单个文件修改
         try {
-            oracle11gTo10g("D:\\tmp\\caxtglloans.dmp");
+            oracle11gTo10g("D:\\tmp\\test.dmp");
         } catch (IOException e) {
             e.printStackTrace();
         }

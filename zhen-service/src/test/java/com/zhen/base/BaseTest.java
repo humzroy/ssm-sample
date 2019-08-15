@@ -1,14 +1,6 @@
-/**
- * 软件著作权：长安新生（深圳）金融投资有限公司
- * <p>
- * 系统名称：马达贷
- */
 package com.zhen.base;
 
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.zhen.exception.BusinessException;
 import com.zhen.utils.*;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -23,7 +15,8 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Base Tester.

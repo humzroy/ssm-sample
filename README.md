@@ -228,15 +228,15 @@ apollo配置中心新增用户(需要超级管理员权限)：
 
 
 ## Apollo启动参数
-cfs service和web项目启动参数在之前的基础上还需要增加以下apollo参数：
->-Denv=DEV -Dapp.id=cfs-sit -Dnamespace=application -Dapollo.meta=http://10.10.10.164:8065
+zhen service和web项目启动参数在之前的基础上还需要增加以下apollo参数：
+>-Denv=DEV -Dapp.id=zhen-sit -Dnamespace=application -Dapollo.meta=http://10.10.10.164:8065
 
 完整项目启动参数示例,不再需要CONF_HOME：
 service:
->-Denv=DEV -Dapp.id=cfs-sit -Dnamespace=application -Dapollo.meta=http://10.10.10.164:8065
+>-Denv=DEV -Dapp.id=zhen-sit -Dnamespace=application -Dapollo.meta=http://10.10.10.164:8065
 
 web
->-Dfile.encoding=UTF-8 -Denv=DEV -Dapp.id=cfs-sit -Dnamespace=application -Dapollo.meta=http://10.10.10.164:8065
+>-Dfile.encoding=UTF-8 -Denv=DEV -Dapp.id=zhen-sit -Dnamespace=application -Dapollo.meta=http://10.10.10.164:8065
 
 ## Apollo调用方式
 工具类：ApolloUtil  
@@ -244,7 +244,7 @@ web
 **调用之前需要先在配置中心进行配置。**
 
 测试类：BaseTest
->从配置中心获取配置成功后，会将配置文件缓存到 **"C:\opt\data\mdb\config-cache\\"** 下
+>从配置中心获取配置成功后，会将配置文件缓存到 **"C:\opt\data\zhen\config-cache\\"** 下
 
 # lombok介绍
 

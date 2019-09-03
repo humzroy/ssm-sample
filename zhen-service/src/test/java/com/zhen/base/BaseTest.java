@@ -1,6 +1,5 @@
 package com.zhen.base;
 
-
 import com.zhen.exception.BusinessException;
 import com.zhen.utils.*;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -15,8 +14,7 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 
 /**
  * Base Tester.
@@ -288,10 +286,8 @@ public class BaseTest {
     }
 
 
-
-
     @Test
-    public void test10(){
+    public void test10() {
         printDir("D:\\software\\cmder_mini");
         readFile("D:\\software\\cmder_mini");
     }
@@ -301,7 +297,8 @@ public class BaseTest {
 
     /**
      * 生成输出格式
-     * @param name 输出的文件名或目录名
+     *
+     * @param name  输出的文件名或目录名
      * @param level 输出的文件名或者目录名所在的层次
      * @return 输出的字符串
      */
@@ -309,8 +306,8 @@ public class BaseTest {
         // 输出的前缀
         String printStr = "";
         // 按层次进行缩进
-        for (int i = 0; i < level; i ++) {
-            printStr  = printStr + "  ";
+        for (int i = 0; i < level; i++) {
+            printStr = printStr + "  ";
         }
         printStr = printStr + "- " + name;
         return printStr;
@@ -318,21 +315,23 @@ public class BaseTest {
 
     /**
      * 输出初始给定的目录
+     *
      * @param dirPath 给定的目录
      */
-    public void printDir(String dirPath){
+    public void printDir(String dirPath) {
         // 将给定的目录进行分割
         String[] dirNameList = dirPath.split("\\\\");
         // 设定文件level的base
         fileLevel = dirNameList.length;
         // 按格式输出
-        for (int i = 0; i < dirNameList.length; i ++) {
+        for (int i = 0; i < dirNameList.length; i++) {
             System.out.println(createPrintStr(dirNameList[i], i));
         }
     }
 
     /**
      * 输出给定目录下的文件，包括子目录中的文件
+     *
      * @param dirPath 给定的目录
      */
     public void readFile(String dirPath) {
@@ -344,14 +343,42 @@ public class BaseTest {
         for (int i = 0; i < list.length; i++) {
             if (list[i].isDirectory()) {
                 System.out.println(createPrintStr(list[i].getName(), fileLevel));
-                fileLevel ++;
+                fileLevel++;
                 // 递归子目录
                 readFile(list[i].getPath());
-                fileLevel --;
+                fileLevel--;
             } else {
                 System.out.println(createPrintStr(list[i].getName(), fileLevel));
             }
         }
     }
+
+    @Test
+    public void testToString() {
+        List<String> list = new ArrayList<>();
+        list.add("1");
+        list.add("2");
+        list.add("3");
+        list.add("4");
+        System.out.println(list.toString());
+    }
+
+    @Test
+    public void test33() {
+        Map<String, String> map = new HashMap<>();
+        int i = 5;
+        if (i < 10) {
+            map.put("msg:", "i小于10");
+            logger.info(map.toString());
+            return;
+        }
+
+        if (i < 5) {
+            map.put("msg:", "i小于5");
+            logger.info(map.toString());
+            return;
+        }
+    }
+
 
 }

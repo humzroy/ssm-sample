@@ -1,13 +1,20 @@
 package com.zhen.base.web.outapi;
 
+import com.zhen.base.domain.mybatisplus.User;
 import com.zhen.base.service.demo.IDemoService;
-import com.zhen.exception.BusinessException;
+import com.zhen.base.service.mybatisplus.MybatisPlusUserService;
+import com.zhen.common.master.BaseResult;
+import com.zhen.common.master.ResultEntity;
 import com.zhen.utils.ExceptionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author wuhengzhen
@@ -22,6 +29,9 @@ public class ApiController {
     @Autowired
     @Qualifier("demoService")
     private IDemoService demoService;
+
+    @Autowired
+    private MybatisPlusUserService mybatisPlusUserService;
 
     /**
      * @return
@@ -71,5 +81,29 @@ public class ApiController {
     public String testInterface() {
         demoService.testInterface();
         return "0000";
+    }
+
+    /**
+     * @description：测试api列表--用户列表
+     * @author：wuhengzhen
+     * @date：2019-9-19 13:55:12
+     **/
+    @RequestMapping(value = "testApiList/queryUserList", method = RequestMethod.GET)
+    public BaseResult testApiList() {
+        // ResultEntity res = new ResultEntity();
+        BaseResult res = BaseResult.createBaseResult();
+
+        // 查询用户列表
+        List<User> users = mybatisPlusUserService.findUsers();
+
+        // res.setStatuMsg("查询成功！");
+        // res.setData(users);
+
+
+        res.setMessageCode("200");
+        res.setMessage("查询成功！");
+        res.putValueToData("data", users);
+
+        return res;
     }
 }

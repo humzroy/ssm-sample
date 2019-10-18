@@ -12,7 +12,9 @@ import redis.clients.jedis.Jedis;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.security.NoSuchAlgorithmException;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.*;
 
@@ -380,5 +382,33 @@ public class BaseTest {
         }
     }
 
+
+    @Test
+    public void test34() {
+        //
+        // double b = 0.665999999999;
+        // BigDecimal uabLimitStA = new BigDecimal("33");
+        // BigDecimal decimalUabA = BigDecimal.valueOf(b).setScale(2, BigDecimal.ROUND_HALF_EVEN);
+        // System.out.println("B:" + decimalUabA);
+        // System.out.println(decimalUabA.multiply(BigDecimal.valueOf(100)).compareTo(uabLimitStA));
+        // System.out.println(uabLimitStA.divide(BigDecimal.valueOf(100), 2, BigDecimal.ROUND_HALF_EVEN).compareTo(decimalUabA));
+
+        // System.out.println(decimalUabA.multiply(BigDecimal.valueOf(100)).subtract(uabLimitStA).intValue() + "%");
+
+
+        BigDecimal bigA = new BigDecimal("0.0022");
+        BigDecimal bigB = new BigDecimal("0.1");
+        NumberFormat format = NumberFormat.getInstance();
+        // 不使用千分位，即展示为11672283.234，而不是11,672,283.234
+        format.setGroupingUsed(false);
+        // 设置数的小数部分所允许的最大位数
+        format.setMaximumFractionDigits(4);
+        System.out.println(Double.valueOf(format.format(Double.valueOf(bigA.multiply(bigB).setScale(4, BigDecimal.ROUND_HALF_EVEN).toString()))));
+        // System.out.println("1:::::" + bigA.multiply(bigB).setScale(4, BigDecimal.ROUND_HALF_EVEN).toString());
+        // System.out.println("2:::::" + bigA.multiply(bigB).setScale(4, BigDecimal.ROUND_HALF_EVEN).toPlainString());
+        // System.out.println("4:::::" + Double.valueOf(bigA.multiply(bigB).setScale(4, BigDecimal.ROUND_HALF_EVEN).stripTrailingZeros().toPlainString()));
+
+
+    }
 
 }

@@ -45,6 +45,7 @@
          <module>../zhen-web</module>
          <module>../zhen-outapiweb</module>
          <module>../zhen-plugins</module>
+         <module>../zhen-test</module>
      </modules>
 
 </project>

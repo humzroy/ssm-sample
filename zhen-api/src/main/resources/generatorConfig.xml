@@ -34,7 +34,7 @@
     <!-- 主要配置内容，指定生成哪些MyBais文件，targetRunTime指定生成代码的运行目标，defaultModelType指定一张数据表生成一个领域模型类 -->
     <!-- targetRuntime="MyBatis3Simple"：不生成Example.java文件，进而不生成XXXByExample方法，仅提供最基础的CRUD方法 -->
     <!-- tragetRuntime="MyBatis3"：生成Example.java文件和XXXByExample方法，除了最基础的CRUD方法外，提供自定义动态Where子句功能 -->
-    <context id="MySQLTables" targetRuntime="MyBatis3">
+    <context id="MySQLTables" targetRuntime="MyBatis3"  defaultModelType="flat">
 
         <!-- 生成的Java文件的编码 -->
         <property name="javaFileEncoding" value="UTF-8"/>
@@ -67,41 +67,41 @@
 
         </jdbcConnection>
 
-        <!-- 类型解析器 -->
-        <!-- false: 默认值，根据JDBC中的DECIMAL/NUMBERIC类型的具体定义，分别表达为java.math.BigDecimal, java.lang.Long/Integer/Short -->
-        <!-- true: 始终使用java.math.BigDecimal表达JDBC中的DECIMAL/NUMBERIC类型 -->
-        <javaTypeResolver>
+        <!-- 类型解析器 自定义的-->
+        <javaTypeResolver type="com.zhen.plugins.mybatis.generator.MyJavaTypeResolver">
+            <!-- false: 默认值，根据JDBC中的DECIMAL/NUMBERIC类型的具体定义，分别表达为java.math.BigDecimal, java.lang.Long/Integer/Short -->
+            <!-- true: 始终使用java.math.BigDecimal表达JDBC中的DECIMAL/NUMBERIC类型 -->
             <property name="forceBigDecimals" value="true"/>
         </javaTypeResolver>
 
         <!-- 2. 指定采用何种方式，生成何种对象 -->
         <!-- 生成领域模型（实体类）和查询对象，	在tragetProject目录下的targetPackage(demo.model)包中生成与数据表同名的领域模型 (Pet.java)， 生成名为PetExample.java的查询对象 -->
-        <javaModelGenerator targetPackage="com.zhen.base.domain.order"
+        <javaModelGenerator targetPackage="com.zhen.base.domain.generator"
                             targetProject="./src/main/java">
-            <property name="CusTransOrderTemp" value="true"/>
+            <property name="TableName" value="true"/>
             <property name="trimStrings" value="true"/>
             <!-- 不使用setProperty方法，而是使用构造函数为每个字段赋值，推荐不设置此属性 -->
             <!-- <property name="immutable" value="true" /> -->
         </javaModelGenerator>
 
         <!-- 生成 MyBatis的SQL映射文件，PetMapper.xml -->
-        <sqlMapGenerator targetPackage="mapper.base.order"
+        <sqlMapGenerator targetPackage="mapper.base.generator"
                          targetProject="${mbg.path}/resources">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
 
         <!--生成MyBatis的DAO接口，PetMapper.java -->
         <!-- type表示javaClient的类型，支持XMLMAPPER:SQL映射文件+接口，ANNOTATEDMAPPER：SQLBuilder+注解+接口，MIXEDMAPPER：混合形式 -->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.zhen.base.dao.order"
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.zhen.base.dao.generator"
                              targetProject="${mbg.path}/java">
-            <property name="CusTransOrderTempDao" value="true"/>
+            <property name="TableNameDao" value="true"/>
             <!-- 指定父接口，一般不使用 -->
             <!-- <property name="rootInterface" value="hello" /> -->
         </javaClientGenerator>
 
         <!-- 3. 指定为哪些数据表生成MyBatis文件 -->
 
-        <table tableName="CUS_TRANS_ORDER_TEMP" domainObjectName="CusTransOrderTemp"
+        <table tableName="TABLE_NAME" domainObjectName="TableName"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">

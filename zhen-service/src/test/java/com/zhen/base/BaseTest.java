@@ -1,13 +1,19 @@
 package com.zhen.base;
 
 import com.zhen.exception.BusinessException;
+import com.zhen.test.TestThread;
 import com.zhen.utils.*;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import redis.clients.jedis.Jedis;
 
 import java.io.File;
@@ -25,9 +31,9 @@ import java.util.*;
  * @version 1.0
  * @since <pre>09/07/2018</pre>
  */
-// @RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 // @ContextConfiguration(locations = {"/spring-redis.xml"})
-// @ContextConfiguration(locations = {"/spring-zhen.xml", })
+@ContextConfiguration(locations = {"/spring-test.xml", "/spring-threadpool.xml"})
 //extends AbstractJUnit4SpringContextTests
 public class BaseTest {
     private static final Logger logger = LoggerFactory.getLogger(BaseTest.class);
@@ -57,6 +63,9 @@ public class BaseTest {
     // private MybatisPlusUserMapper userMapper;
     // @Autowired
     // private RedisUtils redisUtils;
+
+    @Autowired
+    ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     @Test
     public void test() throws Exception {
@@ -410,5 +419,17 @@ public class BaseTest {
 
 
     }
+
+
+    @Test
+    public void testThreadPool() {
+
+        for (int i = 1; i < 5; i++) {
+            TestThread thread = new TestThread();
+            threadPoolTaskExecutor.submit(thread);
+        }
+
+    }
+
 
 }

@@ -108,7 +108,7 @@ public class Usr implements Serializable{
 ### 复杂业务逻辑注释示例：
 ```
 /**
- * 泰美斯返回值示例
+ * XX Api返回值示例
  * {"msg":
  *      {"71":{
  *          "data":{},
@@ -120,7 +120,7 @@ public class Usr implements Serializable{
  * "success":true}
  */
 if (!"000000".equals(object.get("code"))) {
-    logger.info("泰美斯验证失败code:" + object.get("code"));
+    logger.info("XX Api验证失败code:" + object.get("code"));
     resultMap.put("result", "2");
     return resultMap;
 }
@@ -129,7 +129,7 @@ Map msgMap = (Map) object.get("msg");
 Map typeMap = (Map) msgMap.get(type);
 
 if (!"0000".equals(typeMap.get("resCode"))) {
-    logger.info("泰美斯验证失败resCode:" + typeMap.get("resCode"));
+    logger.info("XX Api验证失败resCode:" + typeMap.get("resCode"));
     resultMap.put("result", "2");
     return resultMap;
 }
@@ -221,22 +221,22 @@ public class Test {
 >https://github.com/ctripcorp/apollo/wiki
 
 apollo配置中心地址：
->http://10.10.10.194:8070
+>http://ip:port
 
 apollo配置中心新增用户(需要超级管理员权限)：
->http://10.10.10.194:8070/user-manage.html
+>http://ip:port/user-manage.html
 
 
 ## Apollo启动参数
 zhen service和web项目启动参数在之前的基础上还需要增加以下apollo参数：
->-Denv=DEV -Dapp.id=zhen-sit -Dnamespace=application -Dapollo.meta=http://10.10.10.164:8065
+>-Denv=DEV -Dapp.id=zhen-sit -Dnamespace=application -Dapollo.meta=http://ip:port
 
 完整项目启动参数示例,不再需要CONF_HOME：
 service:
->-Denv=DEV -Dapp.id=zhen-sit -Dnamespace=application -Dapollo.meta=http://10.10.10.164:8065
+>-Denv=DEV -Dapp.id=zhen-sit -Dnamespace=application -Dapollo.meta=http://ip:port
 
 web
->-Dfile.encoding=UTF-8 -Denv=DEV -Dapp.id=zhen-sit -Dnamespace=application -Dapollo.meta=http://10.10.10.164:8065
+>-Dfile.encoding=UTF-8 -Denv=DEV -Dapp.id=zhen-sit -Dnamespace=application -Dapollo.meta=http://ip:port
 
 ## Apollo调用方式
 工具类：ApolloUtil  

@@ -46,24 +46,7 @@
 
     <!--Spring JmsTemplate 的消息生产者 end-->
 
-
     <!-- 消息消费者 start-->
-
-    <!-- 定义Queue监听器 方式1-->
-    <!--<jms:listener-container destination-type="queue" container-type="default" connection-factory="connectionFactory"
-                            acknowledge="auto">
-        <jms:listener destination="zhen.queue" ref="queueReceiver1"/>
-        <jms:listener destination="zhen.queue" ref="queueReceiver2"/>
-    </jms:listener-container>
-
-    &lt;!&ndash; 定义Topic监听器 &ndash;&gt;
-    <jms:listener-container destination-type="topic" container-type="default" connection-factory="connectionFactory"
-                            acknowledge="auto">
-        <jms:listener destination="zhen.topic" ref="topicReceiver1"/>
-        <jms:listener destination="zhen.topic" ref="topicReceiver2"/>
-    </jms:listener-container>-->
-
-    <!-- 方式2-->
     <bean id="defaultMessageQueueListener" class="com.zhen.base.mq.consumer.queue.DefaultMessageQueueListener"/>
     <bean id="jmsContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
         <property name="connectionFactory" ref="connectionFactory"/>

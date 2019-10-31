@@ -383,6 +383,22 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
+     * 描述：去除日期字串中原“-”和“:”
+     *
+     * @param dateTime 日期字串
+     * @return
+     */
+    public static String formatString(String dateTime) {
+        if ((dateTime != null) && (dateTime.length() >= 8)) {
+            String formatDateTime = dateTime.replaceAll("-", "");
+            formatDateTime = formatDateTime.replaceAll(":", "");
+            String date = formatDateTime.substring(0, 8);
+            return date;
+        }
+        return "";
+    }
+
+    /**
      * 获取想要的时间格式
      *
      * @param dateStr
@@ -429,6 +445,100 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
             }
         }
         return dateStr;
+    }
+
+    /**
+     * 描述：获取指定日期的中文星期数
+     *
+     * @param date 指定日期
+     * @return 星期数，如：星期一
+     */
+    public static String getWeekStr(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int week = calendar.get(7);
+        --week;
+        String weekStr = "";
+        switch (week) {
+            case 0:
+                weekStr = "星期日";
+                break;
+            case 1:
+                weekStr = "星期一";
+                break;
+            case 2:
+                weekStr = "星期二";
+                break;
+            case 3:
+                weekStr = "星期三";
+                break;
+            case 4:
+                weekStr = "星期四";
+                break;
+            case 5:
+                weekStr = "星期五";
+                break;
+            case 6:
+                weekStr = "星期六";
+                break;
+            default:
+
+        }
+        return weekStr;
+    }
+
+    /**
+     * 描述：获取当前周
+     *
+     * @return
+     */
+    public static int getCurrentWeek() {
+        Calendar calendar = Calendar.getInstance();
+        int week = calendar.get(7);
+        --week;
+        if (week == 0) {
+            week = 7;
+        }
+        return week;
+    }
+
+    /**
+     * 描述：获取中文当前周
+     *
+     * @return
+     */
+    public static String getCurrentWeekStr() {
+        return getWeekStr(new Date());
+    }
+
+    /**
+     * 描述：获取本年
+     *
+     * @return
+     */
+    public static int getCurrentYear() {
+        Calendar calendar = Calendar.getInstance();
+        return calendar.get(1);
+    }
+
+    /**
+     * 描述：获取本月
+     *
+     * @return
+     */
+    public static int getCurrentMonth() {
+        Calendar calendar = Calendar.getInstance();
+        return calendar.get(2) + 1;
+    }
+
+    /**
+     * 描述：获取本月的当前日期数
+     *
+     * @return
+     */
+    public static int getCurrentDay() {
+        Calendar calendar = Calendar.getInstance();
+        return calendar.get(5);
     }
 
     /**

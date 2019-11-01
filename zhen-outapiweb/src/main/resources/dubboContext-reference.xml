@@ -10,6 +10,8 @@
 
     <dubbo:reference id="mybatisPlusUserService" interface="com.zhen.base.service.mybatisplus.MybatisPlusUserService" timeout="30000"/>
 
+    <dubbo:reference id="emailService" interface="com.zhen.base.service.email.IEmailService" timeout="30000"/>
+
 	
 
 </beans>

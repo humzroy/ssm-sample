@@ -72,12 +72,12 @@ public class JedisUtil {
         config.setTestOnBorrow(true);
 
         //redis如果设置了密码：
-        jedisPool = new JedisPool(config, JRedisPoolConfig.REDIS_IP,
-                JRedisPoolConfig.REDIS_PORT,
-                10000, JRedisPoolConfig.REDIS_PASSWORD);
+        // jedisPool = new JedisPool(config, JRedisPoolConfig.REDIS_IP,
+        //         JRedisPoolConfig.REDIS_PORT,
+        //         10000, JRedisPoolConfig.REDIS_PASSWORD);
 
         //redis未设置了密码：
-        // jedisPool = new JedisPool(config, "47.95.208.138", 6379);
+        jedisPool = new JedisPool(config, "10.1.89.161", 7001);
     }
 
     public JedisPool getPool() {

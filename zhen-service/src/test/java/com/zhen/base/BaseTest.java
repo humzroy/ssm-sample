@@ -1,25 +1,23 @@
 package com.zhen.base;
 
+import com.bi.base.model.AdmWmsParams;
 import com.zhen.exception.BusinessException;
-import com.zhen.test.TestThread;
 import com.zhen.utils.*;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import redis.clients.jedis.Jedis;
+import redis.clients.util.SafeEncoder;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.security.NoSuchAlgorithmException;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.*;
@@ -31,12 +29,13 @@ import java.util.*;
  * @version 1.0
  * @since <pre>09/07/2018</pre>
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+// @RunWith(SpringJUnit4ClassRunner.class)
 // @ContextConfiguration(locations = {"/spring-redis.xml"})
-@ContextConfiguration(locations = {"/spring-test.xml", "/spring-threadpool.xml"})
+// @ContextConfiguration(locations = {"/spring-test.xml", "/spring-threadpool.xml"})
 //extends AbstractJUnit4SpringContextTests
 public class BaseTest {
     private static final Logger logger = LoggerFactory.getLogger(BaseTest.class);
+    private static final DecimalFormat df = new DecimalFormat("#0.00");
 
     @Before
     public void before() throws Exception {
@@ -64,8 +63,8 @@ public class BaseTest {
     // @Autowired
     // private RedisUtils redisUtils;
 
-    @Autowired
-    ThreadPoolTaskExecutor threadPoolTaskExecutor;
+    // @Autowired
+    // ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     @Test
     public void test() throws Exception {
@@ -170,14 +169,34 @@ public class BaseTest {
     @Test
     public void testRedis() {
         // redisUtils.del("name");
-        Jedis redis = JedisUtil.getInstance().getJedis();
-        redis.set("name", "admin");
-        System.out.println(redis.get("name"));
+        // Jedis redis = JedisUtil.getInstance().getJedis();
+        String paramName = "";
+        JedisUtil jedisUtil = JedisUtil.getInstance();
+        JedisUtil.Hash hash = jedisUtil.new Hash();
 
-        // System.out.println(redisUtils.getObject("myKey"));
+        byte[] bytes = hash.hget(SafeEncoder.encode("wmsadm_wms_params"), SafeEncoder.encode("RANK_CODE"));
+        Map<String, List<AdmWmsParams>> listMap = (Map<String, List<AdmWmsParams>>) SerializeUtil.unserialize(bytes);
+        System.out.println(listMap.toString());
+        List<AdmWmsParams> admWmsParams = listMap.get("CN");
+        if (CollectionUtils.isNotEmpty(admWmsParams)) {
+            long start = System.currentTimeMillis();
+            for (AdmWmsParams adm : admWmsParams) {
+                if ("R1".equalsIgnoreCase(adm.getParamCode())) {
+                    paramName = adm.getParamName();
+                    break;
+                }
+            }
+            long end = System.currentTimeMillis();
+            logger.info("完成，耗时：" + (end - start) + " ms");
+        }
+        System.out.println(paramName);
+
+        // redis.set("name", "admin");
+        // System.out.println(redis.get("name"));
 
 
     }
+
 
     @Test
     public void pritNoBug() throws Exception {
@@ -420,16 +439,101 @@ public class BaseTest {
 
     }
 
-
     @Test
-    public void testThreadPool() {
+    public void testDecimalFormat() {
+        BigDecimal number = new BigDecimal("28.125");
+        DecimalFormat decimalFormat = new DecimalFormat("#0.00");
+        System.out.println("1: " + decimalFormat.getRoundingMode());
+        System.out.println("1: " + decimalFormat.format(number));
 
-        for (int i = 1; i < 5; i++) {
-            TestThread thread = new TestThread();
-            threadPoolTaskExecutor.submit(thread);
-        }
+        decimalFormat.setRoundingMode(RoundingMode.HALF_UP);
+        System.out.println("2: " + decimalFormat.getRoundingMode());
+        System.out.println("2: " + decimalFormat.format(number));
 
     }
 
+    // @Test
+    // public void testThreadPool() {
+    //
+    //     for (int i = 1; i < 5; i++) {
+    //         TestThread thread = new TestThread();
+    //         threadPoolTaskExecutor.submit(thread);
+    //     }
+    //
+    // }
+
+    @Test
+    public void testPrecision() {
+
+        DecimalFormat df = new DecimalFormat("#0.00");
+        // BigDecimal xa = new BigDecimal("1");
+        // String total = "100000000000";
+        // BigDecimal r = xa.divide(new BigDecimal(total));
+        // System.out.println(r.toPlainString());
+        // int a = r.compareTo(BigDecimal.ZERO);
+        // int b = r.compareTo(new BigDecimal("0.0001"));
+        // System.out.println(a);
+        // System.out.println(b);
+        // if (a > 0 && b < 0) {
+        //     r = new BigDecimal("0.0001");
+        // }
+        // System.out.println("≈" + r.toPlainString());
+        // System.out.println(r.toPlainString());
+
+
+        String proAmt = "1";
+        String totalAmt = "999999999999";
+
+        BigDecimal weight = new BigDecimal(proAmt).divide(new BigDecimal(totalAmt), 12, BigDecimal.ROUND_HALF_UP);
+        System.out.println(weight.toPlainString());
+        BigDecimal x = weight.multiply(BigDecimal.valueOf(100)).subtract(BigDecimal.ZERO);
+        System.out.println(dealPrecision(x));
+
+
+        BigDecimal finishC = new BigDecimal("0.99999999999995");
+        BigDecimal xc = finishC.multiply(BigDecimal.valueOf(100)).subtract(BigDecimal.ZERO);
+        System.out.println(xc.toPlainString());
+        String res = dealPrecision(xc);
+        System.out.println(res);
+
+    }
+
+
+    /**
+     * @description：精度处理
+     * @author：wuhengzhen
+     * @date：2019/10/30 10:58
+     **/
+    private String dealPrecision(BigDecimal weight) {
+        String res;
+        if (weight == null) {
+            return "";
+        }
+        int compareResultA;
+        int compareResultB;
+        if (weight.compareTo(BigDecimal.ONE) > 0) {
+            compareResultA = weight.compareTo(new BigDecimal("100"));
+            compareResultB = weight.compareTo(new BigDecimal("99.99"));
+            if (compareResultA < 0 && compareResultB > 0) {
+                // 大于99.99 但 小于100，约等于99.99
+                weight = new BigDecimal("99.99");
+                res = "≈" + weight.toPlainString();
+            } else {
+                res = df.format(weight);
+            }
+
+        } else {
+            compareResultA = weight.compareTo(BigDecimal.ZERO);
+            compareResultB = weight.compareTo(new BigDecimal("0.01"));
+            if (compareResultA > 0 && compareResultB < 0) {
+                // 大于0 但 小于0.01，约等于0.01
+                weight = new BigDecimal("0.01");
+                res = "≈" + weight.toPlainString();
+            } else {
+                res = df.format(weight);
+            }
+        }
+        return res;
+    }
 
 }

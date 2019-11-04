@@ -43,6 +43,7 @@ import java.util.Map;
 public class BaseTest {
     private static final Logger logger = LoggerFactory.getLogger(BaseTest.class);
     private static final DecimalFormat df = new DecimalFormat("#0.00");
+    public static final String CONF_HOME = "";
 
     @Before
     public void before() throws Exception {
@@ -250,6 +251,8 @@ public class BaseTest {
     @Test
     public void testReadProperties() {
         System.out.println(PropertiesFileUtil.getInstance().get("from"));
+
+        System.out.println(PropertiesFileUtil.readPropertiesFromfiles("/email.properties", "from", "CONF_HOME"));
     }
 
     @Test

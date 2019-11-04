@@ -1,10 +1,10 @@
 package com.zhen.base.service.email;
 
 import cn.hutool.core.util.ArrayUtil;
+import com.zhen.utils.PropertiesFileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
@@ -23,8 +23,10 @@ public class EmailServiceImpl implements IEmailService {
      * logger
      */
     private static final Logger logger = LoggerFactory.getLogger(EmailServiceImpl.class);
-
-    public static final String from = "wu_worktest@163.com";
+    /**
+     * 发自XX邮箱，
+     */
+    private String from;
     @Autowired
     private JavaMailSender mailSender;
 
@@ -39,11 +41,14 @@ public class EmailServiceImpl implements IEmailService {
      */
     @Override
     public void sendSimpleMail(String to, String subject, String content, String... cc) {
+        from = PropertiesFileUtil.getInstance().get("from");
+
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(from);
         message.setTo(to);
         message.setSubject(subject);
         message.setText(content);
+        // 抄送
         if (ArrayUtil.isNotEmpty(cc)) {
             message.setCc(cc);
         }

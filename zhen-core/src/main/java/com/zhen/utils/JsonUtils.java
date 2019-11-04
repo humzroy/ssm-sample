@@ -6,6 +6,7 @@ import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.serializer.SimpleDateFormatSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.sf.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -101,6 +102,21 @@ public class JsonUtils {
             e.printStackTrace();
         }
         return map;
+    }
+
+    /**
+     * 将json数组转化为String型
+     *
+     * @param str
+     * @return
+     */
+    public static String[] getJsonToStringArray(String str) {
+        JSONArray jsonArray = JSONArray.fromObject(str);
+        String[] arr = new String[jsonArray.size()];
+        for (int i = 0; i < jsonArray.size(); i++) {
+            arr[i] = jsonArray.getString(i);
+        }
+        return arr;
     }
 
     public static void main(String[] args) {

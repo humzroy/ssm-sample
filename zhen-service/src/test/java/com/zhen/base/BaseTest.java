@@ -1,5 +1,9 @@
 package com.zhen.base;
 
+import cn.hutool.core.util.ArrayUtil;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.bi.base.model.AdmWmsParams;
 import com.zhen.exception.BusinessException;
 import com.zhen.utils.*;
@@ -20,7 +24,10 @@ import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Base Tester.
@@ -242,7 +249,7 @@ public class BaseTest {
 
     @Test
     public void testReadProperties() {
-        System.out.println(PropertiesFileUtil.getInstance("../dubbo-resolve").get("dubbo.server.address"));
+        System.out.println(PropertiesFileUtil.getInstance().get("from"));
     }
 
     @Test
@@ -394,22 +401,22 @@ public class BaseTest {
     }
 
     @Test
-    public void test33() {
-        Map<String, String> map = new HashMap<>();
-        int i = 5;
-        if (i < 10) {
-            map.put("msg:", "i小于10");
-            logger.info(map.toString());
-            return;
-        }
+    public void testArray() {
+        String json = "{\"cc\":[\"qqmail@qq.com\",\"163mail@163.com\"]}";
+        JSONObject jsonObject = JSON.parseObject(json);
+        JSONArray jsonArray = jsonObject.getJSONArray("cc");
+        System.out.println("jsonArray: " + jsonArray);
+        // 方式1
+        String[] cc = JsonUtils.getJsonToStringArray(jsonArray.toJSONString());
+        // 方式2
+        String[] strings = jsonArray.toArray(new String[jsonArray.size()]);
 
-        if (i < 5) {
-            map.put("msg:", "i小于5");
-            logger.info(map.toString());
-            return;
-        }
+        testArrayUtil(strings);
     }
 
+    private void testArrayUtil(String... cc) {
+        System.out.println(ArrayUtil.isNotEmpty(cc));
+    }
 
     @Test
     public void test34() {

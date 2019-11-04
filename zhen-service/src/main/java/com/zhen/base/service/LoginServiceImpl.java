@@ -52,9 +52,9 @@ public class LoginServiceImpl implements ILoginService {
         String userName = baseRequest.getValueFormData("userName");
         User user = userMapper.selectUserByUsername(userName);
         if (user != null) {
-            logger.info(userName + "用户信息查询成功！");
+            logger.info("登录用户：{} 用户信息查询成功！", userName);
         } else {
-            logger.info(userName + "用户信息查询为空！");
+            logger.error("登录用户：{} 用户信息查询为空！", userName);
             throw new BusinessException("用户信息查询为空！");
         }
         return user;
@@ -73,9 +73,9 @@ public class LoginServiceImpl implements ILoginService {
         // 将用户信息缓存到redis，并设置失效时间为：30分钟 1800ms
         boolean flag = RedisUtils.set(shiroUser.getSessionId(), shiroUser, 1800);
         if (flag) {
-            logger.info(shiroUser.getUserCde() + "将登陆信息放入Redis成功！");
+            logger.info("登录用户：{} - 将登陆信息放入Redis成功！", shiroUser.getUserCde());
         } else {
-            logger.info(shiroUser.getUserCde() + "将登陆信息放入Redis失败！");
+            logger.info("登录用户：{} - 将登陆信息放入Redis失败！", shiroUser.getUserCde());
             throw new BusinessException("redis data exception！");
         }
     }

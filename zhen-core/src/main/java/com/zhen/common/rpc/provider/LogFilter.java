@@ -3,6 +3,7 @@ package com.zhen.common.rpc.provider;
 import com.alibaba.dubbo.common.utils.ReflectUtils;
 import com.alibaba.dubbo.rpc.*;
 import com.alibaba.dubbo.rpc.service.GenericService;
+import com.zhen.common.master.BaseRequest;
 import com.zhen.common.rpc.domain.FilterDesc;
 import com.zhen.exception.BusinessException;
 import com.zhen.utils.BeanUtils;
@@ -37,19 +38,21 @@ public class LogFilter implements Filter {
 
         // 通过以下for循环，拿到消费者传过来的traceId字段，即 当前请求的线程名称
         for (Object object : invocation.getArguments()) {
-            // 字符串traceId是此次dubbo请求参数对象里的一个字段属性
-            Field field = BeanUtils.getFieldByClass("traceId", object);
-            if (field != null) {
-                // 设置成true的作用就是让我们在用反射时可以对私有变量操作
-                field.setAccessible(true);
-                try {
-                    Object traceId = field.get(object);
-                    if (traceId != null) {
-                        // 将当前线程的名称设置成消费者传过来的名称
-                        Thread.currentThread().setName((String) traceId);
+            if (object instanceof BaseRequest) {
+                // 字符串traceId是此次dubbo请求参数对象里的一个字段属性
+                Field field = BeanUtils.getFieldByClass("traceId", object);
+                if (field != null) {
+                    // 设置成true的作用就是让我们在用反射时可以对私有变量操作
+                    field.setAccessible(true);
+                    try {
+                        Object traceId = field.get(object);
+                        if (traceId != null) {
+                            // 将当前线程的名称设置成消费者传过来的名称
+                            Thread.currentThread().setName((String) traceId);
+                        }
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
                     }
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
                 }
             }
         }

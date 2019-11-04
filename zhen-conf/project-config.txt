@@ -1,0 +1,8 @@
+1.Application & Tomcat config:
+Main Class:com.zhen.runner.ServiceProvider
+VM options:-DCONF_HOME=D:\workspace\github\ssm-sample\zhen-conf
+
+2.Maven build config:
+clean install -DskipTests
+
+run service first, and run web project.

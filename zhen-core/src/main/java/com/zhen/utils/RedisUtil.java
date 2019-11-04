@@ -1,9 +1,7 @@
 package com.zhen.utils;
 
-import com.alibaba.dubbo.config.spring.ServiceBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.util.CollectionUtils;
@@ -23,12 +21,12 @@ import java.util.concurrent.TimeUnit;
  */
 
 @SuppressWarnings("unchecked")
-public class RedisUtils {
+public class RedisUtil {
 
     /**
      * logger
      */
-    private static final Logger logger = LoggerFactory.getLogger(RedisUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(RedisUtil.class);
 
     /**
      * [dubbo]获取Spring上下文
@@ -49,7 +47,7 @@ public class RedisUtils {
 
     private static boolean CACHE_CLOSED;
 
-    private RedisUtils() {
+    private RedisUtil() {
 
     }
 

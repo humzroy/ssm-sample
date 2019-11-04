@@ -7,7 +7,7 @@ import com.zhen.common.master.BaseRequest;
 import com.zhen.common.rpc.domain.FilterDesc;
 import com.zhen.exception.BusinessException;
 import com.zhen.utils.BeanUtils;
-import com.zhen.utils.JsonUtils;
+import com.zhen.utils.JsonUtil;
 import com.zhen.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 
@@ -62,7 +62,7 @@ public class LogFilter implements Filter {
         filterReq.setArgs(invocation.getArguments());
         // 获取消费者的ip地址
         String clientIp = RpcContext.getContext().getRemoteHost();
-        log.info(clientIp + " --->" + JsonUtils.obj2Json(filterReq));
+        log.info(clientIp + " --->" + JsonUtil.obj2Json(filterReq));
         long start = System.currentTimeMillis();
         // 调用服务的方法
         Result result = invoker.invoke(invocation);
@@ -122,7 +122,7 @@ public class LogFilter implements Filter {
         } else {
             log.info("dubbo执行成功!");
             if (result.getValue() != null) {
-                backMessage = JsonUtils.obj2Json(result.getValue());
+                backMessage = JsonUtil.obj2Json(result.getValue());
                 if (backMessage.length() > 500) {
                     backMessage = backMessage.substring(0, 500) + " ... ";
                 }

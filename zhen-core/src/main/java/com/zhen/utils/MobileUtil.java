@@ -20,7 +20,7 @@ public class MobileUtil {
      */
     public static boolean isMobileNO(String mobile) {
         String reg = "^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$";
-        return RegexUtils.match(mobile, reg);
+        return RegexUtil.match(mobile, reg);
     }
 
     /**

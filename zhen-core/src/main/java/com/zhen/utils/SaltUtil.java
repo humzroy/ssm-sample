@@ -40,7 +40,7 @@ public class SaltUtil {
         passSalt.append(pwd).append(salt);
 
         //生成加盐密码字符串的十六进制MD5摘要
-        String md5Hex = MD5Utils.md5Hex(passSalt.toString());
+        String md5Hex = MD5Util.md5Hex(passSalt.toString());
 
         //加盐密码的MD5进行加盐
         char[] cs = new char[48];
@@ -76,7 +76,7 @@ public class SaltUtil {
         String salt = new String(saltChar);
         StringBuffer sb = new StringBuffer();
         sb.append(pwd).append(salt);
-        return MD5Utils.md5Hex(sb.toString()).equals(new String(pwdSaltMd5));
+        return MD5Util.md5Hex(sb.toString()).equals(new String(pwdSaltMd5));
     }
 
     /**

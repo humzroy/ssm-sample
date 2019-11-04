@@ -102,5 +102,5 @@
     </bean>
 
     <!--自定义redis工具类,在需要缓存的地方注入此类 (取消) -->
-    <!--<bean id="redisUtils" class="com.zhen.utils.RedisUtils"/>-->
+    <!--<bean id="redisUtils" class="com.zhen.utils.RedisUtil/>-->
 </beans>

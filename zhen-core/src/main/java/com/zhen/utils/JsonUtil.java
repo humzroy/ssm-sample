@@ -19,8 +19,8 @@ import java.util.Map;
  * @Description : 简单封装alibaba产出的json处理框架 (JSON parser + JSON generator)
  * @date : 2018/05/03 10:50
  */
-public class JsonUtils {
-    private static final Logger logger = LoggerFactory.getLogger(JsonUtils.class);
+public class JsonUtil {
+    private static final Logger logger = LoggerFactory.getLogger(JsonUtil.class);
 
     private static SerializeConfig mapping = new SerializeConfig();
 

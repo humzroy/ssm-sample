@@ -2,6 +2,7 @@ package com.zhen.utils;
 
 import com.jcraft.jsch.*;
 import com.jcraft.jsch.ChannelSftp.LsEntry;
+import com.zhen.utils.sftp.MyUserInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

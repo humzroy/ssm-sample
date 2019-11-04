@@ -20,11 +20,11 @@ import java.security.NoSuchAlgorithmException;
  * @system name:
  * @copyright:
  */
-public class MD5Utils {
+public class MD5Util {
     /**
      * LOG
      */
-    private static Log log = LogFactory.getLog(MD5Utils.class);
+    private static Log log = LogFactory.getLog(MD5Util.class);
 
     /**
      * 适用于上G大的文件
@@ -41,7 +41,7 @@ public class MD5Utils {
             // 生成一个MD5加密计算摘要
             MessageDigest messagedigest = MessageDigest.getInstance("MD5");
             messagedigest.update(byteBuffer);
-            return DataFormatUtils.byte2hex(messagedigest.digest());
+            return DataFormatUtil.byte2hex(messagedigest.digest());
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
             log.error("初始化失败，MessageDigest不支持MD5Utils，原因是：" + e.getMessage(), e);

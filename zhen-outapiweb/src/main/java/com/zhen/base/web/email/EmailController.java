@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.zhen.base.service.email.IEmailService;
-import com.zhen.utils.JsonUtils;
+import com.zhen.utils.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +52,7 @@ public class EmailController {
         String subject = reqJson.getString("subject");
         String content = reqJson.getString("content");
         JSONArray jsonArray = reqJson.getJSONArray("cc");
-        String[] cc = JsonUtils.getJsonToStringArray(jsonArray.toJSONString());
+        String[] cc = JsonUtil.getJsonToStringArray(jsonArray.toJSONString());
         logger.info("接收到发送email信息：收件人邮箱：{}，邮件主题：{}，邮件内容：{}", to, subject, content);
         String res = "success";
         emailService.sendSimpleMail(to, subject, content, cc);

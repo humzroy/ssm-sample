@@ -30,7 +30,7 @@ import java.util.Map;
  * Date：2018-10-24
  * Time：17:50
  */
-public class RSAUtils {
+public class RSAUtil {
 	/**
 	 * 加密算法RSA
 	 */
@@ -436,13 +436,13 @@ public class RSAUtils {
 
 		try {
 			//加密
-			byte[] cipher = RSAUtils.encryptByPublicKey(dataStr.getBytes(), defaultPublicKey);
+			byte[] cipher = RSAUtil.encryptByPublicKey(dataStr.getBytes(), defaultPublicKey);
 			//解密
-			byte[] plainText = RSAUtils.decryptByPrivateKey(cipher, defaultPrivateKey);
+			byte[] plainText = RSAUtil.decryptByPrivateKey(cipher, defaultPrivateKey);
 			System.out.println("密文长度:" + cipher.length);
-			System.out.println(RSAUtils.byteArrayToString(cipher));
+			System.out.println(RSAUtil.byteArrayToString(cipher));
 			System.out.println("明文长度:" + plainText.length);
-			System.out.println(RSAUtils.byteArrayToString(plainText));
+			System.out.println(RSAUtil.byteArrayToString(plainText));
 			System.out.println(new String(plainText));
 
 			String data = "Signature类是一个引擎类，提供加密的数字签名算法，例如DSA或RSAwithMD5。加密安全签名算法采用任意大小的输入和私钥，并生成一个相对较短（通常是固定大小）的字节串——签名。RSA最大解密密文大小为128个字节，RSA最大加密明文大小为117个字节，测试加密解密字符串";

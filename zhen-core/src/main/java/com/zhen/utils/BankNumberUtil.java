@@ -26,7 +26,7 @@ public class BankNumberUtil {
         if (StringUtils.isNotBlank(prefix)) {
             if ("689".indexOf(prefix) >= 0 && prefix.length() == 1) {
                 st = "666" + prefix + getUnixTime();
-                st += RegexUtils.getBankCardCheckCode(st);
+                st += RegexUtil.getBankCardCheckCode(st);
             } else {
                 System.out.println("银行卡号前缀有误");
             }

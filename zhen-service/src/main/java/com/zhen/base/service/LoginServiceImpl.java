@@ -6,7 +6,7 @@ import com.zhen.common.master.BaseRequest;
 import com.zhen.datasource.DataSourceConstant;
 import com.zhen.datasource.DataSourceContextHolder;
 import com.zhen.exception.BusinessException;
-import com.zhen.utils.RedisUtils;
+import com.zhen.utils.RedisUtil;
 import com.zhen.utils.shiro.ShiroUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,7 +71,7 @@ public class LoginServiceImpl implements ILoginService {
     public void saveUserInfoToRedis(BaseRequest baseRequest) {
         ShiroUser shiroUser = baseRequest.getValueFormData("shiroUser");
         // 将用户信息缓存到redis，并设置失效时间为：30分钟 1800ms
-        boolean flag = RedisUtils.set(shiroUser.getSessionId(), shiroUser, 1800);
+        boolean flag = RedisUtil.set(shiroUser.getSessionId(), shiroUser, 1800);
         if (flag) {
             logger.info("登录用户：{} - 将登陆信息放入Redis成功！", shiroUser.getUserCde());
         } else {

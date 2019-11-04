@@ -5,7 +5,7 @@ import com.github.pagehelper.StringUtil;
 import com.zhen.common.constant.BaseConstant;
 import com.zhen.common.master.Master;
 import com.zhen.exception.BusinessException;
-import com.zhen.utils.RedisUtils;
+import com.zhen.utils.RedisUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
@@ -156,7 +156,7 @@ public class ShiroUtil {
             String sessionId = master.getSign();
             logger.info("SESSION:" + sessionId);
             // 从redis获取登录信息
-            user = RedisUtils.getObject(master.getSign());
+            user = RedisUtil.getObject(master.getSign());
             if (user != null) {
                 logger.info(user.getUserCde());
                 return user;

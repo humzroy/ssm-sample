@@ -2,7 +2,7 @@ package com.zhen.ocr.baidu;
 
 import com.baidu.aip.util.Base64Util;
 import com.zhen.utils.FileUtil;
-import com.zhen.utils.HttpClientUtil;
+import com.zhen.utils.HttpsUtil;
 
 import java.net.URLEncoder;
 
@@ -36,7 +36,7 @@ public class BaiduOCR {
              */
             String accessToken = AuthService.getAuth();
             // 注意：Content-Type = application/x-www-form-urlencoded
-            String result = HttpClientUtil.post(OCR_HOST, accessToken, params);
+            String result = HttpsUtil.post(OCR_HOST, accessToken, params);
             System.out.println("百度OCR返回结果：" + result);
         } catch (Exception e) {
             e.printStackTrace();

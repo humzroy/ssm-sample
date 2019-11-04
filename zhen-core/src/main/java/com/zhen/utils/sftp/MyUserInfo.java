@@ -1,4 +1,4 @@
-package com.zhen.utils;
+package com.zhen.utils.sftp;
 
 import com.jcraft.jsch.UserInfo;
 

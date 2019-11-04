@@ -52,7 +52,7 @@ public class DemoServiceImpl implements IDemoService {
         reqData.put("msgNo", "1001");
         reqData.put("reqTime", DateUtils.formatDateTime(new Date()));
         String url = "http://10.10.10.93:9696/test-outapiweb/outapi/testApi";
-        String resp = HttpClientUtil.doPostJson(url, reqData.toJSONString());
+        String resp = HttpsUtil.doPostJson(url, reqData.toJSONString());
 
         logger.info("service 返回消息为：" + resp);
         return resp;*/

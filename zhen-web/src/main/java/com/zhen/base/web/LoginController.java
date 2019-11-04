@@ -6,7 +6,7 @@ import com.zhen.common.master.BaseRequest;
 import com.zhen.common.master.BaseResult;
 import com.zhen.common.master.Master;
 import com.zhen.exception.BusinessException;
-import com.zhen.utils.CookieUtils;
+import com.zhen.utils.CookieUtil;
 import com.zhen.utils.ExceptionUtil;
 import com.zhen.utils.shiro.ShiroUser;
 import com.zhen.utils.shiro.ShiroUtil;
@@ -112,8 +112,8 @@ public class LoginController {
         String tokens = JSON.toJSONString(tokenMap);
         logger.info("封装tokens信息成功" + tokens);
 
-        CookieUtils.setCookie(request, response, "token", tokens, 60 * 60, true);
-        // CookieUtils.setCookie(request, response, "masterSign", shiroUser.getSessionId(), 60 * 60, true);
+        CookieUtil.setCookie(request, response, "token", tokens, 60 * 60, true);
+        // CookieUtil.setCookie(request, response, "masterSign", shiroUser.getSessionId(), 60 * 60, true);
         logger.info("存入cookie成功");
     }
 
@@ -131,7 +131,7 @@ public class LoginController {
         try {
             Subject subject = ShiroUtil.getSubject();
             ShiroUtil.logout(subject);
-            CookieUtils.setCookie(request, response, "token", null, 0);
+            CookieUtil.setCookie(request, response, "token", null, 0);
             // Cookie cookie = new Cookie("token", null);
             // // 注销
             // cookie.setMaxAge(0);

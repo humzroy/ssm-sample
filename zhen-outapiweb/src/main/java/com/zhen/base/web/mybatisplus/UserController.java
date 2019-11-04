@@ -3,7 +3,7 @@ package com.zhen.base.web.mybatisplus;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.zhen.base.domain.mybatisplus.User;
 import com.zhen.base.service.mybatisplus.MybatisPlusUserService;
-import com.zhen.utils.JsonUtils;
+import com.zhen.utils.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ public class UserController {
         List<User> users = mybatisPlusUserService.findUsers();
         // model.addAttribute("users", users);
         // return "list";
-        logger.info("user list to json :{}", JsonUtils.obj2Json(users));
+        logger.info("user list to json :{}", JsonUtil.obj2Json(users));
         return "list";
     }
 

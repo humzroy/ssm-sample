@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
  * Date：2018-09-20
  * Time：16:00
  */
-public class RegexUtils {
+public class RegexUtil {
 
     // region 判断是否为空（不为空）begin
 

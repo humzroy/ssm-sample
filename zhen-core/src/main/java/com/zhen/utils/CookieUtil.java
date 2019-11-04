@@ -17,11 +17,11 @@ import java.net.URLEncoder;
  * @date : 2018/09/11 14:08
  * @copyright:
  */
-public final class CookieUtils {
+public final class CookieUtil {
     /**
      * logger
      */
-    private static final Logger logger = LoggerFactory.getLogger(CookieUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(CookieUtil.class);
 
     /**
      * 得到Cookie的值, 不编码

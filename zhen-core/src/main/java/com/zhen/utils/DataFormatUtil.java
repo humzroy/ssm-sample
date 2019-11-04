@@ -12,7 +12,7 @@ import java.util.*;
 /**
  * 数据格式工具类
  */
-public class DataFormatUtils {
+public class DataFormatUtil {
     /**
      * 字节转2位16进制字窜
      *
@@ -29,7 +29,7 @@ public class DataFormatUtils {
     private static final String DIGIT = "零壹贰叁肆伍陆柒捌玖";
     private static final double MAX_VALUE = 9999999999999.99D;
 
-    public DataFormatUtils() {
+    public DataFormatUtil() {
     }
 
     /**

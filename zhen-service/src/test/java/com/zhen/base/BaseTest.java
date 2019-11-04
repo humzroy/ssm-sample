@@ -68,7 +68,7 @@ public class BaseTest {
     // @Autowired
     // private MybatisPlusUserMapper userMapper;
     // @Autowired
-    // private RedisUtils redisUtils;
+    // private RedisUtil redisUtils;
 
     // @Autowired
     // ThreadPoolTaskExecutor threadPoolTaskExecutor;
@@ -135,10 +135,10 @@ public class BaseTest {
     @Test
     public void testMD5() throws UnsupportedEncodingException, NoSuchAlgorithmException {
         // String password = "admin";
-        // String md5salt = MD5Utils.getMd5Salt(password);
+        // String md5salt = MD5Util.getMd5Salt(password);
         // System.out.println(md5salt);
 
-        System.out.println(MD5Utils.checkPassword("admin", "vALIddME", "7E5089D8E64E39A26D2F1D38EFBB5003"));
+        System.out.println(MD5Util.checkPassword("admin", "vALIddME", "7E5089D8E64E39A26D2F1D38EFBB5003"));
 
     }
 
@@ -161,7 +161,7 @@ public class BaseTest {
 
     @Test
     public void testMd5() throws NoSuchAlgorithmException {
-        // System.out.println(MD5Utils.addSalt("admin"));
+        // System.out.println(MD5Util.addSalt("admin"));
         // 2ZKzfby13j8E468c
         // 726bZ8fK06z3ef6ebb3y8e1be3f5ja183fEf54826af8c8c2
         System.out.println(SaltUtil.getSalt());
@@ -243,7 +243,7 @@ public class BaseTest {
     @Test
     public void testIdNo() {
         String idNo = "37028519940507323x";
-        System.out.println(RegexUtils.isIDNumber(idNo));
+        System.out.println(RegexUtil.isIDNumber(idNo));
     }
 
 
@@ -407,7 +407,7 @@ public class BaseTest {
         JSONArray jsonArray = jsonObject.getJSONArray("cc");
         System.out.println("jsonArray: " + jsonArray);
         // 方式1
-        String[] cc = JsonUtils.getJsonToStringArray(jsonArray.toJSONString());
+        String[] cc = JsonUtil.getJsonToStringArray(jsonArray.toJSONString());
         // 方式2
         String[] strings = jsonArray.toArray(new String[jsonArray.size()]);
 

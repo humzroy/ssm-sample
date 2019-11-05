@@ -5,7 +5,7 @@ import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
 import cn.afterturn.easypoi.excel.entity.ImportParams;
 import cn.afterturn.easypoi.excel.entity.enmus.ExcelType;
-import com.zhen.utils.StringUtils;
+import com.zhen.utils.StringUtil;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -150,7 +150,7 @@ public class EasyPoiUtil {
      */
     public static <T> List<T> importExcel(String filePath, Integer titleRows, Integer headerRows, Class<T> pojoClass) {
         //判断文件是否存在
-        if (StringUtils.isBlank(filePath)) {
+        if (StringUtil.isBlank(filePath)) {
             return null;
         }
         ImportParams params = new ImportParams();

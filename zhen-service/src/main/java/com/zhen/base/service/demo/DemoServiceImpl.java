@@ -5,23 +5,15 @@ import com.zhen.base.domain.system.RequestLog;
 import com.zhen.base.domain.system.User;
 import com.zhen.common.master.BaseRequest;
 import com.zhen.common.master.Master;
-import com.zhen.datasource.DataSource;
-import com.zhen.datasource.DataSourceConstant;
-import com.zhen.datasource.DataSourceContextHolder;
 import com.zhen.exception.BusinessException;
-import com.zhen.utils.DateUtils;
+import com.zhen.utils.DateUtil;
 import com.zhen.utils.shiro.ShiroUser;
 import com.zhen.utils.shiro.ShiroUtil;
-import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
-
-import javax.resource.spi.TransactionSupport;
 
 /**
  * @author wuhengzhen
@@ -50,7 +42,7 @@ public class DemoServiceImpl implements IDemoService {
         msg.put("name", name);
         reqData.put("data", msg);
         reqData.put("msgNo", "1001");
-        reqData.put("reqTime", DateUtils.formatDateTime(new Date()));
+        reqData.put("reqTime", DateUtil.formatDateTime(new Date()));
         String url = "http://10.10.10.93:9696/test-outapiweb/outapi/testApi";
         String resp = HttpsUtil.doPostJson(url, reqData.toJSONString());
 
@@ -79,7 +71,7 @@ public class DemoServiceImpl implements IDemoService {
     @Override
     @Transactional(rollbackFor = BusinessException.class)
     public void testException() throws BusinessException {
-        logger.info("测试异常接口！" + DateUtils.getCurrentDateTimeMillis());
+        logger.info("测试异常接口！" + DateUtil.getCurrentDateTimeMillis());
 
         User user = new User();
         user.setLoginName("admin");
@@ -87,7 +79,7 @@ public class DemoServiceImpl implements IDemoService {
         user.setMobile("18353238798");
         user.setEmail("wuhengzhen.qd@gmail.com");
         user.setUserName("管理员");
-        user.setCreateTime(DateUtils.getCurrentDateTime());
+        user.setCreateTime(DateUtil.getCurrentDateTime());
         user.setCreateUser("system");
         userMapper.insertSelective(user);
         logger.info("insert！！！");

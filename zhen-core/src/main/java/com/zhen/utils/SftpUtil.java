@@ -66,15 +66,15 @@ public class SftpUtil {
             // 打开Session
             JSch jsch = new JSch();
             jsch.getSession(userName, host, port);
-            if (StringUtils.isNotEmpty(keyFile)) {
+            if (StringUtil.isNotEmpty(keyFile)) {
                 jsch.addIdentity(keyFile);
             }
             Session sshSession = jsch.getSession(userName, host, port);
-            if (StringUtils.isNotEmpty(passphrase)) {
+            if (StringUtil.isNotEmpty(passphrase)) {
                 UserInfo userInfo = new MyUserInfo(passphrase);
                 sshSession.setUserInfo(userInfo);
             }
-            if (StringUtils.isNotEmpty(passWord)) {
+            if (StringUtil.isNotEmpty(passWord)) {
                 sshSession.setPassword(passWord);
             }
             Properties sshConfig = new Properties();
@@ -110,7 +110,7 @@ public class SftpUtil {
             makeAndcdDirectory(basePath, directory);
             // 多文件拆分
             if (uploadFile.contains(SftpUtil.BUSIMG_FILENAME_SEPARATOR)) {
-                String[] uploadFiles = StringUtils.splitPreserveAllTokens(uploadFile, SftpUtil.BUSIMG_FILENAME_SEPARATOR);
+                String[] uploadFiles = StringUtil.splitPreserveAllTokens(uploadFile, SftpUtil.BUSIMG_FILENAME_SEPARATOR);
                 for (String file : uploadFiles) {
                     upload(localPath + file);
                 }
@@ -236,7 +236,7 @@ public class SftpUtil {
             sftp.cd(downLoadFilePath);
             // 如果是多个下载文件，需要以“|”分隔
             if (downloadFile.contains(SftpUtil.BUSIMG_FILENAME_SEPARATOR)) {
-                String[] downloadFiles = StringUtils.splitPreserveAllTokens(downloadFile, SftpUtil.BUSIMG_FILENAME_SEPARATOR);
+                String[] downloadFiles = StringUtil.splitPreserveAllTokens(downloadFile, SftpUtil.BUSIMG_FILENAME_SEPARATOR);
                 for (String file : downloadFiles) {
                     downLoad(file, localSaveFilePath + File.separator + file);
                 }
@@ -304,7 +304,7 @@ public class SftpUtil {
      */
     public List<String> batchDownLoadFile(String remotePath, String localPath, String filepPrefix, String fileSuffix, boolean del) {
         List<String> filenames = new ArrayList<>();
-        String dateStr = DateUtils.format(new Date(), DateUtils.PATTERN_STANDARD08W);
+        String dateStr = DateUtil.format(new Date(), DateUtil.PATTERN_STANDARD08W);
         localPath = localPath + dateStr + File.separator;
         try {
             List<String> files = listFiles(remotePath);
@@ -327,7 +327,7 @@ public class SftpUtil {
                                 }
                             }
                         }
-                    } else if (fileSuffix.length() > 0 && StringUtils.isBlank(filepPrefix)) {
+                    } else if (fileSuffix.length() > 0 && StringUtil.isBlank(filepPrefix)) {
                         if (fileName.endsWith(fileSuffix)) {
                             flag = downloadFile(remotePath, fileName, localPath, fileName);
                             if (flag) {
@@ -410,7 +410,7 @@ public class SftpUtil {
         // 检查根目录是否存在
         if (!(new File(localSaveFilePath).isDirectory())) {
             // 依次建立各级目录
-            String[] dirStrArray = StringUtils.splitPreserveAllTokens(localSaveFilePath, File.separator);
+            String[] dirStrArray = StringUtil.splitPreserveAllTokens(localSaveFilePath, File.separator);
             StringBuilder dirStr = new StringBuilder(dirStrArray[0]);
             for (int i = 0; i < dirStrArray.length - 1; i++) {
                 dirStr.append(File.separator);

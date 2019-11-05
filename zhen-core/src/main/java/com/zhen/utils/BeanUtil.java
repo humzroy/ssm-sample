@@ -25,12 +25,12 @@ import java.util.Map;
  * @system name:
  * @copyright:
  */
-public class BeanUtils extends org.springframework.beans.BeanUtils {
+public class BeanUtil extends org.springframework.beans.BeanUtils {
 
     /**
      * logger
      */
-    private static final Logger logger = LoggerFactory.getLogger(BeanUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(BeanUtil.class);
 
     /**
      * description :JavaBean之间的属性复制，属性值非null才进行复制（推荐）
@@ -228,7 +228,7 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
             field.setAccessible(true);
             System.out.println("field.getName()=" + field.getName());
             try {
-                if (StringUtils.isNotBlank(field.get(obj)) && !"serialVersionUID".equals(field.getName())) {
+                if (StringUtil.isNotBlank(field.get(obj)) && !"serialVersionUID".equals(field.getName())) {
                     //不为空
                     flag = true;
                     //当有任何一个参数不为空的时候则跳出判断直接查询

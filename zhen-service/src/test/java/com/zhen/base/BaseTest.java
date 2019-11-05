@@ -7,6 +7,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.bi.base.model.AdmWmsParams;
 import com.zhen.exception.BusinessException;
 import com.zhen.utils.*;
+import io.github.biezhi.ome.OhMyEmail;
+import io.github.biezhi.ome.SendMailException;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.junit.After;
@@ -47,6 +49,8 @@ public class BaseTest {
 
     @Before
     public void before() throws Exception {
+        OhMyEmail.config(OhMyEmail.SMTP_163(false), "wu_worktest@163.com", "123456a");
+
     }
 
     @After
@@ -85,13 +89,13 @@ public class BaseTest {
         String str1 = "";
         String str2 = "dfafdsf";
         StringBuilder stringBuilder = new StringBuilder();
-        if (StringUtils.isNotBlank(str)) {
+        if (StringUtil.isNotBlank(str)) {
             stringBuilder.append(str).append(",");
         }
-        if (StringUtils.isNotBlank(str1)) {
+        if (StringUtil.isNotBlank(str1)) {
             stringBuilder.append(str1).append(",");
         }
-        if (StringUtils.isNotBlank(str2)) {
+        if (StringUtil.isNotBlank(str2)) {
             stringBuilder.append(str2).append(",");
         }
 
@@ -259,7 +263,7 @@ public class BaseTest {
     public void testDate() {
         String date = "1994/4/12";
         try {
-            System.out.println(DateUtils.formatStrDate(date, "yyyy/MM/dd", "yyyyMMdd"));
+            System.out.println(DateUtil.formatStrDate(date, "yyyy/MM/dd", "yyyyMMdd"));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -271,7 +275,7 @@ public class BaseTest {
 
     @Test
     public void testDate1() {
-        System.out.println(DateUtils.format(DateUtils.autoParseDate("1989-04-13 00:00:00.0")));
+        System.out.println(DateUtil.format(DateUtil.autoParseDate("1989-04-13 00:00:00.0")));
     }
 
     @Test
@@ -544,6 +548,21 @@ public class BaseTest {
             }
         }
         return res;
+
     }
+
+    @Test
+    public void testOhMyEmail() {
+
+        long start = System.currentTimeMillis();
+        try {
+            OhMyEmail.subject("test OhMyEmail").from("wu_worktest@163.com").to("15169720@qq.com").text("这是一封来自ohmyemail的测试邮件").send();
+        } catch (SendMailException e) {
+            e.printStackTrace();
+        }
+        long end = System.currentTimeMillis();
+        logger.info("OhMyEmail 邮件发送完成，耗时：" + (end - start) + " ms");
+    }
+
 
 }

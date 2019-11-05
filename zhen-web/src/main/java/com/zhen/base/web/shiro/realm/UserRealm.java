@@ -50,7 +50,7 @@ public class UserRealm extends AuthorizingRealm {
         // List<UpmsRole> upmsRoles = upmsApiService.selectUpmsRoleByUpmsUserId(upmsUser.getUserId());
         // Set<String> roles = new HashSet<>();
         // for (UpmsRole upmsRole : upmsRoles) {
-        //     if (StringUtils.isNotBlank(upmsRole.getName())) {
+        //     if (StringUtil.isNotBlank(upmsRole.getName())) {
         //         roles.add(upmsRole.getName());
         //     }
         // }
@@ -59,7 +59,7 @@ public class UserRealm extends AuthorizingRealm {
         // List<UpmsPermission> upmsPermissions = upmsApiService.selectUpmsPermissionByUpmsUserId(upmsUser.getUserId());
         // Set<String> permissions = new HashSet<>();
         // for (UpmsPermission upmsPermission : upmsPermissions) {
-        //     if (StringUtils.isNotBlank(upmsPermission.getPermissionValue())) {
+        //     if (StringUtil.isNotBlank(upmsPermission.getPermissionValue())) {
         //         permissions.add(upmsPermission.getPermissionValue());
         //     }
         // }

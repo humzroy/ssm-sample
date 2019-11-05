@@ -33,7 +33,7 @@ public class SaltUtil {
      */
     public static String addSalt(String pwd) throws NoSuchAlgorithmException {
         //随机生成十六位的字符
-        String salt = StringUtils.getStringRandom(16);
+        String salt = StringUtil.getStringRandom(16);
 
         //生成加盐密码字符串
         StringBuffer passSalt = new StringBuffer();

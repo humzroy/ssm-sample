@@ -92,7 +92,7 @@ public class JsonUtil {
      * @return
      */
     public static Map jsonToMap(String jsonStr) {
-        if (StringUtils.isEmpty(jsonStr)) {
+        if (StringUtil.isEmpty(jsonStr)) {
             return null;
         }
         Map map = new HashMap();

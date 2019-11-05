@@ -23,7 +23,7 @@ public class BankNumberUtil {
      */
     public synchronized static String getBrankNumber(String prefix) {
         String st = "";
-        if (StringUtils.isNotBlank(prefix)) {
+        if (StringUtil.isNotBlank(prefix)) {
             if ("689".indexOf(prefix) >= 0 && prefix.length() == 1) {
                 st = "666" + prefix + getUnixTime();
                 st += RegexUtil.getBankCardCheckCode(st);

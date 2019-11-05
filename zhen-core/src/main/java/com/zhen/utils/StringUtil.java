@@ -13,12 +13,12 @@ import java.util.regex.Pattern;
 
 /**
  * String工具
- * 主要对 org.apache.commons.lang3.StringUtils 的一些方法进行重写,达到更方便的使用
+ * 主要对 org.apache.commons.lang3.StringUtil 的一些方法进行重写,达到更方便的使用
  *
  * @author
  */
-public class StringUtils extends org.apache.commons.lang3.StringUtils {
-    private static final Logger logger = Logger.getLogger(StringUtils.class);
+public class StringUtil extends org.apache.commons.lang3.StringUtils {
+    private static final Logger logger = Logger.getLogger(StringUtil.class);
 
     private static Pattern pattern = Pattern.compile("<(span)?\\sstyle.*?style>|(span)?\\sstyle=.*?>", Pattern.DOTALL);
     private static Pattern pattern2 = Pattern.compile("(<[^>]+>)", Pattern.DOTALL);
@@ -385,7 +385,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     public static List<String> array2Empty(String[] array) {
         List<String> list = new ArrayList<String>();
         for (String string : array) {
-            if (StringUtils.isNotBlank(string)) {
+            if (StringUtil.isNotBlank(string)) {
                 list.add(string);
             }
         }
@@ -444,7 +444,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      */
     public static String encodeBase64(String input) {
         Base64.Encoder encoder = Base64.getEncoder();
-        if (StringUtils.isEmpty(input)) {
+        if (StringUtil.isEmpty(input)) {
             return "";
         } else {
             String enCodeStr = encoder.encodeToString(input.getBytes());
@@ -460,7 +460,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      */
     public static String decodeBase64(String enCodeStr) {
         Base64.Decoder decoder = Base64.getDecoder();
-        if (StringUtils.isEmpty(enCodeStr)) {
+        if (StringUtil.isEmpty(enCodeStr)) {
             return "";
         } else {
             String str = null;

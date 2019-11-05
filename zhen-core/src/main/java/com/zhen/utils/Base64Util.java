@@ -122,7 +122,7 @@ public class Base64Util {
         boolean flag = false;
         OutputStream out = null;
         // 图像数据不为空
-        if (StringUtils.isNotEmpty(imgStr)) {
+        if (StringUtil.isNotEmpty(imgStr)) {
             try {
                 // Base64解码
                 byte[] b = decryptBASE64(imgStr);

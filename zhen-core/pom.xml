@@ -636,7 +636,11 @@
             <artifactId>hutool-all</artifactId>
             <version>5.0.4</version>
         </dependency>
-
+        <dependency>
+            <groupId>io.github.biezhi</groupId>
+            <artifactId>oh-my-email</artifactId>
+            <version>0.0.4</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>zhen-core</finalName>

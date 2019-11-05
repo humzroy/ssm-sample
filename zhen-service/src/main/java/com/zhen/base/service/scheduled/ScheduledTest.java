@@ -1,6 +1,6 @@
 package com.zhen.base.service.scheduled;
 
-import com.zhen.utils.DateUtils;
+import com.zhen.utils.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -26,7 +26,7 @@ public class ScheduledTest {
      */
     // @Scheduled(cron = "0 0/1 * * * ? ")
     public void testScheduled() {
-        logger.info("定时任务开始执行..." + DateUtils.getCurrentDateTimeMillis());
+        logger.info("定时任务开始执行..." + DateUtil.getCurrentDateTimeMillis());
     }
 
 }

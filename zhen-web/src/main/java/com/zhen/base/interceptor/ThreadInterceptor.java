@@ -1,6 +1,6 @@
 package com.zhen.base.interceptor;
 
-import com.zhen.utils.StringUtils;
+import com.zhen.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,7 +21,7 @@ public class ThreadInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         // 当前线程上下文唯一标示
-        Thread.currentThread().setName(StringUtils.getStringRandom(12));
+        Thread.currentThread().setName(StringUtil.getStringRandom(12));
         log.info("当前线程唯一Name:" + Thread.currentThread().getName());
         return true;
     }

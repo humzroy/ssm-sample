@@ -121,7 +121,7 @@ public class FtpUtil {
      */
     public static boolean downloadFile(String ip, int port, String username, String password, String remotePath, String fileName, String localPath) throws Exception {
 
-        log.info("[downloadFile] begin:" + "--> fileName = " + fileName + DateUtils.formatDateTime(new Date()));
+        log.info("[downloadFile] begin:" + "--> fileName = " + fileName + DateUtil.formatDateTime(new Date()));
         boolean flag = false;
         FTPClient ftp = new FTPClient();
         try {
@@ -139,7 +139,7 @@ public class FtpUtil {
             ftp.enterLocalPassiveMode();
             // 登录
             ftp.login(username, password);
-            log.info(DateUtils.formatDateTime(new Date()) + "[downloadFile] 登陆FTP服务器成功！" + "--> fileName=" + fileName);
+            log.info(DateUtil.formatDateTime(new Date()) + "[downloadFile] 登陆FTP服务器成功！" + "--> fileName=" + fileName);
             reply = ftp.getReplyCode();
             log.info("[downloadFile] ftp.getReplyCode():" + reply + "(注:230:用户登录 530:未登录)");
             if (!FTPReply.isPositiveCompletion(reply)) {
@@ -176,7 +176,7 @@ public class FtpUtil {
                     flag = true;
                 }
             }
-            log.info("[downloadFile] end:" + "fileName = " + fileName + DateUtils.formatDateTime(new Date()));
+            log.info("[downloadFile] end:" + "fileName = " + fileName + DateUtil.formatDateTime(new Date()));
             ftp.logout();
         } catch (Exception e) {
             e.printStackTrace();

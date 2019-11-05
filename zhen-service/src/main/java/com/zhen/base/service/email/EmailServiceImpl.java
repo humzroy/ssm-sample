@@ -1,7 +1,10 @@
 package com.zhen.base.service.email;
 
 import cn.hutool.core.util.ArrayUtil;
+import com.zhen.utils.DateUtil;
 import com.zhen.utils.PropertiesFileUtil;
+import io.github.biezhi.ome.OhMyEmail;
+import io.github.biezhi.ome.SendMailException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +45,8 @@ public class EmailServiceImpl implements IEmailService {
     @Override
     public void sendSimpleMail(String to, String subject, String content, String... cc) {
         from = PropertiesFileUtil.getInstance().get("from");
-
+        String from1 = PropertiesFileUtil.readPropertiesFromfiles("/email.properties", "from", "CONF_HOME");
+        logger.info("from:" + from1);
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(from);
         message.setTo(to);
@@ -52,7 +56,20 @@ public class EmailServiceImpl implements IEmailService {
         if (ArrayUtil.isNotEmpty(cc)) {
             message.setCc(cc);
         }
+        long start = System.currentTimeMillis();
         mailSender.send(message);
-        logger.info("发送邮件成功！");
+        long end = System.currentTimeMillis();
+        logger.info("JavaMail 邮件发送完成，耗时：" + (end - start) + " ms");
+
+
+        OhMyEmail.config(OhMyEmail.SMTP_163(false), "wu_worktest@163.com", "123456a");
+        start = System.currentTimeMillis();
+        try {
+            OhMyEmail.subject("OhMyEmail发送方式测试邮件" + DateUtil.getCurrentDateTime()).from("wu_worktest@163.com").to("15169720@qq.com").text("这是一封来自OhMyEmail发送方式的测试邮件").send();
+        } catch (SendMailException e) {
+            e.printStackTrace();
+        }
+        end = System.currentTimeMillis();
+        logger.info("OhMyEmail 邮件发送完成，耗时：" + (end - start) + " ms");
     }
 }

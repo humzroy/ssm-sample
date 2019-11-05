@@ -125,11 +125,11 @@ public class FileUtil {
         File file = new File(path);
         // 定义返回的文件名称数组
         List<String> fileArr = new ArrayList<>();
-        if (!isFileFlag && StringUtils.isNotBlank(targetType)) {
+        if (!isFileFlag && StringUtil.isNotBlank(targetType)) {
             logger.info("传入的参数异常");
             throw new Exception();
         }
-        if (StringUtils.isNotBlank(targetType)) {
+        if (StringUtil.isNotBlank(targetType)) {
             // 获得该文件夹内的所有文件
             File[] array = file.listFiles();
             for (int i = 0; i < array.length; i++) {

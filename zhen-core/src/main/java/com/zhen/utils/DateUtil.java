@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 /**
  * 日期工具类, 通过静态继承的方式, 扩展common-lang3中的DateUtils
  */
-public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
+public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
 
     private static final Map<Pattern, String> PATTERN_MAP = ImmutableMap.<Pattern, String>builder()
             .put(Pattern.compile("^\\d{8}$"), "yyyyMMdd")
@@ -266,7 +266,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      */
     public static Date addDays(int numDay) {
         // 取时间
-        Date todayDate = DateUtils.todayDate();
+        Date todayDate = DateUtil.todayDate();
         return addDays(todayDate, numDay);
     }
 

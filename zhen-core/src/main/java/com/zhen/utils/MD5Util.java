@@ -132,7 +132,7 @@ public class MD5Util {
      */
     public static boolean checkPassword(String password, String md5PwdStr) {
         String md5Str = md5(password);
-        if (StringUtils.isNotEmpty(md5Str)) {
+        if (StringUtil.isNotEmpty(md5Str)) {
             return md5Str.equals(md5PwdStr);
         } else {
             return false;
@@ -149,7 +149,7 @@ public class MD5Util {
      */
     public static boolean checkPassword(String password, String salt, String md5PwdStr) {
         String md5Str = md5(password + salt);
-        if (StringUtils.isNotEmpty(md5Str)) {
+        if (StringUtil.isNotEmpty(md5Str)) {
             return md5Str.equals(md5PwdStr);
         } else {
             return false;

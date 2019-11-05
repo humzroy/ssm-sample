@@ -2,7 +2,7 @@ package com.zhen.common.rpc.consumer;
 
 import com.alibaba.dubbo.rpc.*;
 import com.zhen.exception.BusinessException;
-import com.zhen.utils.BeanUtils;
+import com.zhen.utils.BeanUtil;
 import com.zhen.utils.ExceptionUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
@@ -27,7 +27,7 @@ public class LogFilter implements Filter {
          */
         for (Object object : invocation.getArguments()) {
             // 字符串traceId是此次dubbo请求参数对象里的一个字段属性
-            Field field = BeanUtils.getFieldByClass("traceId", object);
+            Field field = BeanUtil.getFieldByClass("traceId", object);
             if (field != null) {
                 // 设置成true的作用就是让我们在用反射时可以对私有变量操作
                 field.setAccessible(true);

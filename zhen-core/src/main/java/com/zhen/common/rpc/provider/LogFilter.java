@@ -6,9 +6,9 @@ import com.alibaba.dubbo.rpc.service.GenericService;
 import com.zhen.common.master.BaseRequest;
 import com.zhen.common.rpc.domain.FilterDesc;
 import com.zhen.exception.BusinessException;
-import com.zhen.utils.BeanUtils;
+import com.zhen.utils.BeanUtil;
 import com.zhen.utils.JsonUtil;
-import com.zhen.utils.StringUtils;
+import com.zhen.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
@@ -34,13 +34,13 @@ public class LogFilter implements Filter {
     @Override
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
         // 先给当前线程赋个初始随机数，预防调用当前dubbo项目的消费者没有传traceId字段
-        Thread.currentThread().setName(StringUtils.getStringRandom(8));
+        Thread.currentThread().setName(StringUtil.getStringRandom(8));
 
         // 通过以下for循环，拿到消费者传过来的traceId字段，即 当前请求的线程名称
         for (Object object : invocation.getArguments()) {
             if (object instanceof BaseRequest) {
                 // 字符串traceId是此次dubbo请求参数对象里的一个字段属性
-                Field field = BeanUtils.getFieldByClass("traceId", object);
+                Field field = BeanUtil.getFieldByClass("traceId", object);
                 if (field != null) {
                     // 设置成true的作用就是让我们在用反射时可以对私有变量操作
                     field.setAccessible(true);
@@ -130,7 +130,7 @@ public class LogFilter implements Filter {
                 log.info(clientIp + "<--" + "[无返回Msg]" + " cost :" + cost + "ms");
             }
         }
-        if (StringUtils.isNotEmpty(backMessage)) {
+        if (StringUtil.isNotEmpty(backMessage)) {
             log.info(clientIp + "<--" + backMessage + " cost :" + cost + "ms");
         }
         if (cost > 2500) {

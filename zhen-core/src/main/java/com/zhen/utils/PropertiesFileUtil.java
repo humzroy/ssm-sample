@@ -1,9 +1,14 @@
 package com.zhen.utils;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 /**
  * 资源文件读取工具
@@ -12,6 +17,10 @@ import java.util.ResourceBundle;
  * @date 2017年10月15日
  */
 public class PropertiesFileUtil {
+    /**
+     * logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(PropertiesFileUtil.class);
 
     /**
      * 当打开多个资源文件时，缓存资源文件
@@ -110,6 +119,49 @@ public class PropertiesFileUtil {
 
     public Date getLoadTime() {
         return loadTime;
+    }
+
+    /**
+     * @param propertiesFilename
+     * @param property
+     * @param vm
+     * @return
+     */
+    public static String readPropertiesFromfiles(String propertiesFilename, String property, String vm) {
+        // 系统属性
+        Properties props = System.getProperties();
+        String confHome = props.getProperty(vm);
+        logger.info(vm + ":" + confHome);
+        Properties prop = new Properties();
+        InputStream in = null;
+        InputStreamReader reader = null;
+        try {
+            in = new FileInputStream(confHome + propertiesFilename);
+            reader = new InputStreamReader(in, StandardCharsets.UTF_8);
+            prop.load(reader);
+            String value = prop.getProperty(property);
+            logger.info(value);
+            in.close();
+            return value;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
     }
 
 }

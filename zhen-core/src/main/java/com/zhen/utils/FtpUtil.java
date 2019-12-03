@@ -655,18 +655,18 @@ public class FtpUtil {
      */
     public static void main(String[] args) throws Exception {
         FtpUtil ftpUtil = new FtpUtil("UTF-8");
-        ftpUtil.connect("10.10.10.212", 21, "weblogic", "weblogic");
+        ftpUtil.connect("47.95.208.138", 6709, "ftpuser", "ftpuser");
         // ftpUtil.setTimeOut(60, 60, 60);
-        ftpUtil.upload("/home/weblogic/文件1.txt", new File("E:/image/FTPClient/FTPClient测试/文件1.txt"));
-        ftpUtil.download("/home/weblogic/文件1.txt", new File("E:/image/FTPClient/FTPClient测试/文件1.txt"));
-        ftpUtil.uploadDir("/home/weblogic/FTPClient测试", "E:/image/FTPClient/FTPClient测试");
-        ftpUtil.downloadDir("/home/weblogic/FTPClient测试", "E:/image/FTPClient/FTPClient测试");
+        // ftpUtil.upload("/home/ftpuser/images/timg.jpg", new File("D:/test/imag/timg.jpg"));
+        ftpUtil.download("/home/ftpuser/images/timg.jpg", new File("D:/test/imag/FTPClient/timg.jpg"));
+        // ftpUtil.uploadDir("/home/weblogic/FTPClient测试", "E:/image/FTPClient/FTPClient测试");
+        // ftpUtil.downloadDir("/home/weblogic/FTPClient测试", "E:/image/FTPClient/FTPClient测试");
         //自动增长
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        ftpUtil.retrieveFile("/home/testuser/文件1.txt", bos);
-        System.out.println(bos.size());
-        String contentStr = new String(bos.toByteArray(), "GBK");
-        System.out.println(contentStr);
+        // ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        // ftpUtil.retrieveFile("/home/testuser/文件1.txt", bos);
+        // System.out.println(bos.size());
+        // String contentStr = new String(bos.toByteArray(), "GBK");
+        // System.out.println(contentStr);
         ftpUtil.disconnect();
     }
 

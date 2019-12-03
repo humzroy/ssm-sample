@@ -77,7 +77,7 @@ public class JedisUtil {
         //         10000, JRedisPoolConfig.REDIS_PASSWORD);
 
         //redis未设置了密码：
-        jedisPool = new JedisPool(config, "10.1.89.161", 7001);
+        jedisPool = new JedisPool(config, "10.1.89.161", 7002);
     }
 
     public JedisPool getPool() {

@@ -122,14 +122,14 @@ public class HttpsUtil {
      * @author : wuhengzhen
      * @date : 2018-9-12 9:02
      */
-    public static String httpsPost(String url, Map<String, String> map) throws IOException {
+    public static String httpsPost(String url, Map<String, Object> map) throws IOException {
         //创建post方式请求对象
         HttpPost httpPost = new HttpPost(url);
         //装填参数
         List<NameValuePair> nvps = new ArrayList<>();
         if (map != null) {
-            for (Map.Entry<String, String> entry : map.entrySet()) {
-                nvps.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                nvps.add(new BasicNameValuePair(entry.getKey(), String.valueOf(entry.getValue())));
             }
         }
         //设置参数到请求对象中
@@ -153,7 +153,7 @@ public class HttpsUtil {
             //执行请求操作，并拿到结果（同步阻塞）
             response = HTTP_CLIENT.execute(httpPost);
             int statusCode = response.getStatusLine().getStatusCode();
-            logger.info("HTTP请求，响应码：" + statusCode);
+            logger.info("HTTP STATUS CODE：" + statusCode);
             org.apache.http.HttpEntity entity = response.getEntity();
             if (entity != null) {
                 //按指定编码转换结果实体为String类型

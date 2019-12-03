@@ -126,7 +126,7 @@ public class HttpUtil {
      * @param param
      * @return
      */
-    public static String doPost(String url, Map<String, String> param) {
+    public static String doPost(String url, Map<String, Object> param) {
         // 创建Httpclient对象
         CloseableHttpClient httpClient = HttpClients.createDefault();
         CloseableHttpResponse response = null;
@@ -138,7 +138,7 @@ public class HttpUtil {
             if (param != null) {
                 List<NameValuePair> paramList = new ArrayList<>();
                 for (String key : param.keySet()) {
-                    paramList.add(new BasicNameValuePair(key, param.get(key)));
+                    paramList.add(new BasicNameValuePair(key, String.valueOf(param.get(key))));
                 }
                 // 模拟表单
                 UrlEncodedFormEntity entity = new UrlEncodedFormEntity(paramList);
@@ -364,7 +364,7 @@ public class HttpUtil {
     private static String getHttpEntityContent(HttpResponse response) throws IOException, UnsupportedEncodingException {
         //通过HttpResponse 的getEntity()方法获取返回信息
         org.apache.http.HttpEntity entity = response.getEntity();
-        System.out.println("返回响应码：" + response.getStatusLine().getStatusCode());
+        logger.info("HTTP STATUS CODE：" + response.getStatusLine().getStatusCode());
         if (entity != null) {
             InputStream is = entity.getContent();
             BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));

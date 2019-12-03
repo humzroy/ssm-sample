@@ -4,19 +4,16 @@ import cn.hutool.core.util.ArrayUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.bi.base.model.AdmWmsParams;
 import com.zhen.exception.BusinessException;
 import com.zhen.utils.*;
 import io.github.biezhi.ome.OhMyEmail;
 import io.github.biezhi.ome.SendMailException;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.collections.CollectionUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import redis.clients.util.SafeEncoder;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -29,7 +26,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Base Tester.
@@ -184,24 +180,28 @@ public class BaseTest {
         // Jedis redis = JedisUtil.getInstance().getJedis();
         String paramName = "";
         JedisUtil jedisUtil = JedisUtil.getInstance();
-        JedisUtil.Hash hash = jedisUtil.new Hash();
-
-        byte[] bytes = hash.hget(SafeEncoder.encode("wmsadm_wms_params"), SafeEncoder.encode("RANK_CODE"));
-        Map<String, List<AdmWmsParams>> listMap = (Map<String, List<AdmWmsParams>>) SerializeUtil.unserialize(bytes);
-        System.out.println(listMap.toString());
-        List<AdmWmsParams> admWmsParams = listMap.get("CN");
-        if (CollectionUtils.isNotEmpty(admWmsParams)) {
-            long start = System.currentTimeMillis();
-            for (AdmWmsParams adm : admWmsParams) {
-                if ("R1".equalsIgnoreCase(adm.getParamCode())) {
-                    paramName = adm.getParamName();
-                    break;
-                }
-            }
-            long end = System.currentTimeMillis();
-            logger.info("完成，耗时：" + (end - start) + " ms");
-        }
-        System.out.println(paramName);
+        JedisUtil.Strings strings = jedisUtil.new Strings();
+        System.out.println(strings.get("wmsTRADE_DATA_DT"));
+        // jedisUtil.getJedis().del("wmswms-BastPath");
+        // System.out.println(strings.get("wmswms-BastPath"));
+        // JedisUtil.Hash hash = jedisUtil.new Hash();
+        //
+        // byte[] bytes = hash.hget(SafeEncoder.encode("wmsadm_wms_params"), SafeEncoder.encode("RANK_CODE"));
+        // Map<String, List<AdmWmsParams>> listMap = (Map<String, List<AdmWmsParams>>) SerializeUtil.unserialize(bytes);
+        // System.out.println(listMap.toString());
+        // List<AdmWmsParams> admWmsParams = listMap.get("CN");
+        // if (CollectionUtils.isNotEmpty(admWmsParams)) {
+        //     long start = System.currentTimeMillis();
+        //     for (AdmWmsParams adm : admWmsParams) {
+        //         if ("R1".equalsIgnoreCase(adm.getParamCode())) {
+        //             paramName = adm.getParamName();
+        //             break;
+        //         }
+        //     }
+        //     long end = System.currentTimeMillis();
+        //     logger.info("完成，耗时：" + (end - start) + " ms");
+        // }
+        // System.out.println(paramName);
 
         // redis.set("name", "admin");
         // System.out.println(redis.get("name"));

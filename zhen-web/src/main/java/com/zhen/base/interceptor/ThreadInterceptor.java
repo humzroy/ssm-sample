@@ -1,6 +1,6 @@
 package com.zhen.base.interceptor;
 
-import com.zhen.utils.StringUtil;
+import com.zhen.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;

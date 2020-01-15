@@ -1,7 +1,7 @@
 package com.zhen.common.master;
 
-import com.zhen.utils.ExceptionUtil;
-import com.zhen.utils.RequestUtil;
+import com.zhen.util.ExceptionUtil;
+import com.zhen.util.RequestUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

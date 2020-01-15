@@ -1,7 +1,7 @@
 package com.zhen.base.web.shiro.service.impl;
 
 import com.zhen.base.web.shiro.service.IShiroManager;
-import com.zhen.utils.INI4j;
+import com.zhen.util.INI4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;

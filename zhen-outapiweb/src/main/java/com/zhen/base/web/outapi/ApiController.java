@@ -4,17 +4,14 @@ import com.zhen.base.domain.mybatisplus.User;
 import com.zhen.base.service.demo.IDemoService;
 import com.zhen.base.service.mybatisplus.MybatisPlusUserService;
 import com.zhen.common.master.BaseResult;
-import com.zhen.common.master.ResultEntity;
-import com.zhen.utils.ExceptionUtil;
+import com.zhen.util.ExceptionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author wuhengzhen
@@ -99,7 +96,7 @@ public class ApiController {
         // res.setStatuMsg("查询成功！");
         // res.setData(users);
 
-
+        logger.info("测试 查询用户列表");
         res.setMessageCode("200");
         res.setMessage("查询成功！");
         res.putValueToData("data", users);

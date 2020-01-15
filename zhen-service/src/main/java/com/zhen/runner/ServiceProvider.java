@@ -1,7 +1,7 @@
 package com.zhen.runner;
 
 import com.alibaba.dubbo.container.Main;
-import com.zhen.utils.Base64Util;
+import com.zhen.util.Base64Util;
 
 /**
  * Created with IntelliJ IDEA

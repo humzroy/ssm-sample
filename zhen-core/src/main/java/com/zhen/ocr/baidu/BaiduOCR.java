@@ -1,8 +1,8 @@
 package com.zhen.ocr.baidu;
 
 import com.baidu.aip.util.Base64Util;
-import com.zhen.utils.FileUtil;
-import com.zhen.utils.HttpsUtil;
+import com.zhen.util.FileUtil;
+import com.zhen.util.HttpsUtil;
 
 import java.net.URLEncoder;
 

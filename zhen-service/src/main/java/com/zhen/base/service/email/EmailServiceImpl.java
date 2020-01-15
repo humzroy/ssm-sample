@@ -1,8 +1,8 @@
 package com.zhen.base.service.email;
 
 import cn.hutool.core.util.ArrayUtil;
-import com.zhen.utils.DateUtil;
-import com.zhen.utils.PropertiesFileUtil;
+import com.zhen.util.DateUtil;
+import com.zhen.util.PropertiesFileUtil;
 import io.github.biezhi.ome.OhMyEmail;
 import io.github.biezhi.ome.SendMailException;
 import org.slf4j.Logger;

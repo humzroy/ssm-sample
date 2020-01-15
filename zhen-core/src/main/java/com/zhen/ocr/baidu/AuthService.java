@@ -1,6 +1,6 @@
 package com.zhen.ocr.baidu;
 
-import com.zhen.utils.ExceptionUtil;
+import com.zhen.util.ExceptionUtil;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

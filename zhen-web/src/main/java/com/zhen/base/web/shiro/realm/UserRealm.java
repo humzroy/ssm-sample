@@ -5,7 +5,7 @@ import com.zhen.base.service.ILoginService;
 import com.zhen.common.master.BaseRequest;
 import com.zhen.common.master.Master;
 import com.zhen.exception.BusinessException;
-import com.zhen.utils.shiro.ShiroUser;
+import com.zhen.util.shiro.ShiroUser;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;

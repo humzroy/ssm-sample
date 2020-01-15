@@ -6,9 +6,9 @@ import com.alibaba.dubbo.rpc.service.GenericService;
 import com.zhen.common.master.BaseRequest;
 import com.zhen.common.rpc.domain.FilterDesc;
 import com.zhen.exception.BusinessException;
-import com.zhen.utils.BeanUtil;
-import com.zhen.utils.JsonUtil;
-import com.zhen.utils.StringUtil;
+import com.zhen.util.BeanUtil;
+import com.zhen.util.JsonUtil;
+import com.zhen.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
@@ -62,7 +62,7 @@ public class LogFilter implements Filter {
         filterReq.setArgs(invocation.getArguments());
         // 获取消费者的ip地址
         String clientIp = RpcContext.getContext().getRemoteHost();
-        log.info(clientIp + " --->" + JsonUtil.obj2Json(filterReq));
+        log.info(clientIp + " -->" + JsonUtil.obj2Json(filterReq));
         long start = System.currentTimeMillis();
         // 调用服务的方法
         Result result = invoker.invoke(invocation);

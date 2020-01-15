@@ -1,6 +1,6 @@
 package com.zhen.oss;
 
-import com.zhen.utils.OSSClientUtil;
+import com.zhen.util.OSSClientUtil;
 
 import java.io.FileInputStream;
 import java.io.InputStream;

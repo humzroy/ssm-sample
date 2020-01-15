@@ -2,8 +2,8 @@ package com.zhen.common.rpc.consumer;
 
 import com.alibaba.dubbo.rpc.*;
 import com.zhen.exception.BusinessException;
-import com.zhen.utils.BeanUtil;
-import com.zhen.utils.ExceptionUtil;
+import com.zhen.util.BeanUtil;
+import com.zhen.util.ExceptionUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
 

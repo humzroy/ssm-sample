@@ -147,7 +147,7 @@
         <property name="targetDataSources">
             <map key-type="java.lang.String">
                 <entry value-ref="mysqlDataSource" key="MYSQL"></entry>
-                <!--<entry value-ref="oracleDataSource" key="ORACLE"></entry>-->
+                <entry value-ref="oracleDataSource" key="ORACLE"></entry>
             </map>
         </property>
         <property name="defaultTargetDataSource" ref="mysqlDataSource"></property>
@@ -160,7 +160,7 @@
     </bean>
 
     <!-- enables scanning for @Transactional annotations -->
-    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" order="2"/>
 
     <!-- myBatis文件 -->
     <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
@@ -216,7 +216,7 @@
         <property name="dbType" value="mysql"/>
 
         <!-- Oracle需要添加该项 -->
-        <!-- <property name="dbType" value="oracle" /> -->
+        <!--<property name="dbType" value="oracle" />-->
 
         <!-- 全局表为下划线命名设置 true -->
         <property name="dbColumnUnderline" value="true" />
@@ -229,7 +229,7 @@
 
     <bean id="dataSourceAspect" class="com.zhen.aspect.DataSourceAspect"/>
     <aop:config>
-        <aop:aspect ref="dataSourceAspect">
+        <aop:aspect ref="dataSourceAspect" order="1">
             <!-- 拦截所有service方法 -->
             <aop:pointcut id="dataSourcePointcut" expression="execution(* com.zhen.*.service..*.*(..))"/>
             <aop:before pointcut-ref="dataSourcePointcut" method="before"/>

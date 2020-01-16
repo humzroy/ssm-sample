@@ -75,7 +75,7 @@ public class DataSourceAspect {
      */
     public void after() {
         logger.info("after......");
-        DataSourceContextHolder.setDataSourceType(null);
+        DataSourceContextHolder.clearDataSourceType();
     }
 
     /**

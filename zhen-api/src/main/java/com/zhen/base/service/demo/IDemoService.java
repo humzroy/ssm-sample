@@ -28,7 +28,19 @@ public interface IDemoService {
     @DataSource(DataSourceConstant.MYSQL)
     void testException() throws BusinessException;
 
+    @DataSource(DataSourceConstant.MYSQL)
+    void testException2();
+
     void testInterface();
 
     void testInterface1();
+
+    @DataSource(DataSourceConstant.MYSQL)
+    void testMybatis();
+
+
+    /**
+     * 测试回滚
+     */
+    void testRollBack();
 }

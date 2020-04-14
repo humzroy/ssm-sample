@@ -4,8 +4,9 @@ import cn.hutool.core.util.ArrayUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.jcraft.jsch.ChannelSftp;
 import com.zhen.exception.BusinessException;
-import com.zhen.utils.*;
+import com.zhen.util.*;
 import io.github.biezhi.ome.OhMyEmail;
 import io.github.biezhi.ome.SendMailException;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -18,14 +19,13 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.nio.charset.Charset;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Base Tester.
@@ -247,7 +247,7 @@ public class BaseTest {
 
     @Test
     public void testIdNo() {
-        String idNo = "37028519940507323x";
+        String idNo = "370285199405073131";
         System.out.println(RegexUtil.isIDNumber(idNo));
     }
 
@@ -312,13 +312,50 @@ public class BaseTest {
     @Test
     public void testSFTP() {
 
+
         logger.info("测试登录sftp..");
-        String host = "47.95.208.138";
-        int port = 9022;
-        String loginUser = "mysftp";
-        String password = "mysftp";
+        // String host = "47.95.208.138";
+        String host = "10.192.9.12";
+        // int port = 9022;
+        int port = 22;
+        // String loginUser = "mysftp";
+        String loginUser = "root";
+        // String password = "mysftp";
+        String password = "putty#123";
+
+        String downRemotePath = "/YC_FILE/YYYYMMDD/";
+        String downLoadPath = "D://bi//hips//file//downLoad//";
+        String dataStr = DateUtil.format(new Date(), "yyyyMMdd");
+        String downLoadPathNew = downLoadPath + dataStr + File.separator;
+        String downRemotePathNew = downRemotePath.replace("YYYYMMDD", dataStr);
+        String filepPrefix = "OFI";
+        String fileSuffix = dataStr;
+
+        logger.info("downLoadPathNew：{}", downLoadPathNew);
+        logger.info("downRemotePathNew：{}", downRemotePathNew);
+        logger.info("filepPrefix：{}", filepPrefix);
+        logger.info("fileSuffix：{}", fileSuffix);
 
         SftpUtil instance = SftpUtil.getInstance(host, port, loginUser, password, null, null);
+        try {
+            List<String> fileList = instance.listFiles("/report/templates/");
+            Vector v = instance.listFiles1("/report/templates/");
+
+            System.out.println(v.size());
+
+            Iterator it = v.iterator();
+            while (it.hasNext()) {
+                ChannelSftp.LsEntry entry = (ChannelSftp.LsEntry) it.next();
+                String filename = entry.getFilename();
+                System.out.println(filename);
+            }
+            System.out.println(fileList.size());
+            logger.info("===========================: "+ArrayUtil.toString(fileList));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // List<String> fileNames = instance.batchDownLoadFile(downRemotePathNew, downLoadPathNew, filepPrefix, fileSuffix, false);
+        // logger.info("fileNames: {}", fileNames.toString());
 
         // try {
         //     instance.uploadFile("/upload/", "/test/", "D:\\", "CentOS-Base.repo");
@@ -397,15 +434,6 @@ public class BaseTest {
         }
     }
 
-    @Test
-    public void testToString() {
-        List<String> list = new ArrayList<>();
-        list.add("1");
-        list.add("2");
-        list.add("3");
-        list.add("4");
-        System.out.println(list.toString());
-    }
 
     @Test
     public void testArray() {
@@ -423,93 +451,6 @@ public class BaseTest {
 
     private void testArrayUtil(String... cc) {
         System.out.println(ArrayUtil.isNotEmpty(cc));
-    }
-
-    @Test
-    public void test34() {
-        //
-        // double b = 0.665999999999;
-        // BigDecimal uabLimitStA = new BigDecimal("33");
-        // BigDecimal decimalUabA = BigDecimal.valueOf(b).setScale(2, BigDecimal.ROUND_HALF_EVEN);
-        // System.out.println("B:" + decimalUabA);
-        // System.out.println(decimalUabA.multiply(BigDecimal.valueOf(100)).compareTo(uabLimitStA));
-        // System.out.println(uabLimitStA.divide(BigDecimal.valueOf(100), 2, BigDecimal.ROUND_HALF_EVEN).compareTo(decimalUabA));
-
-        // System.out.println(decimalUabA.multiply(BigDecimal.valueOf(100)).subtract(uabLimitStA).intValue() + "%");
-
-
-        BigDecimal bigA = new BigDecimal("0.0022");
-        BigDecimal bigB = new BigDecimal("0.1");
-        NumberFormat format = NumberFormat.getInstance();
-        // 不使用千分位，即展示为11672283.234，而不是11,672,283.234
-        format.setGroupingUsed(false);
-        // 设置数的小数部分所允许的最大位数
-        format.setMaximumFractionDigits(4);
-        System.out.println(Double.valueOf(format.format(Double.valueOf(bigA.multiply(bigB).setScale(4, BigDecimal.ROUND_HALF_EVEN).toString()))));
-        // System.out.println("1:::::" + bigA.multiply(bigB).setScale(4, BigDecimal.ROUND_HALF_EVEN).toString());
-        // System.out.println("2:::::" + bigA.multiply(bigB).setScale(4, BigDecimal.ROUND_HALF_EVEN).toPlainString());
-        // System.out.println("4:::::" + Double.valueOf(bigA.multiply(bigB).setScale(4, BigDecimal.ROUND_HALF_EVEN).stripTrailingZeros().toPlainString()));
-
-
-    }
-
-    @Test
-    public void testDecimalFormat() {
-        BigDecimal number = new BigDecimal("28.125");
-        DecimalFormat decimalFormat = new DecimalFormat("#0.00");
-        System.out.println("1: " + decimalFormat.getRoundingMode());
-        System.out.println("1: " + decimalFormat.format(number));
-
-        decimalFormat.setRoundingMode(RoundingMode.HALF_UP);
-        System.out.println("2: " + decimalFormat.getRoundingMode());
-        System.out.println("2: " + decimalFormat.format(number));
-
-    }
-
-    // @Test
-    // public void testThreadPool() {
-    //
-    //     for (int i = 1; i < 5; i++) {
-    //         TestThread thread = new TestThread();
-    //         threadPoolTaskExecutor.submit(thread);
-    //     }
-    //
-    // }
-
-    @Test
-    public void testPrecision() {
-
-        DecimalFormat df = new DecimalFormat("#0.00");
-        // BigDecimal xa = new BigDecimal("1");
-        // String total = "100000000000";
-        // BigDecimal r = xa.divide(new BigDecimal(total));
-        // System.out.println(r.toPlainString());
-        // int a = r.compareTo(BigDecimal.ZERO);
-        // int b = r.compareTo(new BigDecimal("0.0001"));
-        // System.out.println(a);
-        // System.out.println(b);
-        // if (a > 0 && b < 0) {
-        //     r = new BigDecimal("0.0001");
-        // }
-        // System.out.println("≈" + r.toPlainString());
-        // System.out.println(r.toPlainString());
-
-
-        String proAmt = "1";
-        String totalAmt = "999999999999";
-
-        BigDecimal weight = new BigDecimal(proAmt).divide(new BigDecimal(totalAmt), 12, BigDecimal.ROUND_HALF_UP);
-        System.out.println(weight.toPlainString());
-        BigDecimal x = weight.multiply(BigDecimal.valueOf(100)).subtract(BigDecimal.ZERO);
-        System.out.println(dealPrecision(x));
-
-
-        BigDecimal finishC = new BigDecimal("0.99999999999995");
-        BigDecimal xc = finishC.multiply(BigDecimal.valueOf(100)).subtract(BigDecimal.ZERO);
-        System.out.println(xc.toPlainString());
-        String res = dealPrecision(xc);
-        System.out.println(res);
-
     }
 
 
@@ -564,5 +505,33 @@ public class BaseTest {
         logger.info("OhMyEmail 邮件发送完成，耗时：" + (end - start) + " ms");
     }
 
+    @Test
+    public void testIp() {
+        try {
+            // 获得本机IP
+            String addr = InetAddress.getLocalHost().getHostAddress();
+            System.out.println(addr);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Test
+    public void testBase64() {
+        String baseStr = "eyJib3JuX25hdGlvbiI6IjE1OCIsImNsaWVudF9pZCI6IjQ0OCIsImN1cnJlbnRfYWRkciI6IjE4\\r\\nOCBIT05HS09ORyBST0FELCBMQU9TSEFOIERJU1RJTkNUIiwiY3VycmVudF93b3JrX2FkZHIiOiLl\\r\\ntILlsbHljLrpppnmuK/kuK3ot68xODjlj7ciLCJjdXJyZW50X3dvcmtfY2l0eSI6IjM3MDIiLCJj\\r\\ndXJyZW50X3dvcmtfY2l0eV9ubyI6IjM3MDIiLCJjdXJyZW50X3dvcmtfbmF0aW9uIjoiMTU2Iiwi\\r\\nY3VycmVudF93b3JrX3Byb3ZpY2VfY29kZSI6IjM3IiwiY3VzdF9mbGFnIjoiMiIsImVuZ19ib3Ju\\r\\nX25hdGlvbiI6IjE1OCIsImVuZ19jdXJyZW50X2FkZHIiOiJRSU5HREFPIiwiZW5nX2N1cnJlbnRf\\r\\nd29ya19uYXRpb24iOiIxNTYiLCJlbmdfaG9tZV9wbGFjZSI6IuWPsOWMlyIsImVuZ19sYXN0X25h\\r\\nbWUiOiJGRUkiLCJlbmdfbWFpbF9hZGRyIjoiMTg4IEhPTkdLT05HIFJPQUQsIExBT1NIQU4gRElT\\r\\nVElOQ1QiLCJlbmdfbWFpbF9jaXR5IjoiUUlOR0RBTyIsImVuZ19tYWlsX25hdGlvbiI6IjE1NiIs\\r\\nImVuZ19uYW1lIjoiTUVORyIsImhvbWVfcGxhY2UiOiLlj7DljJciLCJqc29uX2lkIjoiIiwibWFp\\r\\nbF9hZGRyIjoi5bSC5bGx5Yy66aaZ5riv5Lit6LevMTg45Y+3IiwibWFpbF9jaXR5IjoiMzcwMiIs\\r\\nIm1haWxfbmF0aW9uIjoiMTU2IiwidGF4aW5mbyI6W3siYmVsb25nX3R5cGUiOiIwIiwiaXNfbWFp\\r\\nbl90YXgiOiIxIiwianNvbl9iZWxvbmdfaWQiOiIiLCJqc29uX2lkIjoiIiwibm9fdGF4X25vX3Jl\\r\\nYXNvbiI6IkIiLCJ0YXhfbmF0aW9uIjoiMTU4IiwidGF4X25vIjoiMTIxMjEyIn0seyJiZWxvbmdf\\r\\ndHlwZSI6IjAiLCJpc19tYWluX3RheCI6IjEiLCJqc29uX2JlbG9uZ19pZCI6IiIsImpzb25faWQi\\r\\nOiIiLCJub190YXhfbm9fcmVhc29uIjoiQiIsInRheF9uYXRpb24iOiIxNTYiLCJ0YXhfbm8iOiIx\\r\\nMjMxMjMifV19\\r\\n";
+        // 去除\r\n
+        baseStr = baseStr.replace("\\r\\n", "");
+
+        try {
+
+            String str = new String(Base64Util.decryptBASE64(baseStr), Charset.defaultCharset());
+            String str2 = StringUtil.toSemiangle(str);
+            logger.info("解密后：" + str);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

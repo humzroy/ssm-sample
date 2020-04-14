@@ -12,6 +12,8 @@
 
     <dubbo:reference id="emailService" interface="com.zhen.base.service.email.IEmailService" timeout="30000"/>
 
-	
+    <dubbo:reference id="demoServiceTwo" interface="com.zhen.base.service.demo.IDemoServiceTwo" timeout="30000"/>
+
+
 
 </beans>

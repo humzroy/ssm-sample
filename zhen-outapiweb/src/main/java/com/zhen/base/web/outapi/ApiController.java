@@ -59,7 +59,23 @@ public class ApiController {
     public String testException() {
         String exceptionStackTrace = "监测到异常：\n";
         try {
-            demoService.testException();
+            demoService.testException2();
+        } catch (Exception e) {
+            exceptionStackTrace += ExceptionUtil.getStackTrace(e);
+            logger.error("监测到异常！" + ExceptionUtil.getStackTrace(e));
+        }
+        return exceptionStackTrace;
+    }
+
+    /**
+     * 测试回滚
+     * @return
+     */
+    @RequestMapping(value = "testRollBack", method = RequestMethod.GET)
+    public String testRollBack() {
+        String exceptionStackTrace = "监测到异常：\n";
+        try {
+            demoService.testRollBack();
         } catch (Exception e) {
             exceptionStackTrace += ExceptionUtil.getStackTrace(e);
             logger.error("监测到异常！" + ExceptionUtil.getStackTrace(e));

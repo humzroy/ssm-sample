@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhen.base.dao.generator.WmsHundsunTradeResultMapper">
+  <resultMap id="BaseResultMap" type="com.zhen.base.domain.generator.WmsHundsunTradeResult">
+    <id column="TRAN_CODE" jdbcType="VARCHAR" property="tranCode" />
+    <result column="DEDUCT_STATUS" jdbcType="VARCHAR" property="deductStatus" />
+    <result column="ALLOT_NO" jdbcType="VARCHAR" property="allotNo" />
+    <result column="APPLY_DATE" jdbcType="VARCHAR" property="applyDate" />
+    <result column="ACCEPT_TIME" jdbcType="VARCHAR" property="acceptTime" />
+    <result column="CLIENT_ID" jdbcType="VARCHAR" property="clientId" />
+    <result column="TRADE_ACCO" jdbcType="VARCHAR" property="tradeAcco" />
+    <result column="FUND_CODE" jdbcType="VARCHAR" property="fundCode" />
+    <result column="CONFIRM_FLAG" jdbcType="VARCHAR" property="confirmFlag" />
+    <result column="ORIGINAL_APPNO" jdbcType="VARCHAR" property="originalAppno" />
+    <result column="ORIGINAL_DATE" jdbcType="VARCHAR" property="originalDate" />
+    <result column="SEND_FLAGS" jdbcType="VARCHAR" property="sendFlags" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    TRAN_CODE, DEDUCT_STATUS, ALLOT_NO, APPLY_DATE, ACCEPT_TIME, CLIENT_ID, TRADE_ACCO, 
+    FUND_CODE, CONFIRM_FLAG, ORIGINAL_APPNO, ORIGINAL_DATE, SEND_FLAGS
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from WMS_HUNDSUN_TRADE_RESULT
+    where TRAN_CODE = #{tranCode,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from WMS_HUNDSUN_TRADE_RESULT
+    where TRAN_CODE = #{tranCode,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.zhen.base.domain.generator.WmsHundsunTradeResult">
+    insert into WMS_HUNDSUN_TRADE_RESULT (TRAN_CODE, DEDUCT_STATUS, ALLOT_NO, 
+      APPLY_DATE, ACCEPT_TIME, CLIENT_ID, 
+      TRADE_ACCO, FUND_CODE, CONFIRM_FLAG, 
+      ORIGINAL_APPNO, ORIGINAL_DATE, SEND_FLAGS
+      )
+    values (#{tranCode,jdbcType=VARCHAR}, #{deductStatus,jdbcType=VARCHAR}, #{allotNo,jdbcType=VARCHAR}, 
+      #{applyDate,jdbcType=VARCHAR}, #{acceptTime,jdbcType=VARCHAR}, #{clientId,jdbcType=VARCHAR}, 
+      #{tradeAcco,jdbcType=VARCHAR}, #{fundCode,jdbcType=VARCHAR}, #{confirmFlag,jdbcType=VARCHAR}, 
+      #{originalAppno,jdbcType=VARCHAR}, #{originalDate,jdbcType=VARCHAR}, #{sendFlags,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhen.base.domain.generator.WmsHundsunTradeResult">
+    insert into WMS_HUNDSUN_TRADE_RESULT
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tranCode != null">
+        TRAN_CODE,
+      </if>
+      <if test="deductStatus != null">
+        DEDUCT_STATUS,
+      </if>
+      <if test="allotNo != null">
+        ALLOT_NO,
+      </if>
+      <if test="applyDate != null">
+        APPLY_DATE,
+      </if>
+      <if test="acceptTime != null">
+        ACCEPT_TIME,
+      </if>
+      <if test="clientId != null">
+        CLIENT_ID,
+      </if>
+      <if test="tradeAcco != null">
+        TRADE_ACCO,
+      </if>
+      <if test="fundCode != null">
+        FUND_CODE,
+      </if>
+      <if test="confirmFlag != null">
+        CONFIRM_FLAG,
+      </if>
+      <if test="originalAppno != null">
+        ORIGINAL_APPNO,
+      </if>
+      <if test="originalDate != null">
+        ORIGINAL_DATE,
+      </if>
+      <if test="sendFlags != null">
+        SEND_FLAGS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tranCode != null">
+        #{tranCode,jdbcType=VARCHAR},
+      </if>
+      <if test="deductStatus != null">
+        #{deductStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="allotNo != null">
+        #{allotNo,jdbcType=VARCHAR},
+      </if>
+      <if test="applyDate != null">
+        #{applyDate,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptTime != null">
+        #{acceptTime,jdbcType=VARCHAR},
+      </if>
+      <if test="clientId != null">
+        #{clientId,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeAcco != null">
+        #{tradeAcco,jdbcType=VARCHAR},
+      </if>
+      <if test="fundCode != null">
+        #{fundCode,jdbcType=VARCHAR},
+      </if>
+      <if test="confirmFlag != null">
+        #{confirmFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="originalAppno != null">
+        #{originalAppno,jdbcType=VARCHAR},
+      </if>
+      <if test="originalDate != null">
+        #{originalDate,jdbcType=VARCHAR},
+      </if>
+      <if test="sendFlags != null">
+        #{sendFlags,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhen.base.domain.generator.WmsHundsunTradeResult">
+    update WMS_HUNDSUN_TRADE_RESULT
+    <set>
+      <if test="deductStatus != null">
+        DEDUCT_STATUS = #{deductStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="allotNo != null">
+        ALLOT_NO = #{allotNo,jdbcType=VARCHAR},
+      </if>
+      <if test="applyDate != null">
+        APPLY_DATE = #{applyDate,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptTime != null">
+        ACCEPT_TIME = #{acceptTime,jdbcType=VARCHAR},
+      </if>
+      <if test="clientId != null">
+        CLIENT_ID = #{clientId,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeAcco != null">
+        TRADE_ACCO = #{tradeAcco,jdbcType=VARCHAR},
+      </if>
+      <if test="fundCode != null">
+        FUND_CODE = #{fundCode,jdbcType=VARCHAR},
+      </if>
+      <if test="confirmFlag != null">
+        CONFIRM_FLAG = #{confirmFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="originalAppno != null">
+        ORIGINAL_APPNO = #{originalAppno,jdbcType=VARCHAR},
+      </if>
+      <if test="originalDate != null">
+        ORIGINAL_DATE = #{originalDate,jdbcType=VARCHAR},
+      </if>
+      <if test="sendFlags != null">
+        SEND_FLAGS = #{sendFlags,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where TRAN_CODE = #{tranCode,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhen.base.domain.generator.WmsHundsunTradeResult">
+    update WMS_HUNDSUN_TRADE_RESULT
+    set DEDUCT_STATUS = #{deductStatus,jdbcType=VARCHAR},
+      ALLOT_NO = #{allotNo,jdbcType=VARCHAR},
+      APPLY_DATE = #{applyDate,jdbcType=VARCHAR},
+      ACCEPT_TIME = #{acceptTime,jdbcType=VARCHAR},
+      CLIENT_ID = #{clientId,jdbcType=VARCHAR},
+      TRADE_ACCO = #{tradeAcco,jdbcType=VARCHAR},
+      FUND_CODE = #{fundCode,jdbcType=VARCHAR},
+      CONFIRM_FLAG = #{confirmFlag,jdbcType=VARCHAR},
+      ORIGINAL_APPNO = #{originalAppno,jdbcType=VARCHAR},
+      ORIGINAL_DATE = #{originalDate,jdbcType=VARCHAR},
+      SEND_FLAGS = #{sendFlags,jdbcType=VARCHAR}
+    where TRAN_CODE = #{tranCode,jdbcType=VARCHAR}
+  </update>
+</mapper>

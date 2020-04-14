@@ -9,6 +9,7 @@
 	<dubbo:reference id="loginService" interface="com.zhen.base.service.ILoginService" timeout="30000"/>
 	<dubbo:reference id="jmsSenderService" interface="com.zhen.base.service.jms.IJmsSenderService" timeout="30000"/>
 	<dubbo:reference id="demoService" interface="com.zhen.base.service.demo.IDemoService" timeout="30000"/>
+    <dubbo:reference id="demoServiceTwo" interface="com.zhen.base.service.demo.IDemoServiceTwo" timeout="30000"/>
 
 
 </beans>

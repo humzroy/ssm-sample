@@ -46,12 +46,12 @@ public class OSSDemo {
      */
     private static void uploadFileTest(String endpoint, String accessKeyID, String accessKeySecret, String bucketName, String filedir) throws Exception {
         OSSClientUtil client = new OSSClientUtil(endpoint, accessKeyID, accessKeySecret, bucketName, filedir);
-        InputStream inputStream = new FileInputStream("E:\\img\\avatar1.jpg");
-        String ret = client.uploadFile2OSS(inputStream, "demo/test5.jpg");
-        System.out.println(ret);
-        // client.deleteFile("demo/test2.jpg");
-        // String url = client.getImgUrl("20170202203226_h45n3.thumb.700_0.jpeg");
-        // System.out.println(url);
+        // InputStream inputStream = new FileInputStream("D:\\test\\imag\\timg.jpg");
+        // String ret = client.uploadFile2OSS(inputStream, "demo/图片.jpg");
+        // System.out.println(ret);
+        client.deleteFile("demo/test2.jpg");
+        String url = client.getImgUrl("图片.jpeg");
+        System.out.println(url);
     }
 
 

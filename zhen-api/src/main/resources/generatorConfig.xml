@@ -92,7 +92,7 @@
         tableName:指定了表名
         domainObjectName:指定了实体类的名称,可以去掉domainObjectName="False_comment"
         -->
-        <table tableName="%"
+        <table tableName="s_sign_info"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"

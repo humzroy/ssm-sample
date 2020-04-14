@@ -13,6 +13,7 @@
 	<dubbo:service interface="com.zhen.base.service.demo.IDemoService" ref="demoServiceImpl"/>
     <dubbo:service interface="com.zhen.base.service.mybatisplus.MybatisPlusUserService" ref="mybatisPlusUserServiceImpl"/>
     <dubbo:service interface="com.zhen.base.service.email.IEmailService" ref="emailServiceImpl"/>
+    <dubbo:service interface="com.zhen.base.service.demo.IDemoServiceTwo" ref="demoServiceTwoImpl"/>
 
 
 

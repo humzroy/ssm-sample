@@ -1,8 +1,11 @@
 package com.zhen.base.web.outapi;
 
+import com.alibaba.fastjson.JSON;
 import com.zhen.base.domain.mybatisplus.User;
+import com.zhen.base.domain.require.Customer;
 import com.zhen.base.service.demo.IDemoService;
 import com.zhen.base.service.mybatisplus.MybatisPlusUserService;
+import com.zhen.base.web.util.RequireFieldsUtil;
 import com.zhen.common.master.BaseResult;
 import com.zhen.util.ExceptionUtil;
 import org.slf4j.Logger;
@@ -69,6 +72,7 @@ public class ApiController {
 
     /**
      * 测试回滚
+     *
      * @return
      */
     @RequestMapping(value = "testRollBack", method = RequestMethod.GET)
@@ -117,6 +121,30 @@ public class ApiController {
         res.setMessage("查询成功！");
         res.putValueToData("data", users);
 
+        return res;
+    }
+
+    /**
+     * 测试必输项
+     *
+     * @param reqJson
+     * @return
+     */
+    @RequestMapping(value = "testRequiredFields", method = RequestMethod.POST)
+    public BaseResult testRequiredFields(@RequestBody String reqJson) {
+        BaseResult res = BaseResult.createBaseResult();
+
+        Customer customer = JSON.parseObject(reqJson, Customer.class);
+        try {
+            RequireFieldsUtil.checkCusField(customer);
+            res.setMessage("200");
+            res.setMessage("成功！！！！");
+        } catch (Exception e) {
+            logger.error(ExceptionUtil.getStackTrace(e));
+            res.setSuccess(false);
+            res.setMessageCode("500");
+            res.setMessage(e.getMessage());
+        }
         return res;
     }
 }

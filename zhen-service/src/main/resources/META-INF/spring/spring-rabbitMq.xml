@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/rabbit
+       http://www.springframework.org/schema/rabbit/spring-rabbit-2.2.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <!--<util:properties id="appConfig" location="classpath:/META-INF/env/rabbit.properties"></util:properties>-->
+
+    <!--配置connection-factory，指定连接rabbit server参数-->
+    <!-- virtual-host="/"是默认的虚拟机路径-->
+    <!-- channel-cache-size，channel的缓存数量，默认值为25 -->
+    <!-- cache-mode，缓存连接模式，默认值为CHANNEL(单个connection连接，连接之后关闭，自动销毁) -->
+    <rabbit:connection-factory id="rmqConnectionFactory" host="${rmq.ip}" port="${rmq.port}"
+                               username="${rmq.manager.user}" password="${rmq.manager.password}" virtual-host="test"
+                               channel-cache-size="25"/>
+    <!--通过指定下面的admin信息，当前producer中的exchange和queue会在rabbitmq服务器上自动生成-->
+    <rabbit:admin connection-factory="rmqConnectionFactory"/>
+
+    <!-- 参数介绍:
+        name:queue的名字。
+        durable:是否为持久的。默认是true，RabbitMQ重启后queue依然存在。
+        auto-delete:表示消息队列没有在使用时将被自动删除。默认是false。
+        exclusive:表示该消息队列是否只在当前connection生效。默认false。
+    -->
+
+    <rabbit:queue id="METHOD_EVENT_DIRECT_QUEUE" name="METHOD_EVENT_DIRECT_QUEUE" durable="true" auto-delete="false"
+                  exclusive="false">
+        <!-- 对应的死信队列 -->
+        <rabbit:queue-arguments>
+            <!-- 超时时间为30分钟 单位是毫秒-->
+            <entry key="x-message-ttl" value="1800000" value-type="java.lang.Long"/>
+            <entry key="x-dead-letter-exchange" value="dlx.exchange"/>
+            <entry key="x-dead-letter-routing-key" value="routingKey"/>
+        </rabbit:queue-arguments>
+    </rabbit:queue>
+
+    <!-- 声明死信队列 -->
+    <rabbit:queue id="dlq.queue" name="dlq.queue" durable="true" auto-delete="false" exclusive="false"/>
+
+    <!--绑定队列,
+    rabbitmq的exchangeType常用的三种模式：direct，fanout，topic三种,
+    我们用direct模式，即rabbit:direct-exchange标签，
+    Direct交换器很简单，如果是Direct类型，就会将消息中的RoutingKey与该Exchange关联的所有Binding中的BindingKey进行比较，如果相等，则发送到该Binding对应的Queue中。
+    有一个需要注意的地方：如果找不到指定的exchange，就会报错。
+    但routing key找不到的话，不会报错，这条消息会直接丢失，所以此处要小心,
+    auto-delete:自动删除，如果为Yes，则该交换机所有队列queue删除后，自动删除交换机，默认为false -->
+    <!-- 参数介绍:
+		name:exchange的名字。
+		durable:是否为持久的，默认为true，RabbitMQ重启后exhange依然存在。
+		auto-delete:表示exchange在未被使用时是否自动删除，默认是false。
+		key:queue在该direct-exchange中的key值。当消息发送给该direct-exchange中指定key为设置值时，消息将会转发给queue参数指定的消息队列。(可以理解为就是routingkey)
+	 -->
+    <!-- 定义direct exchange，绑定METHOD_EVENT_DIRECT_EXCHANGE queue -->
+    <rabbit:direct-exchange name="METHOD_EVENT_DIRECT_EXCHANGE" durable="true" auto-delete="false">
+        <rabbit:bindings>
+            <rabbit:binding queue="METHOD_EVENT_DIRECT_QUEUE" key="METHOD_EVENT_DIRECT_ROUTING_KEY"></rabbit:binding>
+        </rabbit:bindings>
+    </rabbit:direct-exchange>
+
+    <!-- 死信队列绑定 -->
+    <rabbit:direct-exchange name="dlx.exchange" durable="true" auto-delete="false">
+        <rabbit:bindings>
+            <rabbit:binding queue="dlq.queue" key="bindingKey"></rabbit:binding>
+        </rabbit:bindings>
+    </rabbit:direct-exchange>
+
+
+    <!-- 定义fanout-exchange，绑定 queue -->
+    <!-- <rabbit:fanout-exchange name="">
+    	<rabbit:bindings>
+    		<rabbit:binding></rabbit:binding>
+    	</rabbit:bindings>
+    </rabbit:fanout-exchange> -->
+
+    <!--定义rabbit template用于数据的接收和发送-->
+    <rabbit:template id="amqpTemplate" connection-factory="rmqConnectionFactory" exchange="METHOD_EVENT_DIRECT_EXCHANGE"/>
+
+    <!-- 配置线程池 -->
+    <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <!-- 线程池维护线程的最少数量，核心线程数 -->
+        <property name="corePoolSize" value="5"/>
+        <!-- 线程池维护线程所允许的空闲时间  单位：秒-->
+        <property name="keepAliveSeconds" value="60"/>
+        <!-- 线程池维护线程的最大数量 -->
+        <property name="maxPoolSize" value="100"/>
+        <!-- 线程池所使用的缓冲队列 -->
+        <property name="queueCapacity" value="50"/>
+    </bean>
+
+    <!-- 消息接收者 -->
+    <bean id="msgConsumer" class="com.zhen.base.rabbitmq.consumer.queue.MsgConsumer"/>
+
+
+    <!-- queue litener 观察 监听模式 当有消息到达时会通知监听在对应的队列上的监听对象
+    acknowledge：auto 自动确认(默认), manual手动确认
+    concurrency：并发数量 ，设置的是对每个listener在初始化的时候设置的并发消费者的个数
+    prefetch 是每次从一次性从broker里面取的待消费的消息的个数
+   -->
+
+    <rabbit:listener-container connection-factory="rmqConnectionFactory" acknowledge="manual" task-executor="taskExecutor"
+                               concurrency="5" prefetch="5">
+        <rabbit:listener queues="METHOD_EVENT_DIRECT_QUEUE" ref="msgConsumer"/>
+    </rabbit:listener-container>
+
+</beans>

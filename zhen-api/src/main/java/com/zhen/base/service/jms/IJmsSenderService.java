@@ -40,4 +40,12 @@ public interface IJmsSenderService {
      * @param message 消息内容
      */
     void sendTopic(String name, final String message);
+
+
+    /**
+     * 发送rabbit mq 消息
+     * @param name
+     * @param message
+     */
+    void sendRabbitMqMsg(String name, final String message);
 }

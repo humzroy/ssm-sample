@@ -4,14 +4,43 @@
        xmlns:jms="http://www.springframework.org/schema/jms"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/jms
+        http://www.springframework.org/schema/jms/spring-jms-4.0.xsd
         http://activemq.apache.org/schema/core
         http://activemq.apache.org/schema/core/activemq-core-5.8.0.xsd">
 
+
     <!-- ActiveMQ 连接工厂 -->
     <!-- 真正可以产生Connection的ConnectionFactory，由对应的 JMS服务厂商提供-->
-    <!-- 如果连接网络：tcp://ip:61616；未连接网络：tcp://localhost:61616 以及用户名，密码-->
-    <!--amq:connectionFactory id="amqConnectionFactory" brokerURL="tcp://127.0.0.1:61616" userName="admin" password="admin"/>-->
-    <amq:connectionFactory id="amqConnectionFactory" brokerURL="${activemq.brokerURL}" alwaysSyncSend="true"/>
+    <!--<amq:connectionFactory id="amqConnectionFactory" brokerURL="${activemq.brokerUrl}" userName="${activemq.userName}" password="${activemq.password}" redeliveryPolicy="activeMQPolicy" />-->
+    <bean id="amqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <!-- ActiveMQ Address -->
+        <property name="brokerURL" value="${activemq.brokerURL}"></property>
+        <!--<property name="userName" value="${activemq.userName}"/>-->
+        <!--<property name="password" value="${activemq.password}"/>-->
+        <!-- 是否异步发送 -->
+        <property name="useAsyncSend" value="true"/>
+        <!-- 引用重发机制 -->
+        <property name="redeliveryPolicy" ref="activeMQRedeliveryPolicy"/>
+        <!-- 消息传输监听器 处理网络及服务器异常 -->
+        <!--<property name="transportListener">-->
+        <!--<bean class="com.schooling.activemq.ActiveMQTransportListener"/>-->
+        <!--</property>-->
+    </bean>
+    <!-- 定义ReDelivery(重发机制)机制 ，重发时间间隔是100毫秒，最大重发次数是3次 -->
+    <bean id="activeMQRedeliveryPolicy" class="org.apache.activemq.RedeliveryPolicy">
+        <!--是否在每次尝试重新发送失败后,增长这个等待时间 -->
+        <property name="useExponentialBackOff" value="true"/>
+        <!--重发次数,默认为6次 这里设置为2次 -->
+        <property name="maximumRedeliveries" value="2"/>
+        <!--重发时间间隔,默认为5秒，设置为1秒 -->
+        <property name="initialRedeliveryDelay" value="1000"/>
+        <!--第一次失败后重新发送之前等待500毫秒,第二次失败再等待500 * 2毫秒,这里的2就是value -->
+        <property name="backOffMultiplier" value="2"/>
+        <!--最大传送延迟，只在useExponentialBackOff为true时有效（V5.5），假设首次重连间隔为10ms，倍数为2，那么第二次重连时间间隔为 20ms，
+            第三次重连时间间隔为40ms，当重连时间间隔大的最大重连时间间隔时，以后每次重连时间间隔都为最大重连时间间隔。 -->
+        <property name="maximumRedeliveryDelay" value="1000"/>
+    </bean>
     <!-- Spring Caching连接工厂 -->
     <!-- Spring用于管理真正的ConnectionFactory的ConnectionFactory -->
     <bean id="connectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
@@ -22,13 +51,23 @@
         <!-- Session缓存数量 -->
         <property name="sessionCacheSize" value="100"/>
     </bean>
-    <!-- 点对点队列 -->
-    <bean id="defaultQueueDestination" class="org.apache.activemq.command.ActiveMQQueue">
-        <constructor-arg index="0" value="zhen.queue"/>
-    </bean>
-    <!-- Spring JmsTemplate 的消息生产者 start-->
+    <!--
+         ActiveMQ为我们提供了一个PooledConnectionFactory，通过往里面注入一个ActiveMQConnectionFactory
+         可以用来将Connection、Session和MessageProducer池化，这样可以大大的减少我们的资源消耗,要依赖于 activemq-pool包
+      -->
+    <!--<bean id="pooledConnectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory">-->
+        <!--<property name="connectionFactory" ref="targetConnectionFactory"/>-->
+        <!--<property name="maxConnections" value="${activemq.pool.maxConnections}"/>-->
+    <!--</bean>-->
 
-    <!-- 定义JmsTemplate的Queue类型 -->
+
+    <!-- 这个是目的地 -->
+    <bean id="defaultQueueDestination" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg index="0" value="${activemq.queueName}"/>
+    </bean>
+
+    <!-- Spring提供的JMS工具类，它可以进行消息发送、接收等 -->
+    <!-- 队列模板 -->
     <bean id="jmsQueueTemplate" class="org.springframework.jms.core.JmsTemplate">
         <!-- 这个connectionFactory对应的是我们定义的Spring提供的那个ConnectionFactory对象 -->
         <constructor-arg ref="connectionFactory"/>
@@ -47,12 +86,32 @@
     <!--Spring JmsTemplate 的消息生产者 end-->
 
     <!-- 消息消费者 start-->
+    <!-- 定义Queue监听器 方式1-->
+
+    <!--<jms:listener-container destination-type="queue" container-type="default" connection-factory="connectionFactory"-->
+    <!--acknowledge="auto">-->
+    <!--<jms:listener destination="zhen.queue" ref="queueReceiver1"/>-->
+    <!--&lt;!&ndash;<jms:listener destination="zhen.queue" ref="queueReceiver2"/>&ndash;&gt;-->
+    <!--</jms:listener-container>-->
+
+    <!-- 定义Topic监听器 -->
+    <!--<jms:listener-container destination-type="topic" container-type="default" connection-factory="connectionFactory"-->
+    <!--acknowledge="auto">-->
+    <!--<jms:listener destination="zhen.topic" ref="topicReceiver1"/>-->
+    <!--<jms:listener destination="zhen.topic" ref="topicReceiver2"/>-->
+    <!--</jms:listener-container>-->
+
+    <!-- 方式2-->
+    <!-- 配置自定义监听：MessageListener -->
     <bean id="defaultMessageQueueListener" class="com.zhen.base.mq.consumer.queue.DefaultMessageQueueListener"/>
+    <!-- 将连接工厂、目标对了、自定义监听注入jms模板 -->
     <bean id="jmsContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
         <property name="connectionFactory" ref="connectionFactory"/>
         <property name="destination" ref="defaultQueueDestination"/>
         <property name="messageListener" ref="defaultMessageQueueListener"/>
         <property name="sessionTransacted" value="true"/>
+        <!--应答模式是 INDIVIDUAL_ACKNOWLEDGE-->
+        <property name="sessionAcknowledgeMode" value="4"/>
         <!--<property name="concurrency" value="4-10"/>-->
     </bean>
     <!-- 消息消费者 end -->

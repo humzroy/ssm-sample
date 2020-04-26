@@ -24,6 +24,7 @@
                 <value>file:${CONF_HOME}/redis.properties</value>
                 <value>file:${CONF_HOME}/activemq.properties</value>
                 <value>file:${CONF_HOME}/email.properties</value>
+                <value>file:${CONF_HOME}/rabbitmq.properties</value>
             </list>
         </property>
     </bean>

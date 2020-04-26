@@ -1,7 +1,7 @@
 package com.zhen.base.service.jms;
 
 import com.zhen.base.service.jms.activemq.MQProducer;
-import com.zhen.base.service.jms.rabbitmq.MsgProducer;
+import com.zhen.base.service.jms.rabbitmq.RmqMsgProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +17,7 @@ public class JmsSenderServiceImpl implements IJmsSenderService {
     @Autowired
     private MQProducer producer;
     @Autowired
-    private MsgProducer msgProducer;
+    private RmqMsgProducer rmqMsgProducer;
 
     /**
      * 一对一消息方法
@@ -71,6 +71,6 @@ public class JmsSenderServiceImpl implements IJmsSenderService {
      */
     @Override
     public void sendRabbitMqMsg(String name, String message) {
-        msgProducer.sendMsg(name, message);
+        rmqMsgProducer.sendMsg(name, message);
     }
 }

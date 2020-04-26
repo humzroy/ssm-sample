@@ -15,11 +15,11 @@ import javax.annotation.Resource;
  * @Version 1.0
  */
 @Component
-public class MsgProducer {
+public class RmqMsgProducer {
     /**
      * logger
      */
-    private static final Logger logger = LoggerFactory.getLogger(MsgProducer.class);
+    private static final Logger logger = LoggerFactory.getLogger(RmqMsgProducer.class);
 
     // 两种获取amqpTemplate方法；一种是注入；另一种是通过加载application-mq.xml文件；
     @Resource

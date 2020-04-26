@@ -9,17 +9,17 @@ import org.springframework.amqp.rabbit.listener.api.ChannelAwareMessageListener;
 import java.nio.charset.StandardCharsets;
 
 /**
- * @ClassName MsgConsumer
+ * @ClassName RmqMsgConsumer
  * @Description RabbitMq 消息消费者
  * @Author wuhengzhen
  * @Date 2020-04-26 16:48
  * @Version 1.0
  */
-public class MsgConsumer implements ChannelAwareMessageListener {
+public class RmqMsgConsumer implements ChannelAwareMessageListener {
     /**
      * logger
      */
-    private static final Logger logger = LoggerFactory.getLogger(MsgConsumer.class);
+    private static final Logger logger = LoggerFactory.getLogger(RmqMsgConsumer.class);
 
     @Override
     public void onMessage(Message message, Channel channel) throws Exception {

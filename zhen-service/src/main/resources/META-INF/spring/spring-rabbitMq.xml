@@ -13,6 +13,7 @@
 
     <!--<util:properties id="appConfig" location="classpath:/META-INF/env/rabbit.properties"></util:properties>-->
 
+    <!--Rabbit MQ 安装好后，参照:https://blog.csdn.net/u013177381/article/details/74011645 进行一个简单的配置。-->
     <!--配置connection-factory，指定连接rabbit server参数-->
     <!-- virtual-host="/"是默认的虚拟机路径-->
     <!-- channel-cache-size，channel的缓存数量，默认值为25 -->

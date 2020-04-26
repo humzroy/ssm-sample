@@ -83,7 +83,7 @@
     <rabbit:template id="amqpTemplate" connection-factory="rmqConnectionFactory" exchange="METHOD_EVENT_DIRECT_EXCHANGE"/>
 
     <!-- 配置线程池 -->
-    <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+    <bean id="rmqTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
         <!-- 线程池维护线程的最少数量，核心线程数 -->
         <property name="corePoolSize" value="5"/>
         <!-- 线程池维护线程所允许的空闲时间  单位：秒-->
@@ -104,7 +104,7 @@
     prefetch 是每次从一次性从broker里面取的待消费的消息的个数
    -->
 
-    <rabbit:listener-container connection-factory="rmqConnectionFactory" acknowledge="manual" task-executor="taskExecutor"
+    <rabbit:listener-container connection-factory="rmqConnectionFactory" acknowledge="manual" task-executor="rmqTaskExecutor"
                                concurrency="5" prefetch="5">
         <rabbit:listener queues="METHOD_EVENT_DIRECT_QUEUE" ref="msgConsumer"/>
     </rabbit:listener-container>

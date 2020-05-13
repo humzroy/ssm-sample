@@ -1,12 +1,14 @@
 package com.zhen.util;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.serializer.SimpleDateFormatSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.sf.json.JSONArray;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -117,6 +119,24 @@ public class JsonUtil {
             arr[i] = jsonArray.getString(i);
         }
         return arr;
+    }
+
+    /**
+     * 判断是不是json格式
+     *
+     * @param json
+     * @return
+     */
+    public static boolean isJson(String json) {
+        if (StringUtils.isBlank(json)) {
+            return false;
+        }
+        try {
+            JSON.parseObject(json);
+        } catch (JSONException e) {
+            return false;
+        }
+        return true;
     }
 
     public static void main(String[] args) {

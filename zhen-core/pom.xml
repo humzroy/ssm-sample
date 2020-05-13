@@ -662,6 +662,13 @@
         </dependency>
         <!-- rabbit mq end -->
 
+        <!-- https://mvnrepository.com/artifact/org.csource/fastdfs-client-java -->
+        <dependency>
+            <groupId>org.csource</groupId>
+            <artifactId>fastdfs_client</artifactId>
+            <version>v1.20</version>
+        </dependency>
+
 
 
     </dependencies>

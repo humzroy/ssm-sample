@@ -666,9 +666,20 @@
         <dependency>
             <groupId>org.csource</groupId>
             <artifactId>fastdfs_client</artifactId>
-            <version>v1.20</version>
+            <version>v1.24</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.vdurmont</groupId>
+            <artifactId>emoji-java</artifactId>
+            <version>5.1.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.binarywang</groupId>
+            <artifactId>java-emoji-converter</artifactId>
+            <version>1.0.1</version>
+        </dependency>
 
 
     </dependencies>

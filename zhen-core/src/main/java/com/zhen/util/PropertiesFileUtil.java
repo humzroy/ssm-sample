@@ -77,8 +77,7 @@ public class PropertiesFileUtil {
      */
     public String get(String key) {
         try {
-            String value = resourceBundle.getString(key);
-            return value;
+            return resourceBundle.getString(key);
         } catch (MissingResourceException e) {
             return "";
         }
@@ -122,9 +121,9 @@ public class PropertiesFileUtil {
     }
 
     /**
-     * @param propertiesFilename
-     * @param property
-     * @param vm
+     * @param propertiesFilename 资源文件名称
+     * @param property           属性key值
+     * @param vm                 jvm参数
      * @return
      */
     public static String readPropertiesFromfiles(String propertiesFilename, String property, String vm) {

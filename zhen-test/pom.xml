@@ -12,5 +12,12 @@
 
     <artifactId>zhen-test</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.zhen</groupId>
+            <artifactId>zhen-core</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
 </project>

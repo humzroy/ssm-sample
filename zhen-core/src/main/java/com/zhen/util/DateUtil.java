@@ -2,6 +2,7 @@ package com.zhen.util;
 
 
 import com.google.common.collect.ImmutableMap;
+import com.zhen.date.EnumDateStyle;
 import jodd.datetime.JDateTime;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -642,6 +643,188 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
         }
         return returnStr;
     }
+
+
+    /**
+     * 把String 日期转换成long型日期
+     *
+     * @param date   String 型日期；
+     * @param format 日期格式；
+     * @return
+     */
+    public static long stringToLong(String date, String format) {
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        Date dt2 = null;
+        long lTime = 0;
+        try {
+            dt2 = sdf.parse(date);
+            // 继续转换得到秒数的long型
+            lTime = dt2.getTime() / 1000;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return lTime;
+    }
+
+    /**
+     * 获取SimpleDateFormat
+     *
+     * @param parttern 日期格式
+     * @return SimpleDateFormat对象
+     * @throws RuntimeException 异常：非法日期格式
+     */
+    public static SimpleDateFormat getDateFormat(String parttern) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(parttern);
+        return simpleDateFormat;
+    }
+
+    /**
+     * 将日期字符串转化为日期。失败返回null。
+     *
+     * @param date 日期字符串
+     * @return 日期
+     */
+    public static Date StringToDate(String date) {
+        EnumDateStyle EnumDateStyle = null;
+        return StringToDate(date, EnumDateStyle);
+    }
+
+    /**
+     * 将日期字符串转化为日期。失败返回null。
+     *
+     * @param date     日期字符串
+     * @param parttern 日期格式
+     * @return 日期
+     */
+    public static Date StringToDate(String date, String parttern) {
+        Date myDate = null;
+        if (date != null) {
+            try {
+                myDate = getDateFormat(parttern).parse(date);
+            } catch (Exception e) {
+            }
+        }
+        return myDate;
+    }
+
+    /**
+     * 将日期字符串转化为日期。失败返回null。
+     *
+     * @param date          日期字符串
+     * @param enumDateStyle 日期风格
+     * @return 日期
+     */
+    public static Date StringToDate(String date, EnumDateStyle enumDateStyle) {
+        Date myDate = null;
+        if (enumDateStyle == null) {
+            List<Long> timestamps = new ArrayList<Long>();
+            for (EnumDateStyle style : enumDateStyle.values()) {
+                Date dateTmp = StringToDate(date, style.getValue());
+                if (dateTmp != null) {
+                    timestamps.add(dateTmp.getTime());
+                }
+            }
+            myDate = getAccurateDate(timestamps);
+        } else {
+            myDate = StringToDate(date, enumDateStyle.getValue());
+        }
+        return myDate;
+    }
+    /**
+     * 获取精确的日期
+     *
+     * @param timestamps 时间long集合
+     * @return 日期
+     */
+    private static Date getAccurateDate(List<Long> timestamps) {
+        Date date = null;
+        long timestamp = 0;
+        Map<Long, long[]> map = new HashMap<Long, long[]>();
+        List<Long> absoluteValues = new ArrayList<Long>();
+
+        if (timestamps != null && timestamps.size() > 0) {
+            if (timestamps.size() > 1) {
+                for (int i = 0; i < timestamps.size(); i++) {
+                    for (int j = i + 1; j < timestamps.size(); j++) {
+                        long absoluteValue = Math.abs(timestamps.get(i) - timestamps.get(j));
+                        absoluteValues.add(absoluteValue);
+                        long[] timestampTmp = {timestamps.get(i), timestamps.get(j)};
+                        map.put(absoluteValue, timestampTmp);
+                    }
+                }
+
+                // 有可能有相等的情况。如2012-11和2012-11-01。时间戳是相等的
+                long minAbsoluteValue = -1;
+                if (!absoluteValues.isEmpty()) {
+                    // 如果timestamps的size为2，这是差值只有一个，因此要给默认值
+                    minAbsoluteValue = absoluteValues.get(0);
+                }
+                for (int i = 0; i < absoluteValues.size(); i++) {
+                    for (int j = i + 1; j < absoluteValues.size(); j++) {
+                        if (absoluteValues.get(i) > absoluteValues.get(j)) {
+                            minAbsoluteValue = absoluteValues.get(j);
+                        } else {
+                            minAbsoluteValue = absoluteValues.get(i);
+                        }
+                    }
+                }
+
+                if (minAbsoluteValue != -1) {
+                    long[] timestampsLastTmp = map.get(minAbsoluteValue);
+                    if (absoluteValues.size() > 1) {
+                        timestamp = Math.max(timestampsLastTmp[0], timestampsLastTmp[1]);
+                    } else if (absoluteValues.size() == 1) {
+                        // 当timestamps的size为2，需要与当前时间作为参照
+                        long dateOne = timestampsLastTmp[0];
+                        long dateTwo = timestampsLastTmp[1];
+                        if ((Math.abs(dateOne - dateTwo)) < 100000000000L) {
+                            timestamp = Math.max(timestampsLastTmp[0], timestampsLastTmp[1]);
+                        } else {
+                            long now = new Date().getTime();
+                            if (Math.abs(dateOne - now) <= Math.abs(dateTwo - now)) {
+                                timestamp = dateOne;
+                            } else {
+                                timestamp = dateTwo;
+                            }
+                        }
+                    }
+                }
+            } else {
+                timestamp = timestamps.get(0);
+            }
+        }
+
+        if (timestamp != 0) {
+            date = new Date(timestamp);
+        }
+        return date;
+    }
+
+    /**
+     * 得到二个日期间的间隔日期；
+     *
+     * @param endTime   结束时间
+     * @param beginTime 开始时间
+     * @param isEndTime 是否包含结束日期；
+     * @return
+     */
+    public static Integer getTwoDayInterval(String endTime, String beginTime, boolean isEndTime) {
+        if ((endTime == null || endTime.equals("") || (beginTime == null || beginTime.equals(""))))
+            return 0;
+        long day = 0l;
+        try {
+            SimpleDateFormat ymdSDF = new SimpleDateFormat("yyyy-MM-dd");
+            java.util.Date date = ymdSDF.parse(endTime);
+            endTime = ymdSDF.format(date);
+            java.util.Date mydate = ymdSDF.parse(beginTime);
+            day = (date.getTime() - mydate.getTime()) / (24 * 60 * 60 * 1000);
+        } catch (Exception e) {
+            return 0;
+        }
+        return Integer.parseInt(day + "");
+    }
+
 
     public static void main(String[] args) {
         System.out.println(getCurrentDateTime());

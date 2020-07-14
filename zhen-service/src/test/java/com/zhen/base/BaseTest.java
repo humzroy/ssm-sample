@@ -4,25 +4,30 @@ import cn.hutool.core.util.ArrayUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.github.binarywang.java.emoji.EmojiConverter;
 import com.jcraft.jsch.ChannelSftp;
+import com.vdurmont.emoji.EmojiManager;
+import com.vdurmont.emoji.EmojiParser;
 import com.zhen.exception.BusinessException;
 import com.zhen.util.*;
 import io.github.biezhi.ome.OhMyEmail;
 import io.github.biezhi.ome.SendMailException;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
-import java.security.NoSuchAlgorithmException;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.*;
@@ -42,15 +47,16 @@ public class BaseTest {
     private static final Logger logger = LoggerFactory.getLogger(BaseTest.class);
     private static final DecimalFormat df = new DecimalFormat("#0.00");
     public static final String CONF_HOME = "";
+    private EmojiConverter emojiConverter = EmojiConverter.getInstance();
 
     @Before
-    public void before() throws Exception {
+    public void before() {
         OhMyEmail.config(OhMyEmail.SMTP_163(false), "wu_worktest@163.com", "123456a");
 
     }
 
     @After
-    public void after() throws Exception {
+    public void after() {
     }
 
     // public <T> T getBean(Class<T> type) {
@@ -75,7 +81,7 @@ public class BaseTest {
     // ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     @Test
-    public void test() throws Exception {
+    public void test() {
 
         // System.out.println("211476b12b1d48cabf0b15abd473351b".length());
         // int i = 8;
@@ -129,12 +135,9 @@ public class BaseTest {
 
     /**
      * MD5
-     *
-     * @throws UnsupportedEncodingException
-     * @throws NoSuchAlgorithmException
      */
     @Test
-    public void testMD5() throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    public void testMD5() {
         // String password = "admin";
         // String md5salt = MD5Util.getMd5Salt(password);
         // System.out.println(md5salt);
@@ -161,7 +164,7 @@ public class BaseTest {
 
 
     @Test
-    public void testMd5() throws NoSuchAlgorithmException {
+    public void testMd5() {
         // System.out.println(MD5Util.addSalt("admin"));
         // 2ZKzfby13j8E468c
         // 726bZ8fK06z3ef6ebb3y8e1be3f5ja183fEf54826af8c8c2
@@ -225,7 +228,7 @@ public class BaseTest {
                 "           ░     ░ ░      ░  ░\n";
 
         System.out.println(s);
-        System.out.println(Base64Util.encryptBASE64(s.getBytes("utf-8")));
+        System.out.println(Base64Util.encryptBASE64(s.getBytes(StandardCharsets.UTF_8)));
 
 
         String base64fozu = "Li4uLi4uLi4uLi4uLi4uLi4uLuaIkeS9m+aFiOaCsi4uLi4uLi4uLi4uLi4uLi4uLi4KICAgICAg\n" +
@@ -350,7 +353,7 @@ public class BaseTest {
                 System.out.println(filename);
             }
             System.out.println(fileList.size());
-            logger.info("===========================: "+ArrayUtil.toString(fileList));
+            logger.info("===========================: " + ArrayUtil.toString(fileList));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -454,41 +457,12 @@ public class BaseTest {
     }
 
 
-    /**
-     * @description：精度处理
-     * @author：wuhengzhen
-     * @date：2019/10/30 10:58
-     **/
-    private String dealPrecision(BigDecimal weight) {
-        String res;
-        if (weight == null) {
-            return "";
-        }
-        int compareResultA;
-        int compareResultB;
-        if (weight.compareTo(BigDecimal.ONE) > 0) {
-            compareResultA = weight.compareTo(new BigDecimal("100"));
-            compareResultB = weight.compareTo(new BigDecimal("99.99"));
-            if (compareResultA < 0 && compareResultB > 0) {
-                // 大于99.99 但 小于100，约等于99.99
-                weight = new BigDecimal("99.99");
-                res = "≈" + weight.toPlainString();
-            } else {
-                res = df.format(weight);
-            }
+    @Test
+    public void testLx() {
+        String date = "2018.05";
 
-        } else {
-            compareResultA = weight.compareTo(BigDecimal.ZERO);
-            compareResultB = weight.compareTo(new BigDecimal("0.01"));
-            if (compareResultA > 0 && compareResultB < 0) {
-                // 大于0 但 小于0.01，约等于0.01
-                weight = new BigDecimal("0.01");
-                res = "≈" + weight.toPlainString();
-            } else {
-                res = df.format(weight);
-            }
-        }
-        return res;
+        System.out.println(date.substring(0, 4));
+
 
     }
 
@@ -533,5 +507,256 @@ public class BaseTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void testTime() {
+
+        String createTime = "1545791729";
+
+        // Long leave1 = DateUtil.stringToLong("2020-06-02 11:30:00", "yyyy-MM-dd HH:mm:ss");
+        // Long leave2 = DateUtil.stringToLong("2020-06-02 12:30:00", "yyyy-MM-dd HH:mm:ss");
+        //
+        // System.out.println(leave1 > leave2);
+        // System.out.println(leave1 < leave2);
+        //
+        //
+        // String date = "1525747565902";
+        //
+        // long ii = Long.parseLong(date);
+        // int ll = Integer.parseInt(ii / 1000 + "");
+        //
+        // System.out.println(ii);
+        // System.out.println(ll);
+
+    }
+
+    @Test
+    public void testEmoji() {
+        String ds = "1121";
+        String string = "\uE107啊\uE107\uE415\uE40C\uE412\uE409\uE410\uE40D\uE107阿萨德发\uE437\uE11B\uE11A\uE40E\uE40A\uE405\uE403\uE41D\uE14C\uE12F\uE34B\uE312\uE112秦莞尔";
+
+        // String string = "鬼脸 做鬼脸略略略 开玩笑 吐舌头 调皮 啦啦啦哈哈 哈哈哈 笑";
+        System.out.println(containsEmoji(string));
+        System.out.println(filterEmoji(string));
+
+        System.out.println(EmojiManager.containsEmoji(string));
+        System.out.println(EmojiParser.removeAllEmojis(string));
+
+    }
+
+
+    @Test
+    public void testEmojiStr() {
+        // String str = "An 😀awesome 😃string with a few 😉emojis!";
+        String str = "An 😀awesome 😃string with a few 😉emojis!       " + "🙅 🙆 💑 😃 😀 😉 ewerwewwwwwww";
+        System.out.println(EmojiManager.containsEmoji(str));
+        System.out.println(EmojiParser.removeAllEmojis(str));
+
+        System.out.println(emojiConverter.toAlias(str));
+    }
+
+
+    @Test
+    public void testToAlias() {
+        String str = "  An 😃😀awesome 😃😃string with a few 😃😉emojis!";
+        String alias = this.emojiConverter.toAlias(str);
+        System.out.println(str);
+        System.out.println("EmojiConverterTest.testToAlias()=====>");
+        System.out.println(alias);
+        Assert.assertEquals(
+                ":no_good: :ok_woman: :couple_with_heart:An :smiley::grinning:awesome :smiley::smiley:string with a few :smiley::wink:emojis!",
+                alias);
+    }
+
+    @Test
+    public void testToHtml() {
+        String str = "  An 😀😃awesome 😃😃string with a few 😉😃emojis!";
+        String result = this.emojiConverter.toHtml(str);
+        System.out.println(str);
+        System.out.println("EmojiConverterTest.testToHtml()=====>");
+        System.out.println(result);
+        Assert.assertEquals(
+                "&#128581; &#128582; &#128145;An &#128512;&#128515;awesome &#128515;&#128515;string with a few &#128521;&#128515;emojis!",
+                result);
+    }
+
+    @Test
+    public void testToUnicode() {
+        String str = "   :smiley: :grinning: :wink:";
+        String result = this.emojiConverter.toUnicode(str);
+        System.err.println(str);
+        System.err.println("EmojiConverterTest.testToUnicode()=====>");
+        System.err.println(result);
+        Assert.assertEquals("🙅 🙆 💑 😃 😀 😉", result);
+    }
+
+
+    public static boolean containsEmoji(String source) {
+        int len = source.length();
+        boolean isEmoji = false;
+        for (int i = 0; i < len; i++) {
+            char hs = source.charAt(i);
+            if (0xd800 <= hs && hs <= 0xdbff) {
+                if (source.length() > 1) {
+                    char ls = source.charAt(i + 1);
+                    int uc = ((hs - 0xd800) * 0x400) + (ls - 0xdc00) + 0x10000;
+                    if (0x1d000 <= uc && uc <= 0x1f77f) {
+                        return true;
+                    }
+                }
+            } else {
+                // non surrogate
+                if (0x2100 <= hs && hs <= 0x27ff && hs != 0x263b) {
+                    return true;
+                } else if (0x2B05 <= hs && hs <= 0x2b07) {
+                    return true;
+                } else if (0x2934 <= hs && hs <= 0x2935) {
+                    return true;
+                } else if (0x3297 <= hs && hs <= 0x3299) {
+                    return true;
+                } else if (hs == 0xa9 || hs == 0xae || hs == 0x303d
+                        || hs == 0x3030 || hs == 0x2b55 || hs == 0x2b1c
+                        || hs == 0x2b1b || hs == 0x2b50 || hs == 0x231a) {
+                    return true;
+                }
+                if (!isEmoji && source.length() > 1 && i < source.length() - 1) {
+                    char ls = source.charAt(i + 1);
+                    if (ls == 0x20e3) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return isEmoji;
+    }
+
+    private static boolean isEmojiCharacter(char codePoint) {
+        return (codePoint == 0x0) || (codePoint == 0x9) || (codePoint == 0xA)
+                || (codePoint == 0xD)
+                || ((codePoint >= 0x20) && (codePoint <= 0xD7FF))
+                || ((codePoint >= 0xE000) && (codePoint <= 0xFFFD))
+                || ((codePoint >= 0x10000) && (codePoint <= 0x10FFFF));
+    }
+
+    /**
+     * 过滤emoji 或者 其他非文字类型的字符
+     *
+     * @param source
+     * @return
+     */
+    public static String filterEmoji(String source) {
+        if (StringUtils.isBlank(source)) {
+            return source;
+        }
+        StringBuilder buf = null;
+        int len = source.length();
+        for (int i = 0; i < len; i++) {
+            char codePoint = source.charAt(i);
+            if (isEmojiCharacter(codePoint)) {
+                if (buf == null) {
+                    buf = new StringBuilder(source.length());
+                }
+                buf.append(codePoint);
+            }
+        }
+        if (buf == null) {
+            return source;
+        } else {
+            if (buf.length() == len) {
+                buf = null;
+                return source;
+            } else {
+                return buf.toString();
+            }
+        }
+    }
+
+
+    @Test
+    public void testStringUtils() {
+
+        String status = "return1";
+        String[] strings = ArrayUtils.toArray("return12", "return2", "return3", "return4", "return5", "close1", "close2", "close3", "close4", "close5");
+        System.out.println(StringUtils.containsAny(status, strings));
+
+    }
+
+    @Test
+    public void testStringUtils2() {
+        String a = null;
+        String b = "";
+        String c = "";
+
+
+        System.out.println(StringUtils.isNoneBlank(a, b, c));
+    }
+
+    @Test
+    public void testSort() {
+        List<Map<String, Object>> leaveList = new ArrayList<>();
+        Map<String, Object> map = new HashMap<>();
+        map.put("startDate", "2020-02-13");
+        map.put("endDate", "2020-02-15");
+        leaveList.add(map);
+
+        Map<String, Object> map1 = new HashMap<>();
+        map1.put("startDate", "2020-02-09");
+        map1.put("endDate", "2020-02-12");
+        leaveList.add(map1);
+
+        Map<String, Object> map2 = new HashMap<>();
+        map2.put("startDate", "2020-02-16");
+        map2.put("endDate", "2020-02-18");
+        leaveList.add(map2);
+
+        System.out.println("1:leaveList *********   " + leaveList.toString());
+
+        if (CollectionUtils.isNotEmpty(leaveList)) {
+
+            leaveList.sort((m1, m2) -> {
+                String startDate1 = (String) m1.get("startDate");
+                String startDate2 = (String) m2.get("startDate");
+                System.out.println(startDate1 + "  和  " + startDate2 + "   比较");
+                if (startDate1.equals(startDate2)) {
+                    System.out.println("0");
+                    return 0;
+                }
+                long startDate1TimeStamp = DateUtil.StringToDate(startDate1).getTime() / 1000;
+                long startDate2TimeStamp = DateUtil.StringToDate(startDate2).getTime() / 1000;
+                // System.out.println(startDate1TimeStamp + "    " + startDate2TimeStamp);
+                if (startDate1TimeStamp > startDate2TimeStamp) {
+                    System.out.println("1");
+                    return 1;
+                } else {
+                    System.out.println("-1");
+                    return -1;
+                }
+            });
+
+        }
+        System.out.println("2:leaveList *********   " + leaveList.toString());
+
+        caseFor:
+        while (true) {
+            break caseFor;
+
+        }
+    }
+
+    @Test
+    public void testInt() {
+
+        Integer a = 100;
+        Integer b = 100;
+
+        System.out.println(a == b);
+
+        Integer a1 = 130;
+        Integer b1 = 130;
+        System.out.println(a1 == b1);
+        System.out.println(a1.equals(b1));
+
+    }
+
 
 }

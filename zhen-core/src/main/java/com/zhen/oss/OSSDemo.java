@@ -21,7 +21,7 @@ public class OSSDemo {
         // 阿里云主账号AccessKey拥有所有API的访问权限，风险很高。强烈建议您创建并使用RAM账号进行API访问或日常运维，请登录 https://ram.console.aliyun.com 创建RAM账号。
         String accessKeyID = "你的AccessKey";
         // 这里是'apiuser'的权限
-        String accessKeySecret = "AyFTNNhAjGlN15vO1cq0r0JIvQNnZh";
+        String accessKeySecret = "你的accessKeySecret";
         // 存储空间
         String bucketName = "wuhengzhen-oss";
         // 文件目录

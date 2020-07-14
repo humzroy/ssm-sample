@@ -184,27 +184,7 @@ public class BaseTest {
         String paramName = "";
         JedisUtil jedisUtil = JedisUtil.getInstance();
         JedisUtil.Strings strings = jedisUtil.new Strings();
-        System.out.println(strings.get("wmsTRADE_DATA_DT"));
-        // jedisUtil.getJedis().del("wmswms-BastPath");
-        // System.out.println(strings.get("wmswms-BastPath"));
-        // JedisUtil.Hash hash = jedisUtil.new Hash();
         //
-        // byte[] bytes = hash.hget(SafeEncoder.encode("wmsadm_wms_params"), SafeEncoder.encode("RANK_CODE"));
-        // Map<String, List<AdmWmsParams>> listMap = (Map<String, List<AdmWmsParams>>) SerializeUtil.unserialize(bytes);
-        // System.out.println(listMap.toString());
-        // List<AdmWmsParams> admWmsParams = listMap.get("CN");
-        // if (CollectionUtils.isNotEmpty(admWmsParams)) {
-        //     long start = System.currentTimeMillis();
-        //     for (AdmWmsParams adm : admWmsParams) {
-        //         if ("R1".equalsIgnoreCase(adm.getParamCode())) {
-        //             paramName = adm.getParamName();
-        //             break;
-        //         }
-        //     }
-        //     long end = System.currentTimeMillis();
-        //     logger.info("完成，耗时：" + (end - start) + " ms");
-        // }
-        // System.out.println(paramName);
 
         // redis.set("name", "admin");
         // System.out.println(redis.get("name"));

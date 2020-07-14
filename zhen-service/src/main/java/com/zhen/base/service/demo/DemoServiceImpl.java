@@ -1,6 +1,5 @@
 package com.zhen.base.service.demo;
 
-import com.zhen.base.dao.generator.WmsHundsunTradeResultMapper;
 import com.zhen.base.dao.system.UserMapper;
 import com.zhen.base.domain.system.RequestLog;
 import com.zhen.base.domain.system.User;
@@ -18,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.Map;
 
@@ -34,8 +32,6 @@ public class DemoServiceImpl implements IDemoService {
 
     @Autowired
     private UserMapper userMapper;
-    @Autowired
-    private WmsHundsunTradeResultMapper wmsHundsunTradeResultMapper;
     @Autowired
     private IDemoServiceTwo demoServiceTwo;
 
@@ -94,20 +90,6 @@ public class DemoServiceImpl implements IDemoService {
         //user.setCreateTime(DateUtil.getCurrentDateTime());
         //user.setCreateUser("system");
         //userMapper.insertSelective(user);
-        // WmsHundsunTradeResult result = new WmsHundsunTradeResult();
-        // result.setTranCode("123");
-        // result.setDeductStatus("");
-        // result.setAllotNo("");
-        // result.setApplyDate("");
-        // result.setAcceptTime("");
-        // result.setClientId("");
-        // result.setTradeAcco("");
-        // result.setFundCode("");
-        // result.setConfirmFlag("");
-        // result.setOriginalAppno("");
-        // result.setOriginalDate("");
-        // result.setSendFlags("");
-        // wmsHundsunTradeResultMapper.insertSelective(result);
         //logger.info("insert！！！");
         try {
             int i = 1 / 0;

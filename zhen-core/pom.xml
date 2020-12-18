@@ -665,8 +665,8 @@
         <!-- https://mvnrepository.com/artifact/org.csource/fastdfs-client-java -->
         <dependency>
             <groupId>org.csource</groupId>
-            <artifactId>fastdfs_client</artifactId>
-            <version>v1.24</version>
+            <artifactId>fastdfs-client-java</artifactId>
+            <version>1.29-SNAPSHOT</version>
         </dependency>
 
         <dependency>

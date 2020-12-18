@@ -333,7 +333,7 @@ public class FileUtil {
         FileOutputStream fos = null;
         try {
             //用于https下载
-            URL url = new URL(null, urlStr, new Handler());
+            URL url = new URL(urlStr);
             logger.info("影像下载,包装后的url: " + url);
             conn = (HttpURLConnection) url.openConnection();
             //设置超时间为3秒
@@ -343,7 +343,7 @@ public class FileUtil {
 
             //得到输入流
             inputStream = conn.getInputStream();
-            //获取自己数组
+            //获取字节数组
             byte[] getData = readInputStream(inputStream);
 
             //文件保存位置
@@ -353,14 +353,14 @@ public class FileUtil {
             }
             File file = new File(saveDir + File.separator + fileName);
             if (file.exists()) {
-                logger.info("文件创建成功");
+                logger.info("文件已存在");
             } else {
-                logger.info("文件创建失败");
+                logger.info("文件不存在，开始创建");
+                fos = new FileOutputStream(file);
+                fos.write(getData);
+                fos.flush();
+                logger.info("影像下载成功");
             }
-            fos = new FileOutputStream(file);
-            fos.write(getData);
-            fos.flush();
-            logger.info("影像下载成功");
         } catch (Exception e) {
             logger.error("影像文件[" + urlStr + "]下载失败" + ExceptionUtil.getStackTrace(e));
         } finally {

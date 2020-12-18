@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.binarywang.java.emoji.EmojiConverter;
+import com.google.common.collect.Lists;
 import com.jcraft.jsch.ChannelSftp;
 import com.vdurmont.emoji.EmojiManager;
 import com.vdurmont.emoji.EmojiParser;
@@ -12,6 +13,7 @@ import com.zhen.exception.BusinessException;
 import com.zhen.util.*;
 import io.github.biezhi.ome.OhMyEmail;
 import io.github.biezhi.ome.SendMailException;
+import lombok.Data;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -24,6 +26,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
@@ -31,6 +35,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Base Tester.
@@ -510,19 +515,7 @@ public class BaseTest {
 
     }
 
-    @Test
-    public void testEmoji() {
-        String ds = "1121";
-        String string = "\uE107啊\uE107\uE415\uE40C\uE412\uE409\uE410\uE40D\uE107阿萨德发\uE437\uE11B\uE11A\uE40E\uE40A\uE405\uE403\uE41D\uE14C\uE12F\uE34B\uE312\uE112秦莞尔";
 
-        // String string = "鬼脸 做鬼脸略略略 开玩笑 吐舌头 调皮 啦啦啦哈哈 哈哈哈 笑";
-        System.out.println(containsEmoji(string));
-        System.out.println(filterEmoji(string));
-
-        System.out.println(EmojiManager.containsEmoji(string));
-        System.out.println(EmojiParser.removeAllEmojis(string));
-
-    }
 
 
     @Test
@@ -738,5 +731,139 @@ public class BaseTest {
 
     }
 
+    @Test
+    public void testList() {
+        List<String> users = Lists.newArrayList("a", "b", "c", "d");
+        List<String> remove = Lists.newArrayList("a", "b");
+        remove.forEach(s -> users.removeIf(s1 -> s1.equals(s)));
+
+        System.out.println(users);
+
+
+        System.out.println(StringUtils.join(users, ","));
+        String con = JSON.toJSONString(Lists.newArrayList("2asd-55a2sf"));
+
+        System.out.println(con);
+
+
+        List<String> tidList = JSON.parseArray(con, String.class);
+        System.out.println(tidList);
+
+        String json = "{\"msg\": \"Json Errorwwww\", \"stateNo\": 1001}";
+
+
+        JSONObject jsonObject = JSON.parseObject(json);
+        System.out.println(jsonObject.getString("stateNo"));
+
+        String regex = "[,，]";
+        String address = "地址1,  首地址，23";
+        // List<String> addressList = Lists.newArrayList();
+        List<String> addressList = Arrays.stream(address.split(regex)).map(String::trim).collect(Collectors.toList());
+
+        System.out.println(addressList.toString());
+    }
+
+    @Test
+    public void testCheckSymbol() {
+        String ss = "地址";
+        System.out.println(RegexUtil.checkSymbol(ss));
+
+
+    }
+
+
+    @Test
+    public void testStr() {
+        String str = "level_1";
+        System.out.println();
+
+        System.out.println(".... level" + (Integer.parseInt(str.substring(str.lastIndexOf('_') + 1))+1));
+
+
+        String rate = "80.99";
+
+        Demo demo = new Demo();
+        demo.setRate(new BigDecimal(rate));
+
+
+        System.out.println(JSON.toJSONString(demo));
+
+        String str2 = " 31d487f9-0fa6-4353-ae14-d814e929f3a6";
+        System.out.println(StringUtils.trim(str2));
+
+
+
+        //
+        List<Demo> demos = new ArrayList<>();
+        Demo demo2 = new Demo();
+        demo2.setRateStr(rate);
+        demos.add(demo2);
+        Demo demo3 = new Demo();
+        demo3.setRateStr("10");
+        demos.add(demo3);
+
+        Demo demo4 = new Demo();
+        demo4.setRateStr("");
+        demos.add(demo4);
+
+        Demo demo5 = new Demo();
+        demo5.setRate(BigDecimal.TEN);
+        demo5.setRateStr("");
+        demos.add(demo5);
+
+        BigDecimal result2 = demos.stream()
+                // 将user对象的age取出来map为Bigdecimal
+                .map(extVisitUserInfo -> StringUtils.isNotEmpty(extVisitUserInfo.getRateStr()) ? new BigDecimal(extVisitUserInfo.getRateStr()) : BigDecimal.ZERO)
+                // 使用reduce()聚合函数,实现累加器
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        System.out.println(result2);
+
+        List<Demo> strings = demos.stream().filter(extVisitUserInfo -> StringUtils.isEmpty(extVisitUserInfo.getRateStr())).collect(Collectors.toList());
+        System.out.println(strings.toString());
+        int s = (int) demos.stream().filter(extVisitUserInfo -> StringUtils.isEmpty(extVisitUserInfo.getRateStr())).count();
+        System.out.println(s);
+
+
+        BigDecimal averagePercent = (new BigDecimal("100").subtract(result2)).divide(new BigDecimal(s)).setScale(2,BigDecimal.ROUND_HALF_DOWN);
+        System.out.println(averagePercent);
+        System.out.println(new BigDecimal(0.359999).setScale(2, RoundingMode.DOWN));
+    }
+
+    @Data
+    class Demo {
+        private BigDecimal rate;
+        private String rateStr;
+    }
+
+    @Test
+    public void test22() {
+        String reqJson = "{\"operateType\":\"channel\",\"info\":{\"detectionId\":\"8ffa00db-609d-43a9-ae40-ed44800335e6\",\"applyType\":\"normal\",\"isCashPaid\":\"2\",\"actualPaymentTime\":\"2020-12-09\",\"actualAmountPaid\":\"1000\",\"journalVoucherNo\":\"123456789\",\"paymentVoucherPath\":\"支付凭证路径\",\"auditUserId\":\"a0000000-d000-m000-i000-n00000000000\",\"auditUserName\":\"admin\",\"auditUserNumber\":\"LX001\",\"detectionAuditStatus\":\"case_over\"}}";
+
+        String json = HttpUtil.doPostJson("http://localhost:8080/lxcs-admin/cases/auslegen/financeInfoConfirm", reqJson);
+        System.out.println(json);
+
+
+    }
+
+    @Test
+    public void testDownloadImg() throws Exception {
+        // String imgUrl = "http://avatar.csdn.net/1/3/B/1_li1325169021.jpg";
+        String imgUrl = "http://172.16.110.76:8180/cwxt-admin/cwdata/uploadFiles/attachments//202012/17/1608193385957.jpg";
+
+        FileUtil.downLoadFromUrl(imgUrl, "test.jpg", "D:\\test\\image");
+    }
+
+    @Test
+    public void testFastDfs() {
+        try {
+            FastDFSClient fastDFSClient = new FastDFSClient("D:\\workspace\\personal\\ssm-sample\\zhen-conf\\fastdfs-client.properties");
+
+            String s = fastDFSClient.uploadFile("D:\\test\\image\\test.jpg");
+            System.out.println(s);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

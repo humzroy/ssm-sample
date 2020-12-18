@@ -17,13 +17,15 @@ public class FastDFSClient {
     private StorageServer storageServer = null;
     private StorageClient1 storageClient = null;
 
-    public FastDFSClient(String conf) throws Exception {
-        if (conf.contains("classpath:")) {
-            conf = conf.replace("classpath:", this.getClass().getResource("/").getPath());
-        }
-        ClientGlobal.init(conf);
+    /**
+     *
+     * @param properties properties配置文件位置
+     * @throws Exception
+     */
+    public FastDFSClient(String properties) throws Exception {
+        ClientGlobal.initByProperties(properties);
         trackerClient = new TrackerClient();
-        trackerServer = trackerClient.getConnection();
+        trackerServer = trackerClient.getTrackerServer();
         storageServer = null;
         storageClient = new StorageClient1(trackerServer, storageServer);
     }

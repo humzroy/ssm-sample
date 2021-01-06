@@ -731,6 +731,7 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
         }
         return myDate;
     }
+
     /**
      * 获取精确的日期
      *
@@ -823,6 +824,105 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
             return 0;
         }
         return Integer.parseInt(day + "");
+    }
+
+    /**
+     * 整数(秒数)转换为时分秒格式(xx:xx:xx)
+     *
+     * @param time
+     * @return
+     * @author qsk
+     */
+    public static String secToTime(int time) {
+        String timeStr = null;
+        int hour = 0;
+        int minute = 0;
+        int second = 0;
+        if (time <= 0) {
+            return "00:00:00";
+        } else {
+            minute = time / 60;
+            if (minute < 60) {
+                second = time % 60;
+                timeStr = "00:" + unitFormat(minute) + ":" + unitFormat(second);
+            } else {
+                hour = minute / 60;
+                if (hour > 99)
+                    return "99:59:59";
+                minute = minute % 60;
+                second = time - hour * 3600 - minute * 60;
+                timeStr = unitFormat(hour) + ":" + unitFormat(minute) + ":" + unitFormat(second);
+            }
+        }
+        return timeStr;
+    }
+
+    public static String secToTime(long time) {
+        String timeStr = null;
+        long hour = 0;
+        long minute = 0;
+        long second = 0;
+        if (time <= 0) {
+            return "00:00:00";
+        } else {
+            minute = time / 60;
+            if (minute < 60) {
+                second = time % 60;
+                timeStr = "00:" + unitFormat(minute) + ":" + unitFormat(second);
+            } else {
+                hour = minute / 60;
+                if (hour > 99)
+                    return "99:59:59";
+                minute = minute % 60;
+                second = time - hour * 3600 - minute * 60;
+                timeStr = unitFormat(hour) + ":" + unitFormat(minute) + ":" + unitFormat(second);
+            }
+        }
+        return timeStr;
+    }
+
+    private static String unitFormat(int i) {
+        String retStr = null;
+        if (i >= 0 && i < 10) {
+            retStr = "0" + i;
+        } else {
+            retStr = "" + i;
+        }
+        return retStr;
+    }
+
+    private static String unitFormat(long i) {
+        String retStr = null;
+        if (i >= 0 && i < 10) {
+            retStr = "0" + i;
+        } else {
+            retStr = "" + i;
+        }
+        return retStr;
+    }
+
+    /**
+     * 将秒数转换为X天X时X分X秒
+     *
+     * @param second
+     * @return
+     */
+    public static String secondToTime(long second) {
+        long days = second / 86400;
+        second = second % 86400;
+        long hours = second / 3600;
+        second = second % 3600;
+        long minutes = second / 60;
+        second = second % 60;
+        if (days > 0) {
+            return days + "天" + hours + "小时" + minutes + "分" + second + "秒";
+        } else if (hours > 0) {
+            return hours + "小时" + minutes + "分" + second + "秒";
+        } else if (minutes > 0) {
+            return minutes + "分" + second + "秒";
+        } else {
+            return second + "秒";
+        }
     }
 
 

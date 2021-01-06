@@ -14,9 +14,12 @@ import com.zhen.util.*;
 import io.github.biezhi.ome.OhMyEmail;
 import io.github.biezhi.ome.SendMailException;
 import lombok.Data;
+import lombok.SneakyThrows;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
 import org.junit.Assert;
@@ -35,6 +38,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
 import java.util.stream.Collectors;
 
 /**
@@ -258,6 +262,8 @@ public class BaseTest {
 
         System.out.println(0.5f);
         System.out.println(Float.valueOf("30.00") / 100);
+
+        System.out.println("2020-11-11 23:10:30".length());
     }
 
 
@@ -514,8 +520,6 @@ public class BaseTest {
         // System.out.println(ll);
 
     }
-
-
 
 
     @Test
@@ -777,7 +781,7 @@ public class BaseTest {
         String str = "level_1";
         System.out.println();
 
-        System.out.println(".... level" + (Integer.parseInt(str.substring(str.lastIndexOf('_') + 1))+1));
+        System.out.println(".... level" + (Integer.parseInt(str.substring(str.lastIndexOf('_') + 1)) + 1));
 
 
         String rate = "80.99";
@@ -790,7 +794,6 @@ public class BaseTest {
 
         String str2 = " 31d487f9-0fa6-4353-ae14-d814e929f3a6";
         System.out.println(StringUtils.trim(str2));
-
 
 
         //
@@ -825,7 +828,7 @@ public class BaseTest {
         System.out.println(s);
 
 
-        BigDecimal averagePercent = (new BigDecimal("100").subtract(result2)).divide(new BigDecimal(s)).setScale(2,BigDecimal.ROUND_HALF_DOWN);
+        BigDecimal averagePercent = (new BigDecimal("100").subtract(result2)).divide(new BigDecimal(s)).setScale(2, BigDecimal.ROUND_HALF_DOWN);
         System.out.println(averagePercent);
         System.out.println(new BigDecimal(0.359999).setScale(2, RoundingMode.DOWN));
     }
@@ -865,5 +868,43 @@ public class BaseTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void testThreadPool() throws InterruptedException {
+
+        CountDownLatch countDownLatch = new CountDownLatch(10);
+
+        for (int i = 0; i < 10; i++) {
+            //使用线程池工具处理耗时操作
+            ThreadPoolUtil.getInstance().execute(new Runnable() {
+                @SneakyThrows
+                @Override
+                public void run() {
+                    //在此执行耗时操作
+                    //例如：文件下载、数据库存取、音频格式转换等
+
+                    Thread.sleep(3000);
+
+
+                    System.out.println(Thread.currentThread().getName() + " done");
+                    countDownLatch.countDown();
+                }
+            });
+        }
+        countDownLatch.await();
+        System.out.println("子线程都执行完了哦，主线程开始执行....");
+
+
+    }
+
+    @Test
+    public void testRandom() {
+        System.out.println(DateUtil.secondToTime(Long.valueOf("1565629")));
+        System.out.println(DateUtil.secToTime(Integer.valueOf("1565629")));
+
+
+    }
+
+
 
 }

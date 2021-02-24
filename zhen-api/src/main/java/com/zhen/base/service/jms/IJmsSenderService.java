@@ -47,5 +47,5 @@ public interface IJmsSenderService {
      * @param name
      * @param message
      */
-    void sendRabbitMqMsg(String name, final String message);
+    // void sendRabbitMqMsg(String name, final String message);
 }

@@ -69,8 +69,8 @@ public class JmsSenderServiceImpl implements IJmsSenderService {
      * @param name
      * @param message
      */
-    @Override
-    public void sendRabbitMqMsg(String name, String message) {
-        rmqMsgProducer.sendMsg(name, message);
-    }
+    // @Override
+    // public void sendRabbitMqMsg(String name, String message) {
+    //     rmqMsgProducer.sendMsg(name, message);
+    // }
 }

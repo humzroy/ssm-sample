@@ -95,6 +95,9 @@ public class DemoServiceTwoImpl implements IDemoServiceTwo {
         resMap.put("success", false);
         resMap.put("message", "失败！");
 
+
+        // 这里回滚的话，两个事务都回滚，这里不回滚，上层事务回滚，因为REQUIRES_NEW 开启了新的事务
+        // TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         return resMap;
     }
 }

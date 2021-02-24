@@ -6,9 +6,12 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.binarywang.java.emoji.EmojiConverter;
 import com.google.common.collect.Lists;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.jcraft.jsch.ChannelSftp;
 import com.vdurmont.emoji.EmojiManager;
 import com.vdurmont.emoji.EmojiParser;
+import com.zhen.base.domain.system.User;
 import com.zhen.exception.BusinessException;
 import com.zhen.util.*;
 import io.github.biezhi.ome.OhMyEmail;
@@ -17,6 +20,7 @@ import lombok.Data;
 import lombok.SneakyThrows;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
@@ -28,10 +32,15 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.InetAddress;
+import java.net.URL;
+import java.net.URLConnection;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -39,6 +48,9 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -655,6 +667,7 @@ public class BaseTest {
         String status = "return1";
         String[] strings = ArrayUtils.toArray("return12", "return2", "return3", "return4", "return5", "close1", "close2", "close3", "close4", "close5");
         System.out.println(StringUtils.containsAny(status, strings));
+        System.out.println(ArrayUtils.toString(StringUtils.split("", ",")));
 
     }
 
@@ -871,7 +884,7 @@ public class BaseTest {
 
     @Test
     public void testThreadPool() throws InterruptedException {
-
+        final String url = "http://127.0.0.1:9090/aaron-demo/demo/product/2";
         CountDownLatch countDownLatch = new CountDownLatch(10);
 
         for (int i = 0; i < 10; i++) {
@@ -882,8 +895,8 @@ public class BaseTest {
                 public void run() {
                     //在此执行耗时操作
                     //例如：文件下载、数据库存取、音频格式转换等
-
-                    Thread.sleep(3000);
+                    System.out.println(HttpUtil.get(url));
+                    // Thread.sleep(3000);
 
 
                     System.out.println(Thread.currentThread().getName() + " done");
@@ -898,11 +911,123 @@ public class BaseTest {
     }
 
     @Test
-    public void testRandom() {
-        System.out.println(DateUtil.secondToTime(Long.valueOf("1565629")));
-        System.out.println(DateUtil.secToTime(Integer.valueOf("1565629")));
+    public void testApi() {
+
+        final String url = "http://127.0.0.1:9090/aaron-demo/demo/product/2";
+
+        for (int i = 0; i < 10; i++) {
+            ThreadPoolUtil.getInstance().execute(new Runnable() {
+                public void run() {
+                    System.out.println(HttpUtil.doGet(url));
+                }
+            });
+        }
 
 
+    }
+
+    class MyRunner implements Runnable {
+        String url;
+
+        MyRunner(String url) {
+            this.url = url;
+        }
+
+        /**
+         * When an object implementing interface <code>Runnable</code> is used
+         * to create a thread, starting the thread causes the object's
+         * <code>run</code> method to be called in that separately executing
+         * thread.
+         * <p>
+         * The general contract of the method <code>run</code> is that it may
+         * take any action whatsoever.
+         *
+         * @see Thread#run()
+         */
+        @Override
+        public void run() {
+            String s = null;
+            try {
+                s = HttpUtil.doGet(this.url);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            System.out.println(s);
+        }
+    }
+
+    /**
+     * get请求
+     *
+     * @param realUrl
+     * @return
+     */
+    public static String sendGet(URL realUrl) {
+        String result = "";
+        BufferedReader in = null;
+        try {
+            // 打开和URL之间的连接
+            URLConnection connection = realUrl.openConnection();
+            // 设置通用的请求属性
+            connection.setRequestProperty("accept", "*/*");
+            connection.setRequestProperty("connection", "Keep-Alive");
+            connection.setRequestProperty("user-agent",
+                    "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+            // 建立实际的连接
+            connection.connect();
+
+            // 定义 BufferedReader输入流来读取URL的响应
+            in = new BufferedReader(new InputStreamReader(
+                    connection.getInputStream()));
+            String line;
+            while ((line = in.readLine()) != null) {
+                result += line;
+            }
+        } catch (Exception e) {
+            System.out.println("发送GET请求出现异常！" + e);
+            e.printStackTrace();
+        }
+        // 使用finally块来关闭输入流
+        finally {
+            try {
+                if (in != null) {
+                    in.close();
+                }
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+
+    @Test
+    public void testStr22() {
+        String ss = "8643650511537181609830243074_15165283950.amr";
+
+        String imeiCode = "864365051153718";
+        int lastIndexOf = ss.lastIndexOf('_');
+        System.out.println("lastIndexOf  " + lastIndexOf);
+        int index = ss.indexOf(imeiCode);
+        System.out.println("index  " + index);
+
+        String ns = imeiCode + "_"+ss.substring(imeiCode.length(), lastIndexOf) + ss.substring(lastIndexOf);
+        System.out.println(ns);
+
+
+        String op = "刘露(qd001),www(qd010)；2021-01-26 13:52:19V字形从V字形从V型从在V字形从：测试测试1121";
+        System.out.println(op);
+        System.out.println(op.replaceFirst("外访：", ""));
+        System.out.println(StringUtils.replaceFirst(op,"外访：","外访："));
+
+
+        String name = "事实上";
+        String hideVal = name.substring(0, 1);
+        int num = name.length()-1;
+        for (int i = 0; i <num ; i++) {
+            hideVal += "*";
+        }
+        System.out.println(hideVal);
     }
 
 

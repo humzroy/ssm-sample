@@ -65,7 +65,7 @@
         <!--端口号  -->
         <property name="port" value="${redis.port}"/>
         <!--如果Redis设置有密码  -->
-        <property name="password" value="${redis.password}" />
+        <!--<property name="password" value="${redis.password}" />-->
         <!--客户端超时时间单位是毫秒  -->
         <!--<property name="timeout" value="${redis.timeout}"></property>-->
     </bean>
